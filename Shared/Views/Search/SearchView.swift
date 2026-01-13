@@ -26,13 +26,13 @@ struct SearchView: View {
 
     private var filterSelection: Binding<SearchFilter> {
         Binding(
-            get: {
+            get: { @MainActor in
                 if let type = viewModel.selectedType {
                     return .type(type)
                 }
                 return .all
             },
-            set: { newValue in
+            set: { @MainActor newValue in
                 viewModel.selectedType = newValue.selectedType
                 let trimmed = viewModel.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {
