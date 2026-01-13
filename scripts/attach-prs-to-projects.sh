@@ -26,19 +26,43 @@ fi
 echo "Fetching PRs and milestones..."
 PRS=$(gh pr list --repo "$REPO" --state open --json number,title,milestone --jq '.[] | "\(.number)|\(.title)|\(.milestone.title // "None")"')
 
-# Get all projects
+# Get all projects using REST API
 echo "Fetching projects..."
-PROJECTS=$(gh project list --owner "$REPO" --format json | jq -r '.[] | "\(.number)|\(.title)"')
+TOKEN="${GITHUB_TOKEN:-$(gh auth token 2>/dev/null || echo '')}"
+if [ -z "$TOKEN" ]; then
+    echo "❌ Error: GITHUB_TOKEN not set and gh auth token not available"
+    exit 1
+fi
 
-# Map milestones to project names
-declare -A MILESTONE_TO_PROJECT=(
-    ["v0.2.0 - Core Features"]="v0.2.0 - Core Features"
-    ["v0.3.0 - Platform Optimization"]="v0.3.0 - Platform Optimization"
-    ["v0.4.0 - Testing & Quality"]="v0.4.0 - Testing & Quality"
-    ["v1.0.0-beta - Beta Release"]="v1.0.0-beta - Beta Release"
-    ["v1.0.0 - Production Release"]="v1.0.0 - Production Release"
-    ["v1.1.0+ - Post-Launch"]="v1.1.0+ - Post-Launch"
-)
+PROJECTS_JSON=$(curl -s -H "Authorization: token $TOKEN" \
+  -H "Accept: application/vnd.github.v3+json" \
+  "https://api.github.com/repos/$REPO/projects")
+
+PROJECTS=$(echo "$PROJECTS_JSON" | python3 -c "
+import sys, json
+try:
+    projects = json.load(sys.stdin)
+    for p in projects:
+        print(f\"{p['number']}|{p['name']}\")
+except:
+    print('')
+" 2>/dev/null)
+
+if [ -z "$PROJECTS" ]; then
+    echo "⚠️  No projects found. Projects may need to be created first."
+    echo "   See docs/MILESTONE_PROJECTS.md for instructions"
+fi
+
+# Function to get project number by title
+get_project_number() {
+    local milestone_title="$1"
+    echo "$PROJECTS" | while IFS='|' read -r proj_num proj_title; do
+        if [ "$proj_title" = "$milestone_title" ]; then
+            echo "$proj_num"
+            return
+        fi
+    done
+}
 
 # Process each PR
 while IFS='|' read -r pr_number pr_title milestone; do
@@ -47,17 +71,15 @@ while IFS='|' read -r pr_number pr_title milestone; do
         continue
     fi
     
-    # Find project number for this milestone
-    project_number=""
-    while IFS='|' read -r proj_num proj_title; do
-        if [ "$proj_title" = "${MILESTONE_TO_PROJECT[$milestone]}" ]; then
-            project_number=$proj_num
-            break
-        fi
-    done <<< "$PROJECTS"
+    # Find project number for this milestone (project name should match milestone)
+    project_number=$(get_project_number "$milestone")
     
     if [ -z "$project_number" ]; then
         echo "⚠️  PR #$pr_number: Project for milestone '$milestone' not found"
+        echo "   Available projects:"
+        echo "$PROJECTS" | while IFS='|' read -r proj_num proj_title; do
+            echo "     - $proj_title (Project #$proj_num)"
+        done
         continue
     fi
     
