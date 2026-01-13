@@ -19,21 +19,28 @@ class ResourcesViewModel: BaseViewModelProtocol {
     // Filtering
     var searchText: String = ""
     var selectedCategory: ResourceCategory?
+    var selectedTag: String?
     
     var filteredResources: [Resource] {
-        resources.filtered(searchText: searchText, category: selectedCategory)
+        resources.filtered(searchText: searchText, category: selectedCategory, tag: selectedTag)
+    }
+    
+    var availableTags: [String] {
+        let allTags = resources.flatMap { $0.tags }
+        return Array(Set(allTags)).sorted()
     }
     
     private let resourcesManager: ResourcesManager
     private var loadTask: Task<Void, Never>?
     
-    init(resourcesManager: ResourcesManager = ResourcesManager.shared) {
+    nonisolated init(resourcesManager: ResourcesManager = MainActor.assumeIsolated { ResourcesManager.shared }) {
         self.resourcesManager = resourcesManager
     }
     
     func clearFilters() {
         searchText = ""
         selectedCategory = nil
+        selectedTag = nil
     }
     
     func loadResources() {

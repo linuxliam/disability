@@ -53,8 +53,8 @@ enum ResourceCategory: String, Codable, CaseIterable {
 
 // MARK: - Resource Filtering Extension
 extension Array where Element == Resource {
-    /// Filters resources by search text and category
-    func filtered(searchText: String, category: ResourceCategory?) -> [Resource] {
+    /// Filters resources by search text, category, and tag
+    func filtered(searchText: String, category: ResourceCategory?, tag: String?) -> [Resource] {
         var filtered = self
 
         // Pre-compute lowercase search for efficiency
@@ -66,6 +66,10 @@ extension Array where Element == Resource {
 
         if let category = category {
             filtered = filtered.filter { $0.category == category }
+        }
+        
+        if let tag = tag {
+            filtered = filtered.filter { $0.tags.contains(tag) }
         }
 
         return filtered

@@ -18,20 +18,22 @@ class EventsViewModel: BaseViewModelProtocol {
     
     // Filtering
     var selectedCategory: EventCategory?
+    var dateFilter: EventDateFilter = .upcoming
     
     var filteredEvents: [Event] {
-        events.filtered(category: selectedCategory)
+        events.filtered(category: selectedCategory, dateFilter: dateFilter)
     }
     
     private let eventsManager: EventsManager
     private var loadTask: Task<Void, Never>?
     
-    init(eventsManager: EventsManager = EventsManager.shared) {
+    nonisolated init(eventsManager: EventsManager = MainActor.assumeIsolated { EventsManager.shared }) {
         self.eventsManager = eventsManager
     }
     
     func clearFilters() {
         selectedCategory = nil
+        dateFilter = .upcoming
     }
     
     func loadEvents() {

@@ -1,0 +1,37 @@
+.DS_Store
+
+# Build artifacts
+build/
+DerivedData/
+*.xcuserstate
+*.xcuserdatad
+
+# Xcode
+*.xcbkptlist
+*.xcscmblueprint
+*.xcworkspace/xcuserdata/
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*.class
+*.so
+.Python
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+

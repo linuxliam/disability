@@ -32,14 +32,17 @@ class SearchViewModel {
     private var allArticles: [NewsArticle] = []
     private var isDataLoaded = false
 
-    init(
-        resourcesManager: ResourcesManager = .shared,
-        eventsManager: EventsManager = .shared
+    nonisolated init(
+        resourcesManager: ResourcesManager = MainActor.assumeIsolated { ResourcesManager.shared },
+        eventsManager: EventsManager = MainActor.assumeIsolated { EventsManager.shared }
     ) {
         self.resourcesManager = resourcesManager
         self.eventsManager = eventsManager
-        loadRecentSearches()
-        preloadData()
+        // Load recent searches asynchronously
+        Task { @MainActor in
+            loadRecentSearches()
+        }
+        // Note: preloadData() is called lazily in performSearch() when needed
     }
 
     private func preloadData() {
