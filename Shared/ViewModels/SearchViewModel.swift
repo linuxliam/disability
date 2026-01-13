@@ -38,8 +38,11 @@ class SearchViewModel {
     ) {
         self.resourcesManager = resourcesManager
         self.eventsManager = eventsManager
-        loadRecentSearches()
-        preloadData()
+        // Load recent searches asynchronously
+        Task { @MainActor in
+            loadRecentSearches()
+        }
+        // Note: preloadData() is called lazily in performSearch() when needed
     }
 
     private func preloadData() {
