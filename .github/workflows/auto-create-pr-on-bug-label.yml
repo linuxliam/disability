@@ -66,6 +66,7 @@ jobs:
         run: |
           ISSUE_NUM=${{ github.event.issue.number }}
           BRANCH_NAME="${{ steps.check-branch.outputs.branch }}"
+          ISSUE_TITLE="${{ github.event.issue.title }}"
           
           # Switch to main branch
           git checkout main || git checkout -b main origin/main
@@ -76,24 +77,7 @@ jobs:
           
           # Create placeholder file to establish branch
           mkdir -p .github/auto-fix
-          cat > .github/auto-fix/issue-$ISSUE_NUM.md << EOF
-# Bug Fix for Issue #$ISSUE_NUM
-
-This PR was automatically created for bug issue #$ISSUE_NUM.
-
-## Issue
-- **Title:** ${{ github.event.issue.title }}
-- **Number:** #$ISSUE_NUM
-
-## Next Steps
-1. Implement the bug fix
-2. Add tests if applicable
-3. Update documentation if needed
-4. Ensure all CI/CD checks pass
-
-## Related
-Fixes #$ISSUE_NUM
-EOF
+          printf '# Bug Fix for Issue #%s\n\nThis PR was automatically created for bug issue #%s.\n\n## Issue\n- **Title:** %s\n- **Number:** #%s\n\n## Next Steps\n1. Implement the bug fix\n2. Add tests if applicable\n3. Update documentation if needed\n4. Ensure all CI/CD checks pass\n\n## Related\nFixes #%s\n' "$ISSUE_NUM" "$ISSUE_NUM" "$ISSUE_TITLE" "$ISSUE_NUM" "$ISSUE_NUM" > .github/auto-fix/issue-$ISSUE_NUM.md
           
           # Commit the placeholder
           git add .github/auto-fix/issue-$ISSUE_NUM.md
