@@ -9,8 +9,24 @@ import SwiftUI
 
 @MainActor
 struct SearchView: View {
-    @State private var viewModel = SearchViewModel()
+    @State private var viewModel: SearchViewModel
+    @State private var communityViewModel = CommunityViewModel()
+    @State private var newsViewModel = NewsViewModel()
     @Environment(AppState.self) var appState: AppState
+    
+    init() {
+        // Initialize view models
+        let communityVM = CommunityViewModel()
+        let newsVM = NewsViewModel()
+        _communityViewModel = State(initialValue: communityVM)
+        _newsViewModel = State(initialValue: newsVM)
+        
+        // Initialize search view model with view models
+        _viewModel = State(initialValue: SearchViewModel(
+            communityViewModel: communityVM,
+            newsViewModel: newsVM
+        ))
+    }
 
     private enum SearchFilter: Hashable {
         case all
@@ -137,7 +153,7 @@ struct SearchView: View {
                                     LazyVGrid(columns: AdaptiveLayout.gridColumns(for: .regular, availableWidth: geometry.size.width), spacing: LayoutConstants.cardGap) {
                                         ForEach(viewModel.searchResults) { result in
                                             NavigationLink(value: result) {
-                                                SearchResultGridCard(result: result)
+                                                SearchResultGridCard(result: result, searchQuery: viewModel.currentQuery)
                                             }
                                             .buttonStyle(.plain)
                                         }
@@ -248,7 +264,7 @@ struct SearchView: View {
                     Section {
                         ForEach(viewModel.searchResults) { result in
                             NavigationLink(value: result) {
-                                SearchResultRow(result: result)
+                                SearchResultRow(result: result, searchQuery: viewModel.currentQuery)
                             }
                             }
                         } header: {
@@ -294,6 +310,13 @@ struct SearchView: View {
             }
         }
         .appScreenChrome()
+        .onAppear {
+            // Load data for view models
+            communityViewModel.loadPosts()
+            newsViewModel.loadArticles()
+            // Update search view model with loaded data
+            viewModel.setViewModels(community: communityViewModel, news: newsViewModel)
+        }
     }
     
     @ViewBuilder
@@ -345,13 +368,11 @@ struct SearchView: View {
     }
     
     private func findPost(id: UUID) -> CommunityPost? {
-        // This should come from CommunityViewModel
-        return nil
+        return communityViewModel.posts.first { $0.id == id }
     }
     
     private func findArticle(id: UUID) -> NewsArticle? {
-        // This should come from NewsViewModel
-        return nil
+        return newsViewModel.articles.first { $0.id == id }
     }
 }
 
@@ -390,13 +411,55 @@ struct QuickSearchCard: View {
 
 struct SearchResultRow: View {
     let result: SearchResult
+    let searchQuery: String
+    
+    init(result: SearchResult, searchQuery: String = "") {
+        self.result = result
+        self.searchQuery = searchQuery
+    }
     
     var body: some View {
-        AppRow(
-            title: result.title,
-            subtitle: result.summary,
-            systemImage: result.icon,
-            trailingText: result.typeLabel
-        )
+        HStack(spacing: 12) {
+            Image(systemName: result.icon)
+                .foregroundStyle(.tint)
+                .frame(width: 24)
+            
+            VStack(alignment: .leading, spacing: 4) {
+                if !searchQuery.isEmpty {
+                    HighlightedTitleText(
+                        text: result.title,
+                        query: searchQuery,
+                        font: .body.weight(.semibold),
+                        foregroundColor: .primary
+                    )
+                } else {
+                    Text(result.title)
+                        .font(.body.weight(.semibold))
+                        .foregroundStyle(.primary)
+                }
+                
+                if !searchQuery.isEmpty {
+                    HighlightedSummaryText(
+                        text: result.summary,
+                        query: searchQuery,
+                        font: .subheadline,
+                        foregroundColor: Color.secondaryText
+                    )
+                    .lineLimit(2)
+                } else {
+                    Text(result.summary)
+                        .font(.subheadline)
+                        .foregroundStyle(Color.secondaryText)
+                        .lineLimit(2)
+                }
+            }
+            
+            Spacer()
+            
+            Text(result.typeLabel)
+                .font(.caption.weight(.bold))
+                .foregroundStyle(Color.tertiaryText)
+        }
+        .padding(.vertical, 6)
     }
 }

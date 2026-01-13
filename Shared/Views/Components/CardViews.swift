@@ -542,6 +542,12 @@ struct CommunityPostGridCard: View {
 
 struct SearchResultGridCard: View {
     let result: SearchResult
+    let searchQuery: String
+    
+    init(result: SearchResult, searchQuery: String = "") {
+        self.result = result
+        self.searchQuery = searchQuery
+    }
     
     var body: some View {
         AppGridCard {
@@ -554,15 +560,35 @@ struct SearchResultGridCard: View {
                 }
                 
                 VStack(alignment: .leading, spacing: LayoutConstants.spacingS) {
-                    Text(result.title)
-                        .font(.headline.weight(.bold))
-                        .foregroundStyle(Color.primaryText)
+                    if !searchQuery.isEmpty {
+                        HighlightedTitleText(
+                            text: result.title,
+                            query: searchQuery,
+                            font: .headline.weight(.bold),
+                            foregroundColor: Color.primaryText
+                        )
                         .lineLimit(2)
+                    } else {
+                        Text(result.title)
+                            .font(.headline.weight(.bold))
+                            .foregroundStyle(Color.primaryText)
+                            .lineLimit(2)
+                    }
                     
-                    Text(result.summary)
-                        .font(.subheadline)
-                        .foregroundStyle(Color.secondaryText)
+                    if !searchQuery.isEmpty {
+                        HighlightedSummaryText(
+                            text: result.summary,
+                            query: searchQuery,
+                            font: .subheadline,
+                            foregroundColor: Color.secondaryText
+                        )
                         .lineLimit(3)
+                    } else {
+                        Text(result.summary)
+                            .font(.subheadline)
+                            .foregroundStyle(Color.secondaryText)
+                            .lineLimit(3)
+                    }
                 }
                 
                 Spacer(minLength: 0)
@@ -575,6 +601,46 @@ struct SearchResultGridCard: View {
                     Image(systemName: "arrow.right.circle.fill")
                         .foregroundStyle(Color.tertiaryText)
                 }
+            }
+        }
+    }
+}
+
+/// View for displaying highlighted title text
+struct HighlightedTitleText: View {
+    let text: String
+    let query: String
+    let font: Font
+    let foregroundColor: Color
+    
+    var body: some View {
+        let segments = SearchHighlighting.highlight(text, query: query)
+        
+        segments.reduce(Text("")) { result, segment in
+            if segment.isHighlighted {
+                return result + Text(segment.text).font(font).foregroundColor(.accentColor).bold()
+            } else {
+                return result + Text(segment.text).font(font).foregroundColor(foregroundColor)
+            }
+        }
+    }
+}
+
+/// View for displaying highlighted summary text
+struct HighlightedSummaryText: View {
+    let text: String
+    let query: String
+    let font: Font
+    let foregroundColor: Color
+    
+    var body: some View {
+        let segments = SearchHighlighting.highlight(text, query: query)
+        
+        segments.reduce(Text("")) { result, segment in
+            if segment.isHighlighted {
+                return result + Text(segment.text).font(font).foregroundColor(.accentColor)
+            } else {
+                return result + Text(segment.text).font(font).foregroundColor(foregroundColor)
             }
         }
     }
