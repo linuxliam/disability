@@ -18,9 +18,10 @@ class EventsViewModel: BaseViewModelProtocol {
     
     // Filtering
     var selectedCategory: EventCategory?
+    var dateFilter: EventDateFilter = .upcoming
     
     var filteredEvents: [Event] {
-        events.filtered(category: selectedCategory)
+        events.filtered(category: selectedCategory, dateFilter: dateFilter)
     }
     
     private let eventsManager: EventsManager
@@ -32,6 +33,7 @@ class EventsViewModel: BaseViewModelProtocol {
     
     func clearFilters() {
         selectedCategory = nil
+        dateFilter = .upcoming
     }
     
     func loadEvents() {
