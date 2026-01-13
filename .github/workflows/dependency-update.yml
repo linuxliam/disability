@@ -1,0 +1,94 @@
+name: Dependency Update Check
+
+on:
+  schedule:
+    # Run weekly on Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  check-dependencies:
+    name: Check for Dependency Updates
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Check for Swift Package Updates
+        id: swift-packages
+        run: |
+          if [ -f "Package.swift" ]; then
+            echo "Swift Package Manager detected"
+            # Check for outdated packages
+            swift package update 2>&1 | tee /tmp/swift-update.log || true
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          else
+            echo "No Package.swift found"
+            echo "has_updates=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Check Xcode Project Dependencies
+        id: xcode-deps
+        run: |
+          # Check for Swift Package dependencies in Xcode project
+          if grep -r "packageReferences" DisabilityAdvocacy.xcodeproj/project.pbxproj > /dev/null 2>&1; then
+            echo "Xcode project has Swift Package dependencies"
+            echo "has_dependencies=true" >> $GITHUB_OUTPUT
+          else
+            echo "No Swift Package dependencies found in Xcode project"
+            echo "has_dependencies=false" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Create Issue for Updates
+        if: steps.xcode-deps.outputs.has_dependencies == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const title = '📦 Dependency Update Check - ' + new Date().toISOString().split('T')[0];
+            
+            // Check if issue already exists
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'dependencies'
+            });
+            
+            const existingIssue = issues.find(issue => issue.title.includes('Dependency Update Check'));
+            
+            if (existingIssue) {
+              console.log(`Issue already exists: #${existingIssue.number}`);
+              return;
+            }
+            
+            // Create new issue
+            const { data: issue } = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              body: `## Dependency Update Check
+              
+              This is an automated check for dependency updates.
+              
+              ### Next Steps
+              1. Review Xcode project for Swift Package updates
+              2. Check for security advisories
+              3. Test updates in a development branch
+              4. Update dependencies if safe
+              
+              ### Manual Check
+              - Open Xcode project
+              - Go to File → Packages → Update to Latest Package Versions
+              - Review changes
+              - Test thoroughly before merging
+              
+              ---
+              *This issue was automatically created by the Dependency Update Check workflow.*`,
+              labels: ['dependencies', 'automated']
+            });
+            
+            console.log(`Created issue #${issue.number}: ${issue.html_url}`);
