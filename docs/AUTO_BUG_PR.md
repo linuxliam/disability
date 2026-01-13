@@ -117,7 +117,7 @@ Fixes #<number>
 ## Configuration
 
 ### Workflow File
-`.github/workflows/auto-create-bug-pr.yml`
+`.github/workflows/auto-create-pr-on-bug-label.yml`
 
 ### Customization
 
@@ -183,7 +183,7 @@ git checkout fix/<number>/bug-fix
 ### Workflow Not Running
 
 **Check:**
-1. Workflow file exists: `.github/workflows/auto-create-bug-pr.yml`
+1. Workflow file exists: `.github/workflows/auto-create-pr-on-bug-label.yml`
 2. Workflow is enabled in repository settings
 3. GitHub Actions is enabled
 4. Check Actions tab for errors

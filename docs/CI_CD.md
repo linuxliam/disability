@@ -7,7 +7,7 @@ This document describes the Continuous Integration and Continuous Deployment set
 
 ### Workflow: Build and Test
 
-**File:** `.github/workflows/build-and-test.yml`
+**File:** `.github/workflows/ci-build-test-lint.yml`
 
 **Triggers:**
 - Push to `main` or `develop` branches
