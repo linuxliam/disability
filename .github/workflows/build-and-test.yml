@@ -115,11 +115,96 @@ jobs:
             -target "DisabilityAdvocacy-iOS" \
             -showBuildSettings 2>&1 | grep -i "error" || echo "✓ No missing file errors"
 
+  # Swift 6 Concurrency Pre-Check
+  check-swift-concurrency:
+    name: Swift 6 Concurrency Check
+    runs-on: macos-14
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Select Xcode version
+        run: |
+          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
+          else
+            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          fi
+      
+      - name: Check for Swift 6 concurrency issues
+        id: concurrency_check
+        continue-on-error: true
+        run: |
+          echo "## 🔍 Swift 6 Concurrency Pre-Check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Pattern 1: Check for calls to MainActor-isolated methods without @MainActor
+          echo "### Checking for MainActor isolation issues..." >> $GITHUB_STEP_SUMMARY
+          
+          CONCURRENCY_ISSUES=0
+          
+          # Find files that call Manager.shared methods without @MainActor
+          while IFS= read -r file; do
+            # Check for calls to Manager.shared methods in non-isolated contexts
+            if grep -q "Manager\.shared\." "$file" && ! grep -q "@MainActor" "$file"; then
+              # Check if the method calling Manager.shared is not marked @MainActor
+              LINE_NUM=$(grep -n "Manager\.shared\." "$file" | head -1 | cut -d: -f1)
+              if [ -n "$LINE_NUM" ]; then
+                # Check if the function containing this line is marked @MainActor
+                FUNCTION_START=$(sed -n "1,${LINE_NUM}p" "$file" | grep -nE "^\s*(private\s+)?func\s+" | tail -1 | cut -d: -f1)
+                if [ -n "$FUNCTION_START" ]; then
+                  FUNCTION_CONTEXT=$(sed -n "${FUNCTION_START},${LINE_NUM}p" "$file")
+                  if ! echo "$FUNCTION_CONTEXT" | grep -q "@MainActor"; then
+                    echo "⚠️ **Potential issue in:** \`$file\` (line $LINE_NUM)" >> $GITHUB_STEP_SUMMARY
+                    echo "   Calls Manager.shared method without @MainActor annotation" >> $GITHUB_STEP_SUMMARY
+                    CONCURRENCY_ISSUES=$((CONCURRENCY_ISSUES + 1))
+                  fi
+                fi
+              fi
+            fi
+          done < <(find Shared -name "*.swift" -type f 2>/dev/null)
+          
+          # Pattern 2: Check for nonisolated init calling MainActor methods
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Checking for nonisolated init issues..." >> $GITHUB_STEP_SUMMARY
+          
+          while IFS= read -r file; do
+            if grep -q "nonisolated init" "$file"; then
+              # Check if nonisolated init calls MainActor methods
+              if grep -A 10 "nonisolated init" "$file" | grep -q "Manager\.shared\|MainActor"; then
+                echo "⚠️ **Potential issue in:** \`$file\`" >> $GITHUB_STEP_SUMMARY
+                echo "   nonisolated init may call MainActor-isolated methods" >> $GITHUB_STEP_SUMMARY
+                CONCURRENCY_ISSUES=$((CONCURRENCY_ISSUES + 1))
+              fi
+            fi
+          done < <(find Shared -name "*.swift" -type f 2>/dev/null)
+          
+          # Summary
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "$CONCURRENCY_ISSUES" -eq 0 ]; then
+            echo "✅ **No obvious concurrency issues detected**" >> $GITHUB_STEP_SUMMARY
+            echo "Note: This is a pre-check. Full validation occurs during build." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "⚠️ **Found $CONCURRENCY_ISSUES potential concurrency issue(s)**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### 💡 Common Fixes:" >> $GITHUB_STEP_SUMMARY
+            echo "1. Add \`@MainActor\` to methods that call MainActor-isolated code" >> $GITHUB_STEP_SUMMARY
+            echo "2. Use \`Task { @MainActor in ... }\` for async MainActor calls" >> $GITHUB_STEP_SUMMARY
+            echo "3. Use \`MainActor.assumeIsolated { ... }\` in nonisolated init (with caution)" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "::notice title=Swift 6 Concurrency Check::Found $CONCURRENCY_ISSUES potential issue(s)"
+          
+          # Don't fail the job, just warn
+          exit 0
+
   # Build Jobs with Matrix Strategy
   build-ios:
     name: Build iOS (${{ matrix.configuration }})
     runs-on: macos-14
     timeout-minutes: 30
+    needs: [validate-dependencies, check-swift-concurrency]
     strategy:
       fail-fast: false
       matrix:
@@ -184,14 +269,64 @@ jobs:
             echo '```' >> $GITHUB_STEP_SUMMARY
           fi
       
-      - name: Check build output
+      - name: Categorize and report errors
         if: failure()
         run: |
-          echo "## Build Failed (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
-          echo "Last 100 lines of output:" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -100 build-ios-${{ matrix.configuration }}.log >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "## ❌ Build Failed (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f "build-ios-${{ matrix.configuration }}.log" ]; then
+            # Extract and categorize errors
+            CONCURRENCY_ERRORS=$(grep -c "main actor-isolated\|nonisolated context" build-ios-${{ matrix.configuration }}.log || echo "0")
+            COMPILATION_ERRORS=$(grep -c "error:" build-ios-${{ matrix.configuration }}.log || echo "0")
+            LINKER_ERRORS=$(grep -c "Undefined symbol\|ld:" build-ios-${{ matrix.configuration }}.log || echo "0")
+            
+            echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
+            echo "- **Concurrency Errors:** $CONCURRENCY_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Compilation Errors:** $COMPILATION_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Linker Errors:** $LINKER_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show concurrency errors with context
+            if [ "$CONCURRENCY_ERRORS" -gt 0 ]; then
+              echo "### 🔴 Swift 6 Concurrency Errors" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              grep -B 2 -A 5 "main actor-isolated\|nonisolated context" build-ios-${{ matrix.configuration }}.log | head -50 >> $GITHUB_STEP_SUMMARY || true
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**💡 Fix:** Add \`@MainActor\` to the method or use \`Task { @MainActor in ... }\`" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            # Show other compilation errors
+            if [ "$COMPILATION_ERRORS" -gt "$CONCURRENCY_ERRORS" ]; then
+              echo "### Other Compilation Errors" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              grep "error:" build-ios-${{ matrix.configuration }}.log | grep -v "main actor-isolated\|nonisolated context" | head -20 >> $GITHUB_STEP_SUMMARY || true
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            # Show last 50 lines for context
+            echo "### Full Error Context (Last 50 lines)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 build-ios-${{ matrix.configuration }}.log >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Create annotations for better visibility
+          if [ -f "build-ios-${{ matrix.configuration }}.log" ]; then
+            while IFS= read -r line; do
+              if echo "$line" | grep -q "error:"; then
+                FILE=$(echo "$line" | grep -oE "[^:]+\.swift" | head -1 || echo "")
+                LINE_NUM=$(echo "$line" | grep -oE ":[0-9]+:" | head -1 | tr -d ':' || echo "")
+                MESSAGE=$(echo "$line" | sed 's/.*error: //' || echo "$line")
+                if [ -n "$FILE" ] && [ -n "$LINE_NUM" ]; then
+                  echo "::error file=$FILE,line=$LINE_NUM::$MESSAGE"
+                fi
+              fi
+            done < <(grep "error:" build-ios-${{ matrix.configuration }}.log | head -10)
+          fi
       
       - name: Archive build artifacts
         if: success()
@@ -199,7 +334,7 @@ jobs:
         with:
           name: ios-build-${{ matrix.configuration }}
           path: |
-            build/Debug-iphonesimulator/DisabilityAdvocacy-iOS.app
+            build/${{ matrix.configuration == 'Debug' && 'Debug' || 'Release' }}-iphonesimulator/DisabilityAdvocacy-iOS.app
             build-ios-${{ matrix.configuration }}.log
           retention-days: 7
           if-no-files-found: warn
@@ -209,6 +344,7 @@ jobs:
     name: Build macOS (${{ matrix.configuration }})
     runs-on: macos-14
     timeout-minutes: 30
+    needs: [validate-dependencies, check-swift-concurrency]
     strategy:
       fail-fast: false
       matrix:
@@ -270,14 +406,64 @@ jobs:
             echo '```' >> $GITHUB_STEP_SUMMARY
           fi
       
-      - name: Check build output
+      - name: Categorize and report errors
         if: failure()
         run: |
-          echo "## Build Failed (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
-          echo "Last 100 lines of output:" >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          tail -100 build-macos-${{ matrix.configuration }}.log >> $GITHUB_STEP_SUMMARY || true
-          echo '```' >> $GITHUB_STEP_SUMMARY
+          echo "## ❌ Build Failed (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f "build-macos-${{ matrix.configuration }}.log" ]; then
+            # Extract and categorize errors
+            CONCURRENCY_ERRORS=$(grep -c "main actor-isolated\|nonisolated context" build-macos-${{ matrix.configuration }}.log || echo "0")
+            COMPILATION_ERRORS=$(grep -c "error:" build-macos-${{ matrix.configuration }}.log || echo "0")
+            LINKER_ERRORS=$(grep -c "Undefined symbol\|ld:" build-macos-${{ matrix.configuration }}.log || echo "0")
+            
+            echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
+            echo "- **Concurrency Errors:** $CONCURRENCY_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Compilation Errors:** $COMPILATION_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Linker Errors:** $LINKER_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show concurrency errors with context
+            if [ "$CONCURRENCY_ERRORS" -gt 0 ]; then
+              echo "### 🔴 Swift 6 Concurrency Errors" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              grep -B 2 -A 5 "main actor-isolated\|nonisolated context" build-macos-${{ matrix.configuration }}.log | head -50 >> $GITHUB_STEP_SUMMARY || true
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "**💡 Fix:** Add \`@MainActor\` to the method or use \`Task { @MainActor in ... }\`" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            # Show other compilation errors
+            if [ "$COMPILATION_ERRORS" -gt "$CONCURRENCY_ERRORS" ]; then
+              echo "### Other Compilation Errors" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              grep "error:" build-macos-${{ matrix.configuration }}.log | grep -v "main actor-isolated\|nonisolated context" | head -20 >> $GITHUB_STEP_SUMMARY || true
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            # Show last 50 lines for context
+            echo "### Full Error Context (Last 50 lines)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 build-macos-${{ matrix.configuration }}.log >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Create annotations for better visibility
+          if [ -f "build-macos-${{ matrix.configuration }}.log" ]; then
+            while IFS= read -r line; do
+              if echo "$line" | grep -q "error:"; then
+                FILE=$(echo "$line" | grep -oE "[^:]+\.swift" | head -1 || echo "")
+                LINE_NUM=$(echo "$line" | grep -oE ":[0-9]+:" | head -1 | tr -d ':' || echo "")
+                MESSAGE=$(echo "$line" | sed 's/.*error: //' || echo "$line")
+                if [ -n "$FILE" ] && [ -n "$LINE_NUM" ]; then
+                  echo "::error file=$FILE,line=$LINE_NUM::$MESSAGE"
+                fi
+              fi
+            done < <(grep "error:" build-macos-${{ matrix.configuration }}.log | head -10)
+          fi
       
       - name: Archive build artifacts
         if: success()
@@ -285,7 +471,7 @@ jobs:
         with:
           name: macos-build-${{ matrix.configuration }}
           path: |
-            build/Debug/DisabilityAdvocacy-macOS.app
+            build/${{ matrix.configuration }}/DisabilityAdvocacy-macOS.app
             build-macos-${{ matrix.configuration }}.log
           retention-days: 7
           if-no-files-found: warn
@@ -560,7 +746,7 @@ jobs:
   build-status:
     name: Build Status Summary
     runs-on: ubuntu-latest
-    needs: [build-ios, build-macos, test-ios, test-macos, validate-build, security-scan]
+    needs: [build-ios, build-macos, test-ios, test-macos, validate-build, security-scan, check-swift-concurrency]
     if: always()
     steps:
       - name: Generate comprehensive status summary
@@ -593,6 +779,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Validation | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Swift 6 Concurrency Check | ${{ needs.check-swift-concurrency.result == 'success' && '✅ Passed' || needs.check-swift-concurrency.result == 'skipped' && '⏭️ Skipped' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Build Validation | ${{ needs.validate-build.result == 'success' && '✅ Passed' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Security Scan | ${{ needs.security-scan.result == 'success' && '✅ Passed' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
           echo "| Code Quality | ${{ needs.lint.result == 'success' && '✅ Passed' || needs.lint.result == 'skipped' && '⏭️ Skipped' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
