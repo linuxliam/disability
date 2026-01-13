@@ -46,6 +46,20 @@ struct ProfileView: View {
             }
 
             Section {
+                NavigationLink(value: AppDestination.favorites) {
+                    HStack {
+                        Label(String(localized: "My Favorites"), systemImage: "heart.fill")
+                        Spacer()
+                        Text("\(appState.favoriteResources.count)")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            } header: {
+                Text(String(localized: "Content"))
+            }
+            
+            Section {
                 Toggle(isOn: $user.notificationPreferences.eventReminders) {
                     Label(String(localized: "Event Reminders"), systemImage: "calendar.badge.clock")
                 }

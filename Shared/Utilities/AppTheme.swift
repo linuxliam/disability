@@ -137,6 +137,7 @@ extension View {
                 case .accessibility: AccessibilitySettingsView()
                 case .letterGenerator: LetterTemplateView()
                 case .rightsKnowledgeBase: RightsKnowledgeBaseView()
+                case .favorites: FavoritesView()
                 }
             }
             .navigationDestination(for: AdvocacyTool.self) { tool in
