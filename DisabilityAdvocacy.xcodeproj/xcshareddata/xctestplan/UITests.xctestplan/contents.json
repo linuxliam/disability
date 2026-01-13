@@ -1,0 +1,33 @@
+{
+  "configurations" : [
+    {
+      "id" : "ui-tests-config",
+      "name" : "Configuration 1",
+      "options" : {
+        "targetForVariableExpansion" : {
+          "containerPath" : "container:DisabilityAdvocacy.xcodeproj",
+          "identifier" : "469485EF2F0736AC0002B78E",
+          "name" : "DisabilityAdvocacyUITests"
+        }
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "commandLineArgumentEntries" : [
+    ],
+    "environmentVariableEntries" : [
+    ]
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:DisabilityAdvocacy.xcodeproj",
+        "identifier" : "469485EF2F0736AC0002B78E",
+        "name" : "DisabilityAdvocacyUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
+
+

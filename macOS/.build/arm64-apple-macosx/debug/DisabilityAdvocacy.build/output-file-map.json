@@ -1,0 +1,26 @@
+{
+  "": {
+    "swift-dependencies": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/master.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/AccessibilityExtensions.swift": {
+    "dependencies": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions.d",
+    "object": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions.swift.o",
+    "swiftmodule": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions.swiftdeps",
+    "diagnostics": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions.dia"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/ContextualMenuExtensions.swift": {
+    "dependencies": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions.d",
+    "object": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions.swift.o",
+    "swiftmodule": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions.swiftdeps",
+    "diagnostics": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions.dia"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/TooltipExtensions.swift": {
+    "dependencies": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions.d",
+    "object": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions.swift.o",
+    "swiftmodule": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions~partial.swiftmodule",
+    "swift-dependencies": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions.swiftdeps",
+    "diagnostics": "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions.dia"
+  }
+}

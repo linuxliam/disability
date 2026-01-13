@@ -1,0 +1,24 @@
+[
+  {
+    "id": "e1e1e1e1-e1e1-e1e1-e1e1-e1e1e1e1e1e1",
+    "title": "Disability Rights Workshop",
+    "description": "Learn about your rights under the ADA and how to advocate for yourself in various settings.",
+    "date": "2024-02-01T10:00:00Z",
+    "location": "Community Center, Main St",
+    "isVirtual": false,
+    "category": "Workshop",
+    "accessibilityNotes": "Wheelchair accessible, ASL interpreter available upon request"
+  },
+  {
+    "id": "e2e2e2e2-e2e2-e2e2-e2e2-e2e2e2e2e2e2",
+    "title": "Virtual Accessibility Tech Showcase",
+    "description": "See the latest assistive technology innovations and connect with developers.",
+    "date": "2024-02-15T14:00:00Z",
+    "location": "Online",
+    "isVirtual": true,
+    "registrationURL": "https://example.com/register",
+    "eventURL": "https://example.com/tech-showcase",
+    "category": "Webinar",
+    "accessibilityNotes": "Live captions and screen reader compatible"
+  }
+]

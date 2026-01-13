@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "self:">
+   </FileRef>
+   <FileRef
+      location = "group:Placeholders.swift">
+   </FileRef>
+   <FileRef
+      location = "group:JSONStorageManager.swift">
+   </FileRef>
+   <FileRef
+      location = "group:PersistentResource.swift">
+   </FileRef>
+   <FileRef
+      location = "group:PersistentEvent.swift">
+   </FileRef>
+   <FileRef
+      location = "group:PersistentUser.swift">
+   </FileRef>
+   <FileRef
+      location = "group:PlatformUI.swift">
+   </FileRef>
+   <FileRef
+      location = "group:Colors.swift">
+   </FileRef>
+   <FileRef
+      location = "group:UIExtensions.swift">
+   </FileRef>
+   <FileRef
+      location = "group:AppChip.swift">
+   </FileRef>
+   <FileRef
+      location = "group:AppSectionHeader.swift">
+   </FileRef>
+   <FileRef
+      location = "group:AppEmptyState.swift">
+   </FileRef>
+   <FileRef
+      location = "group:ProfileToolbarButton.swift">
+   </FileRef>
+   <FileRef
+      location = "group:AppRow.swift">
+   </FileRef>
+   <FileRef
+      location = "group:EnhancedSearchBar.swift">
+   </FileRef>
+   <FileRef
+      location = "group:EventSkeletonRow.swift">
+   </FileRef>
+   <FileRef
+      location = "group:AppTab.swift">
+   </FileRef>
+</Workspace>

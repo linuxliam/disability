@@ -1,0 +1,250 @@
+//
+//  StringExtensionsTests.swift
+//  DisabilityAdvocacyTests
+//
+//  Unit tests for StringExtensions
+//
+
+import XCTest
+@testable import DisabilityAdvocacy
+
+final class StringExtensionsTests: XCTestCase {
+    
+    // MARK: - Localized Tests
+    
+    func testLocalized_ReturnsString() {
+        // Given
+        let string = "Test String"
+        
+        // When
+        let localized = string.localized
+        
+        // Then
+        XCTAssertFalse(localized.isEmpty, "Should return localized string")
+    }
+    
+    // MARK: - CapitalizedFirst Tests
+    
+    func testCapitalizedFirst_EmptyString() {
+        // Given
+        let string = ""
+        
+        // When
+        let result = string.capitalizedFirst
+        
+        // Then
+        XCTAssertEqual(result, "", "Empty string should return empty string")
+    }
+    
+    func testCapitalizedFirst_SingleCharacter() {
+        // Given
+        let string = "a"
+        
+        // When
+        let result = string.capitalizedFirst
+        
+        // Then
+        XCTAssertEqual(result, "A", "Single character should be capitalized")
+    }
+    
+    func testCapitalizedFirst_MultipleCharacters() {
+        // Given
+        let string = "hello"
+        
+        // When
+        let result = string.capitalizedFirst
+        
+        // Then
+        XCTAssertEqual(result, "Hello", "First character should be capitalized")
+    }
+    
+    func testCapitalizedFirst_AlreadyCapitalized() {
+        // Given
+        let string = "Hello"
+        
+        // When
+        let result = string.capitalizedFirst
+        
+        // Then
+        XCTAssertEqual(result, "Hello", "Already capitalized string should remain capitalized")
+    }
+    
+    // MARK: - Truncated Tests
+    
+    func testTruncated_ShorterThanLength() {
+        // Given
+        let string = "hello"
+        let length = 10
+        
+        // When
+        let result = string.truncated(to: length)
+        
+        // Then
+        XCTAssertEqual(result, string, "Should return original string if shorter than length")
+    }
+    
+    func testTruncated_LongerThanLength() {
+        // Given
+        let string = "hello world"
+        let length = 5
+        
+        // When
+        let result = string.truncated(to: length)
+        
+        // Then
+        XCTAssertEqual(result, "hello...", "Should truncate and add ellipsis")
+        XCTAssertEqual(result.count, length + 3, "Should add 3 characters for ellipsis")
+    }
+    
+    func testTruncated_ExactLength() {
+        // Given
+        let string = "hello"
+        let length = 5
+        
+        // When
+        let result = string.truncated(to: length)
+        
+        // Then
+        XCTAssertEqual(result, string, "Should return original string if exact length")
+    }
+    
+    // MARK: - Trimmed Tests
+    
+    func testTrimmed_NoWhitespace() {
+        // Given
+        let string = "hello"
+        
+        // When
+        let result = string.trimmed
+        
+        // Then
+        XCTAssertEqual(result, string, "Should return original string if no whitespace")
+    }
+    
+    func testTrimmed_LeadingWhitespace() {
+        // Given
+        let string = "  hello"
+        
+        // When
+        let result = string.trimmed
+        
+        // Then
+        XCTAssertEqual(result, "hello", "Should remove leading whitespace")
+    }
+    
+    func testTrimmed_TrailingWhitespace() {
+        // Given
+        let string = "hello  "
+        
+        // When
+        let result = string.trimmed
+        
+        // Then
+        XCTAssertEqual(result, "hello", "Should remove trailing whitespace")
+    }
+    
+    func testTrimmed_LeadingAndTrailingWhitespace() {
+        // Given
+        let string = "  hello  "
+        
+        // When
+        let result = string.trimmed
+        
+        // Then
+        XCTAssertEqual(result, "hello", "Should remove leading and trailing whitespace")
+    }
+    
+    func testTrimmed_Newlines() {
+        // Given
+        let string = "\nhello\n"
+        
+        // When
+        let result = string.trimmed
+        
+        // Then
+        XCTAssertEqual(result, "hello", "Should remove newlines")
+    }
+    
+    // MARK: - IsValidURL Tests
+    
+    func testIsValidURL_ValidHTTPURL() {
+        // Given
+        let string = "https://example.com"
+        
+        // When
+        let result = string.isValidURL
+        
+        // Then
+        XCTAssertTrue(result, "Should be valid URL")
+    }
+    
+    func testIsValidURL_ValidHTTPSURL() {
+        // Given
+        let string = "https://example.com"
+        
+        // When
+        let result = string.isValidURL
+        
+        // Then
+        XCTAssertTrue(result, "Should be valid URL")
+    }
+    
+    func testIsValidURL_InvalidURL() {
+        // Given
+        let string = "not a url"
+        
+        // When
+        let result = string.isValidURL
+        
+        // Then
+        XCTAssertFalse(result, "Should not be valid URL")
+    }
+    
+    func testIsValidURL_EmptyString() {
+        // Given
+        let string = ""
+        
+        // When
+        let result = string.isValidURL
+        
+        // Then
+        XCTAssertFalse(result, "Empty string should not be valid URL")
+    }
+    
+    // MARK: - AsURL Tests
+    
+    func testAsURL_ValidURL() {
+        // Given
+        let string = "https://example.com"
+        
+        // When
+        let result = string.asURL
+        
+        // Then
+        XCTAssertNotNil(result, "Should return URL")
+        XCTAssertEqual(result?.absoluteString, string, "URL should match original string")
+    }
+    
+    func testAsURL_InvalidURL() {
+        // Given
+        let string = "not a url"
+        
+        // When
+        let result = string.asURL
+        
+        // Then
+        XCTAssertNil(result, "Should return nil for invalid URL")
+    }
+    
+    func testAsURL_EmptyString() {
+        // Given
+        let string = ""
+        
+        // When
+        let result = string.asURL
+        
+        // Then
+        XCTAssertNil(result, "Should return nil for empty string")
+    }
+}
+

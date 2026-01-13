@@ -1,0 +1,81 @@
+client:
+  name: basic
+  file-system: device-agnostic
+tools: {}
+targets:
+  "DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe": ["<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe>"]
+  "DisabilityAdvocacy-arm64-apple-macosx26.0-debug.module": ["<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.module>"]
+  "PackageStructure": ["<PackageStructure>"]
+  "main": ["<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe>","<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.module>"]
+  "test": ["<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe>","<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.module>"]
+default: "main"
+nodes:
+  "/Users/liammatthews/Desktop/APP/DA/macOS/":
+    is-directory-structure: true
+    content-exclusion-patterns: [".git",".build"]
+  "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy":
+    is-mutated: true
+commands:
+  "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy-entitlement.plist":
+    tool: write-auxiliary-file
+    inputs: ["<entitlement-plist>","<com.apple.security.get-task-allow>"]
+    outputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy-entitlement.plist"]
+    description: "Write auxiliary file /Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy-entitlement.plist"
+
+  "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/sources":
+    tool: write-auxiliary-file
+    inputs: ["<sources-file-list>","/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/AccessibilityExtensions.swift","/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/ContextualMenuExtensions.swift","/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/TooltipExtensions.swift"]
+    outputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/sources"]
+    description: "Write auxiliary file /Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/sources"
+
+  "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.product/Objects.LinkFileList":
+    tool: write-auxiliary-file
+    inputs: ["<link-file-list>","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions.swift.o"]
+    outputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.product/Objects.LinkFileList"]
+    description: "Write auxiliary file /Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.product/Objects.LinkFileList"
+
+  "/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt":
+    tool: write-auxiliary-file
+    inputs: ["<swift-get-version>","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc"]
+    outputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"]
+    always-out-of-date: "true"
+    description: "Write auxiliary file /Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt"
+
+  "<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe>":
+    tool: phony
+    inputs: ["<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe-CodeSigning>"]
+    outputs: ["<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe>"]
+
+  "<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.module>":
+    tool: phony
+    inputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/Modules/DisabilityAdvocacy.swiftmodule"]
+    outputs: ["<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.module>"]
+
+  "C.DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe":
+    tool: shell
+    inputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.product/Objects.LinkFileList"]
+    outputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy"]
+    description: "Linking ./.build/arm64-apple-macosx/debug/DisabilityAdvocacy"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-L","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug","-o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy","-module-name","DisabilityAdvocacy","-Xlinker","-no_warn_duplicate_libraries","-emit-executable","-Xlinker","-alias","-Xlinker","_DisabilityAdvocacy_main","-Xlinker","_main","-Xlinker","-rpath","-Xlinker","@loader_path","@/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.product/Objects.LinkFileList","-Xlinker","-rpath","-Xlinker","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-6.2/macosx","-target","arm64-apple-macosx14.0","-Xlinker","-add_ast_path","-Xlinker","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/Modules/DisabilityAdvocacy.swiftmodule","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g"]
+
+  "C.DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe-entitlements":
+    tool: shell
+    inputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy-entitlement.plist"]
+    outputs: ["<DisabilityAdvocacy-arm64-apple-macosx26.0-debug.exe-CodeSigning>"]
+    description: "Applying debug entitlements to ./.build/arm64-apple-macosx/debug/DisabilityAdvocacy"
+    args: ["codesign","--force","--sign","-","--entitlements","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy-entitlement.plist","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy"]
+
+  "C.DisabilityAdvocacy-arm64-apple-macosx26.0-debug.module":
+    tool: shell
+    inputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/AccessibilityExtensions.swift","/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/ContextualMenuExtensions.swift","/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/TooltipExtensions.swift","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/swift-version--58304C5D6DBC2206.txt","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/sources"]
+    outputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/AccessibilityExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/ContextualMenuExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/TooltipExtensions.swift.o","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/Modules/DisabilityAdvocacy.swiftmodule"]
+    description: "Compiling Swift Module 'DisabilityAdvocacy' (3 sources)"
+    args: ["/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc","-module-name","DisabilityAdvocacy","-emit-dependencies","-emit-module","-emit-module-path","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/Modules/DisabilityAdvocacy.swiftmodule","-output-file-map","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/output-file-map.json","-incremental","-c","@/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/DisabilityAdvocacy.build/sources","-I","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/Modules","-target","arm64-apple-macosx14.0","-incremental","-enable-batch-mode","-serialize-diagnostics","-index-store-path","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/index/store","-Onone","-enable-testing","-j11","-DSWIFT_PACKAGE","-DDEBUG","-DSWIFT_MODULE_RESOURCE_BUNDLE_UNAVAILABLE","-module-cache-path","/Users/liammatthews/Desktop/APP/DA/macOS/.build/arm64-apple-macosx/debug/ModuleCache","-parseable-output","-Xfrontend","-entry-point-function-name","-Xfrontend","DisabilityAdvocacy_main","-swift-version","5","-plugin-path","/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/host/plugins/testing","-sdk","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-F","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks","-I","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-L","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib","-g","-Xcc","-isysroot","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk","-Xcc","-F","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/Frameworks","-Xcc","-F","-Xcc","/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/Library/PrivateFrameworks","-Xcc","-fPIC","-Xcc","-g","-package-name","macos"]
+
+  "PackageStructure":
+    tool: package-structure-tool
+    inputs: ["/Users/liammatthews/Desktop/APP/DA/macOS/","/Users/liammatthews/Desktop/APP/DA/macOS/Package.swift","/Users/liammatthews/Desktop/APP/DA/macOS/Package.resolved"]
+    outputs: ["<PackageStructure>"]
+    description: "Planning build"
+    allow-missing-inputs: true
+
