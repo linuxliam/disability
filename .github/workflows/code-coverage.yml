@@ -24,13 +24,37 @@ jobs:
             sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
           fi
       
+      - name: Find available iOS Simulator
+        id: simulator
+        run: |
+          # Find any available iPhone simulator
+          DEVICE_UDID=$(xcrun simctl list devices available | grep -i "iphone" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/' | head -1)
+          
+          if [ -z "$DEVICE_UDID" ]; then
+            echo "use_generic=true" >> $GITHUB_OUTPUT
+          else
+            echo "use_generic=false" >> $GITHUB_OUTPUT
+            echo "device_udid=$DEVICE_UDID" >> $GITHUB_OUTPUT
+            # Boot the simulator
+            xcrun simctl boot "$DEVICE_UDID" 2>/dev/null || true
+            sleep 5
+          fi
+      
       - name: Run tests with coverage
         run: |
+          if [ "${{ steps.simulator.outputs.use_generic }}" == "true" ]; then
+            DESTINATION="generic/platform=iOS Simulator"
+          else
+            DESTINATION="platform=iOS Simulator,id=${{ steps.simulator.outputs.device_udid }}"
+          fi
+          
+          echo "Using destination: $DESTINATION"
+          
           xcodebuild test \
             -project DisabilityAdvocacy.xcodeproj \
             -scheme "DisabilityAdvocacy-iOS" \
             -sdk iphonesimulator \
-            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -destination "$DESTINATION" \
             -enableCodeCoverage YES \
             -derivedDataPath build \
             CODE_SIGN_IDENTITY="" \

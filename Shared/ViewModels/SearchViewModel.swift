@@ -22,6 +22,8 @@ class SearchViewModel {
 
     private let resourcesManager: ResourcesManager
     private let eventsManager: EventsManager
+    private var communityViewModel: CommunityViewModel?
+    private var newsViewModel: NewsViewModel?
 
     // Performance optimizations
     private var searchCache: [String: [SearchResult]] = [:]
@@ -34,22 +36,36 @@ class SearchViewModel {
 
     nonisolated init(
         resourcesManager: ResourcesManager = MainActor.assumeIsolated { ResourcesManager.shared },
-        eventsManager: EventsManager = MainActor.assumeIsolated { EventsManager.shared }
+        eventsManager: EventsManager = MainActor.assumeIsolated { EventsManager.shared },
+        communityViewModel: CommunityViewModel? = nil,
+        newsViewModel: NewsViewModel? = nil
     ) {
         self.resourcesManager = resourcesManager
         self.eventsManager = eventsManager
-        // Load recent searches asynchronously
+        // Store view models for later use (will be set on MainActor)
         Task { @MainActor in
+            self.communityViewModel = communityViewModel
+            self.newsViewModel = newsViewModel
             loadRecentSearches()
         }
         // Note: preloadData() is called lazily in performSearch() when needed
+    }
+    
+    /// Sets the view models for community and news data
+    func setViewModels(community: CommunityViewModel?, news: NewsViewModel?) {
+        self.communityViewModel = community
+        self.newsViewModel = news
+        // Reload data if already loaded
+        if isDataLoaded {
+            preloadData()
+        }
     }
 
     private func preloadData() {
         allResources = resourcesManager.getAllResources()
         allEvents = eventsManager.getAllEvents()
-        allPosts = getSamplePosts()
-        allArticles = getSampleArticles()
+        allPosts = communityViewModel?.posts ?? []
+        allArticles = newsViewModel?.articles ?? []
         isDataLoaded = true
     }
     
@@ -234,16 +250,9 @@ class SearchViewModel {
         UserDefaults.standard.removeObject(forKey: recentSearchesKey)
     }
     
-    // MARK: - Sample Data Helpers (temporary until ViewModels are integrated)
-    
-    private func getSamplePosts() -> [CommunityPost] {
-        // This should ideally come from CommunityViewModel
-        return []
-    }
-    
-    private func getSampleArticles() -> [NewsArticle] {
-        // This should ideally come from NewsViewModel  
-        return []
+    /// Current search query for highlighting purposes
+    var currentQuery: String {
+        searchText.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 

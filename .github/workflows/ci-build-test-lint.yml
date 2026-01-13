@@ -510,15 +510,53 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-test-ios-
       
-      - name: Boot iOS Simulator
+      - name: List available simulators
         run: |
-          xcrun simctl boot "${{ matrix.device }}" 2>/dev/null || true
-          xcrun simctl list devices | grep "${{ matrix.device }}" || echo "Simulator not found, will use generic"
+          echo "Available iOS Simulators:"
+          xcrun simctl list devices available | grep -i "iphone" | head -10
+      
+      - name: Find and boot iOS Simulator
+        id: simulator
+        run: |
+          # Try to find the specific device
+          DEVICE_NAME="${{ matrix.device }}"
+          DEVICE_UDID=$(xcrun simctl list devices available | grep -i "$DEVICE_NAME" | grep -i "iphone" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/' | head -1)
+          
+          if [ -z "$DEVICE_UDID" ]; then
+            # Fallback to any available iPhone simulator
+            echo "Device '$DEVICE_NAME' not found, using first available iPhone"
+            DEVICE_UDID=$(xcrun simctl list devices available | grep -i "iphone" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/' | head -1)
+            DEVICE_NAME=$(xcrun simctl list devices available | grep -i "iphone" | head -1 | sed -E 's/.*(iPhone[^\(]+).*/\1/' | xargs)
+          fi
+          
+          if [ -z "$DEVICE_UDID" ]; then
+            echo "No iPhone simulator found, using generic destination"
+            echo "use_generic=true" >> $GITHUB_OUTPUT
+            echo "device_name=generic" >> $GITHUB_OUTPUT
+          else
+            echo "Found device: $DEVICE_NAME ($DEVICE_UDID)"
+            echo "use_generic=false" >> $GITHUB_OUTPUT
+            echo "device_name=$DEVICE_NAME" >> $GITHUB_OUTPUT
+            echo "device_udid=$DEVICE_UDID" >> $GITHUB_OUTPUT
+            
+            # Boot the simulator
+            xcrun simctl boot "$DEVICE_UDID" 2>/dev/null || true
+            sleep 5
+          fi
       
       - name: Run iOS unit tests
         id: test
         run: |
           set -o pipefail
+          
+          if [ "${{ steps.simulator.outputs.use_generic }}" == "true" ]; then
+            DESTINATION="generic/platform=iOS Simulator"
+          else
+            DESTINATION="platform=iOS Simulator,id=${{ steps.simulator.outputs.device_udid }}"
+          fi
+          
+          echo "Using destination: $DESTINATION"
+          
           xcodebuild test \
             -project DisabilityAdvocacy.xcodeproj \
             -scheme "DisabilityAdvocacy-iOS" \
@@ -527,7 +565,7 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            -destination 'platform=iOS Simulator,name=${{ matrix.device }},OS=latest' \
+            -destination "$DESTINATION" \
             -derivedDataPath build \
             -resultBundlePath build/test-results-${{ matrix.device }}.xcresult \
             -only-testing:DisabilityAdvocacyTests \

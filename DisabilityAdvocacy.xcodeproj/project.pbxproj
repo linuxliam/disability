@@ -15,6 +15,7 @@
 		05B9247EB0494A67895CD85C /* TestConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F563726C4F497882A3B6EE /* TestConfiguration.swift */; };
 		06D37D209841463EAD78E45F /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4076C17A1F9E4AB4A7C9B5E4 /* AppLogger.swift */; };
 		07B61868FC8646A185DAF98B /* SkeletonComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61F59A39C4B6474192638CE2 /* SkeletonComponents.swift */; };
+		089AABF722759DED19D8A61F /* SearchHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791DDCBDCBDE801E5B04DF27 /* SearchHighlighting.swift */; };
 		0979DF48A6B94D43955E31A3 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F40EA5FBB6FD481D8FACBC78 /* EmptyStateView.swift */; };
 		0BC7D886098C43339518C073 /* EventsManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD2132FD7B3400691DE74B3 /* EventsManagerTests.swift */; };
 		0DA75FA2F0F04D448D950163 /* NavigationModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CC6DF071AA14483BE7F8064 /* NavigationModels.swift */; };
@@ -96,6 +97,7 @@
 		46FBB9112F161277003E53BD /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78847307C4148E4A1CDF643 /* Colors.swift */; };
 		46FBB9122F161277003E53BD /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4076C17A1F9E4AB4A7C9B5E4 /* AppLogger.swift */; };
 		46FBB9132F161277003E53BD /* Placeholders.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ACE254B32C94EE0BFE416DB /* Placeholders.swift */; };
+		DD634FE0530EEA7CD0D6C875 /* SearchHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 791DDCBDCBDE801E5B04DF27 /* SearchHighlighting.swift */; };
 		46FBB9142F161277003E53BD /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2247D3E03A804C25A47A842E /* ProfileView.swift */; };
 		46FBB9152F161277003E53BD /* AccessibilitySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F8AE66A1943415C9BA1397A /* AccessibilitySettingsView.swift */; };
 		46FBB9162F161277003E53BD /* KeyboardShortcutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6821306EDED2426C90042072 /* KeyboardShortcutsView.swift */; };
@@ -329,6 +331,7 @@
 		775640227D594FFC83029B9A /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		77DDEBC8680949A49DEB3757 /* DisabilityAdvocacy-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DisabilityAdvocacy-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ACE254B32C94EE0BFE416DB /* Placeholders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Placeholders.swift; sourceTree = "<group>"; };
+		791DDCBDCBDE801E5B04DF27 /* SearchHighlighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHighlighting.swift; sourceTree = "<group>"; };
 		7C84310F07B34214924480ED /* RightsInfoModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightsInfoModelTests.swift; sourceTree = "<group>"; };
 		7FAA3D518E194D2890ED2989 /* EventsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManager.swift; sourceTree = "<group>"; };
 		7FD2132FD7B3400691DE74B3 /* EventsManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsManagerTests.swift; sourceTree = "<group>"; };
@@ -502,6 +505,7 @@
 				0518DE531F30433381FC35CB /* DragDropManager.swift */,
 				7ACE254B32C94EE0BFE416DB /* Placeholders.swift */,
 				F802D14C8C714519BA924788 /* PlatformUI.swift */,
+				791DDCBDCBDE801E5B04DF27 /* SearchHighlighting.swift */,
 				54D16AB6D8F64A9591373297 /* View+Layout.swift */,
 			);
 			path = Utilities;
@@ -1084,6 +1088,7 @@
 				73C9EB26C2A04F6DB1E807C8 /* Colors.swift in Sources */,
 				06D37D209841463EAD78E45F /* AppLogger.swift in Sources */,
 				A9C3F52EC5C943F29625CE87 /* Placeholders.swift in Sources */,
+				089AABF722759DED19D8A61F /* SearchHighlighting.swift in Sources */,
 				3B732294937F4F6E875F6F6C /* ProfileView.swift in Sources */,
 				6C2F1186E04249F88E13FE3F /* AccessibilitySettingsView.swift in Sources */,
 				5C459A622C77411AAE962CE5 /* KeyboardShortcutsView.swift in Sources */,
@@ -1192,6 +1197,7 @@
 				46FBB9112F161277003E53BD /* Colors.swift in Sources */,
 				46FBB9122F161277003E53BD /* AppLogger.swift in Sources */,
 				46FBB9132F161277003E53BD /* Placeholders.swift in Sources */,
+				DD634FE0530EEA7CD0D6C875 /* SearchHighlighting.swift in Sources */,
 				46FBB9142F161277003E53BD /* ProfileView.swift in Sources */,
 				46FBB9152F161277003E53BD /* AccessibilitySettingsView.swift in Sources */,
 				46FBB9162F161277003E53BD /* KeyboardShortcutsView.swift in Sources */,
