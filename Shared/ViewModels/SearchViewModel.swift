@@ -32,9 +32,9 @@ class SearchViewModel {
     private var allArticles: [NewsArticle] = []
     private var isDataLoaded = false
 
-    init(
-        resourcesManager: ResourcesManager = .shared,
-        eventsManager: EventsManager = .shared
+    nonisolated init(
+        resourcesManager: ResourcesManager = MainActor.assumeIsolated { ResourcesManager.shared },
+        eventsManager: EventsManager = MainActor.assumeIsolated { EventsManager.shared }
     ) {
         self.resourcesManager = resourcesManager
         self.eventsManager = eventsManager

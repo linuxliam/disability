@@ -27,7 +27,7 @@ class ResourcesViewModel: BaseViewModelProtocol {
     private let resourcesManager: ResourcesManager
     private var loadTask: Task<Void, Never>?
     
-    init(resourcesManager: ResourcesManager = ResourcesManager.shared) {
+    nonisolated init(resourcesManager: ResourcesManager = MainActor.assumeIsolated { ResourcesManager.shared }) {
         self.resourcesManager = resourcesManager
     }
     

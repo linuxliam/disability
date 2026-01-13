@@ -26,7 +26,7 @@ class EventsViewModel: BaseViewModelProtocol {
     private let eventsManager: EventsManager
     private var loadTask: Task<Void, Never>?
     
-    init(eventsManager: EventsManager = EventsManager.shared) {
+    nonisolated init(eventsManager: EventsManager = MainActor.assumeIsolated { EventsManager.shared }) {
         self.eventsManager = eventsManager
     }
     
