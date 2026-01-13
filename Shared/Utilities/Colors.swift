@@ -1,5 +1,7 @@
 import SwiftUI
 
+/// Legacy color extensions for backward compatibility
+/// New code should use ThemeManager and ColorTokens instead
 extension Color {
     // Backgrounds
     static var appBackground: Color {
@@ -50,4 +52,5 @@ extension Color {
     }
     
     // Note: Brand/triad and semantic colors are defined in AppColorPalette.swift
+    // Note: For theme-aware colors, use ThemeManager and ColorTokens instead
 }

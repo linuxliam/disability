@@ -94,6 +94,8 @@ struct PillButton: View {
 // Note: EnhancedSearchBar is defined in Views/Components/EnhancedSearchBar.swift
 
 // MARK: - Typography System
+/// Legacy typography system for backward compatibility
+/// New code should use TypographyTokens with ThemeManager for theme-aware fonts
 enum AppTypography {
     // Display
     static var display: Font { .largeTitle.weight(.bold) }
@@ -115,6 +117,61 @@ enum AppTypography {
     static var labelSmall: Font { .caption.weight(.medium) }
     static var caption: Font { .caption }
     static var captionSmall: Font { .caption2 }
+    
+    // MARK: - Theme-Aware Typography
+    
+    /// Get theme-aware typography token
+    @MainActor
+    static func token(_ token: TypographyToken, theme: ThemeManager) -> Font {
+        switch token {
+        case .displayLarge:
+            return TypographyTokens.displayLarge(theme: theme)
+        case .displayMedium:
+            return TypographyTokens.displayMedium(theme: theme)
+        case .headingLarge:
+            return TypographyTokens.headingLarge(theme: theme)
+        case .headingMedium:
+            return TypographyTokens.headingMedium(theme: theme)
+        case .headingSmall:
+            return TypographyTokens.headingSmall(theme: theme)
+        case .headingXSmall:
+            return TypographyTokens.headingXSmall(theme: theme)
+        case .bodyLarge:
+            return TypographyTokens.bodyLarge(theme: theme)
+        case .bodyMedium:
+            return TypographyTokens.bodyMedium(theme: theme)
+        case .bodySmall:
+            return TypographyTokens.bodySmall(theme: theme)
+        case .labelLarge:
+            return TypographyTokens.labelLarge(theme: theme)
+        case .labelMedium:
+            return TypographyTokens.labelMedium(theme: theme)
+        case .labelSmall:
+            return TypographyTokens.labelSmall(theme: theme)
+        case .caption:
+            return TypographyTokens.caption(theme: theme)
+        case .captionSmall:
+            return TypographyTokens.captionSmall(theme: theme)
+        }
+    }
+}
+
+/// Typography token enum for type-safe font selection
+enum TypographyToken {
+    case displayLarge
+    case displayMedium
+    case headingLarge
+    case headingMedium
+    case headingSmall
+    case headingXSmall
+    case bodyLarge
+    case bodyMedium
+    case bodySmall
+    case labelLarge
+    case labelMedium
+    case labelSmall
+    case caption
+    case captionSmall
 }
 
 // MARK: - Typography Modifiers

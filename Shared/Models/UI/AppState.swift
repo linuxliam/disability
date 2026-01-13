@@ -8,6 +8,7 @@ class AppState {
     var selectedTab: AppTab = .home
     var favoriteResources: Set<UUID> = AppState.loadFavorites()
     var feedback = FeedbackViewModel()
+    var themeManager = ThemeManager()
     
     // Navigation paths
     var homePath = NavigationPath()

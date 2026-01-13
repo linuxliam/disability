@@ -19,7 +19,9 @@ struct AdvocacyApp: App {
         WindowGroup {
             AppRootView(showLaunchScreen: $showLaunchScreen)
                 .environment(appState)
+                .environment(appState.themeManager)
                 .environment(notificationManager)
+                .preferredColorScheme(appState.themeManager.configuration.colorScheme)
                 .modelContainer(for: [PersistentResource.self, PersistentEvent.self, PersistentUser.self])
                 .task {
                     notificationManager.initialize()

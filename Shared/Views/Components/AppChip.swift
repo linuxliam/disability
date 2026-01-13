@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct AppChip: View {
+    @Environment(\.themeManager) private var themeManager
+    
     enum Style {
         case primary, secondary, tertiary
     }
@@ -25,17 +27,17 @@ struct AppChip: View {
     
     private var background: Color {
         switch style {
-        case .primary: return .triadPrimary.opacity(0.12)
-        case .secondary: return .triadSecondary.opacity(0.12)
-        case .tertiary: return .triadTertiary.opacity(0.12)
+        case .primary: return ColorTokens.brandPrimary(theme: themeManager).opacity(0.12)
+        case .secondary: return ColorTokens.brandSecondary(theme: themeManager).opacity(0.12)
+        case .tertiary: return ColorTokens.brandTertiary(theme: themeManager).opacity(0.12)
         }
     }
     
     private var foreground: Color {
         switch style {
-        case .primary: return .triadPrimary
-        case .secondary: return .triadSecondary
-        case .tertiary: return .triadTertiary
+        case .primary: return ColorTokens.brandPrimary(theme: themeManager)
+        case .secondary: return ColorTokens.brandSecondary(theme: themeManager)
+        case .tertiary: return ColorTokens.brandTertiary(theme: themeManager)
         }
     }
 }
