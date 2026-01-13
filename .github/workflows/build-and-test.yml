@@ -62,7 +62,6 @@ jobs:
           swiftlint version
       
       - name: Run SwiftLint
-        continue-on-error: true
         run: |
           if command -v swiftlint &> /dev/null; then
             swiftlint lint --reporter github-actions-logging || true
@@ -134,7 +133,6 @@ jobs:
       
       - name: Check for Swift 6 concurrency issues
         id: concurrency_check
-        continue-on-error: true
         run: |
           echo "## 🔍 Swift 6 Concurrency Pre-Check" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -196,7 +194,7 @@ jobs:
           
           echo "::notice title=Swift 6 Concurrency Check::Found $CONCURRENCY_ISSUES potential issue(s)"
           
-          # Don't fail the job, just warn
+          # Exit with success (this is a warning check, not a blocker)
           exit 0
 
   # Build Jobs with Matrix Strategy
@@ -205,6 +203,7 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 30
     needs: [validate-dependencies, check-swift-concurrency]
+    if: always()
     strategy:
       fail-fast: false
       matrix:
@@ -329,7 +328,7 @@ jobs:
           fi
       
       - name: Archive build artifacts
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ios-build-${{ matrix.configuration }}
@@ -345,6 +344,7 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 30
     needs: [validate-dependencies, check-swift-concurrency]
+    if: always()
     strategy:
       fail-fast: false
       matrix:
@@ -466,7 +466,7 @@ jobs:
           fi
       
       - name: Archive build artifacts
-        if: success()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: macos-build-${{ matrix.configuration }}
@@ -483,7 +483,7 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 25
     needs: [build-ios]
-    if: github.event.inputs.skip_tests != 'true'
+    if: always() && github.event.inputs.skip_tests != 'true'
     strategy:
       fail-fast: false
       matrix:
@@ -517,7 +517,6 @@ jobs:
       
       - name: Run iOS unit tests
         id: test
-        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild test \
@@ -580,7 +579,7 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 20
     needs: [build-macos]
-    if: github.event.inputs.skip_tests != 'true'
+    if: always() && github.event.inputs.skip_tests != 'true'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -605,7 +604,6 @@ jobs:
       
       - name: Run macOS unit tests
         id: test
-        continue-on-error: true
         run: |
           set -o pipefail
           xcodebuild test \
@@ -661,6 +659,7 @@ jobs:
     runs-on: macos-14
     timeout-minutes: 15
     needs: [build-ios, build-macos]
+    if: always()
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
