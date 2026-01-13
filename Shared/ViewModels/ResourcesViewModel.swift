@@ -19,9 +19,15 @@ class ResourcesViewModel: BaseViewModelProtocol {
     // Filtering
     var searchText: String = ""
     var selectedCategory: ResourceCategory?
+    var selectedTag: String?
     
     var filteredResources: [Resource] {
-        resources.filtered(searchText: searchText, category: selectedCategory)
+        resources.filtered(searchText: searchText, category: selectedCategory, tag: selectedTag)
+    }
+    
+    var availableTags: [String] {
+        let allTags = resources.flatMap { $0.tags }
+        return Array(Set(allTags)).sorted()
     }
     
     private let resourcesManager: ResourcesManager
@@ -34,6 +40,7 @@ class ResourcesViewModel: BaseViewModelProtocol {
     func clearFilters() {
         searchText = ""
         selectedCategory = nil
+        selectedTag = nil
     }
     
     func loadResources() {
