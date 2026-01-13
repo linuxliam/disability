@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct ManageEventsView: View {
     @State private var events: [Event] = []
     @State private var showingEditView = false
@@ -71,10 +72,12 @@ struct ManageEventsView: View {
         .onAppear(perform: loadEvents)
     }
     
+    @MainActor
     private func loadEvents() {
         events = EventsManager.shared.getAllEvents()
     }
     
+    @MainActor
     private func deleteEvents(at offsets: IndexSet) {
         for index in offsets {
             EventsManager.shared.deleteEvent(id: events[index].id)

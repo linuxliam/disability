@@ -75,5 +75,12 @@ class CommunityViewModel: BaseViewModelProtocol {
         }
     }
     
+    /// Adds a new post to the community feed
+    func addPost(_ post: CommunityPost) {
+        // Add the new post at the beginning of the array (most recent first)
+        posts.insert(post, at: 0)
+        AppLogger.info("Post added to community: \(post.title)", log: AppLogger.general)
+    }
+    
 }
 

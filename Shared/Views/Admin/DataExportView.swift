@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct DataExportView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -28,6 +29,7 @@ struct DataExportView: View {
         )
     }
     
+    @MainActor
     private func exportButton(filename: String, icon: String, color: Color) -> some View {
         let fileURL = DataManager.shared.getJSONStorageManager().getLocalFileURL(for: filename)
         

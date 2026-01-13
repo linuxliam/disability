@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftData
 
 @main
+@MainActor
 struct AdvocacyApp: App {
     @State private var appState = AppState()
     @State private var notificationManager = NotificationManager.shared

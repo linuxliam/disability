@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct CommunityView: View {
     @Environment(AppState.self) var appState
     @State private var viewModel = CommunityViewModel()
@@ -152,7 +153,7 @@ struct CommunityView: View {
         }
         .sheet(isPresented: $showCreatePost) {
             NavigationStack {
-                CreatePostView()
+                CreatePostView(communityViewModel: viewModel)
             }
         }
         .appScreenChrome()
