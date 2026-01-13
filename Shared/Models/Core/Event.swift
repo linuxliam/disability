@@ -53,14 +53,31 @@ enum EventCategory: String, Codable, CaseIterable {
     }
 }
 
+// MARK: - Event Date Filter
+enum EventDateFilter: String, CaseIterable {
+    case all = "All Events"
+    case upcoming = "Upcoming"
+    case past = "Past"
+}
+
 // MARK: - Event Filtering Extension
 extension Array where Element == Event {
-    /// Filters events by category and sorts by date
-    func filtered(category: EventCategory?) -> [Event] {
+    /// Filters events by category and date filter, sorts by date
+    func filtered(category: EventCategory?, dateFilter: EventDateFilter) -> [Event] {
         var filtered = self
         
         if let category = category {
             filtered = filtered.filter { $0.category == category }
+        }
+        
+        let now = Date()
+        switch dateFilter {
+        case .all:
+            break
+        case .upcoming:
+            filtered = filtered.filter { $0.date >= now }
+        case .past:
+            filtered = filtered.filter { $0.date < now }
         }
         
         return filtered.sorted { $0.date < $1.date }
