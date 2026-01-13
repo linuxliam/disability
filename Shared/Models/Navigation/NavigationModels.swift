@@ -65,4 +65,5 @@ enum AppDestination: Hashable {
     case accessibility
     case letterGenerator
     case rightsKnowledgeBase
+    case favorites
 }

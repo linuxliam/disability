@@ -14,13 +14,22 @@ struct EventsView: View {
     
     // MARK: - Filter Buttons
     private var filterButtonRow: some View {
-        Picker(String(localized: "Category"), selection: $viewModel.selectedCategory) {
-            Text(String(localized: "All Categories")).tag(Optional<EventCategory>.none)
-            ForEach(EventCategory.allCases, id: \.self) { category in
-                Text(category.rawValue).tag(Optional(category))
+        VStack(spacing: LayoutConstants.spacingS) {
+            Picker(String(localized: "Category"), selection: $viewModel.selectedCategory) {
+                Text(String(localized: "All Categories")).tag(Optional<EventCategory>.none)
+                ForEach(EventCategory.allCases, id: \.self) { category in
+                    Text(category.rawValue).tag(Optional(category))
+                }
             }
+            .pickerStyle(.menu)
+            
+            Picker(String(localized: "Date"), selection: $viewModel.dateFilter) {
+                ForEach(EventDateFilter.allCases, id: \.self) { filter in
+                    Text(filter.rawValue).tag(filter)
+                }
+            }
+            .pickerStyle(.menu)
         }
-        .pickerStyle(.menu)
         .padding(.horizontal, LayoutConstants.screenHorizontalPadding)
     }
     
