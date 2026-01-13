@@ -1,3 +1,0 @@
-{"timestamp": 1733456789000, "location": "debug_script.py", "message": "Checking Resources.json paths in root pbxproj", "data": {"paths": ["../Resources/Resources.json"]}, "sessionId": "debug-session", "hypothesisId": "1"}
-{"timestamp": 1733456789000, "location": "debug_script.py", "message": "Resolved path for ../Resources/Resources.json", "data": {"resolved": "/Users/liammatthews/Desktop/APP/Resources/Resources.json", "exists": false}, "sessionId": "debug-session", "hypothesisId": "1"}
-{"timestamp": 1733456789000, "location": "debug_script.py", "message": "Checking Resources.json existence in root", "data": {"path": "Resources/Resources.json", "exists": true}, "sessionId": "debug-session", "hypothesisId": "1"}
