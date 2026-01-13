@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct LetterTemplateView: View {
     @State private var viewModel = LetterTemplateViewModel()
     @State private var selectedCategory: LetterCategory?

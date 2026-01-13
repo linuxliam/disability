@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct SearchView: View {
     @State private var viewModel = SearchViewModel()
     @Environment(AppState.self) var appState: AppState
@@ -331,11 +332,13 @@ struct SearchView: View {
     }
     
     // Helper methods to find items (simplified - should use ViewModels in production)
+    @MainActor
     private func findResource(id: UUID) -> Resource? {
         let resources = ResourcesManager.shared.getAllResources()
         return resources.first { $0.id == id }
     }
     
+    @MainActor
     private func findEvent(id: UUID) -> Event? {
         let events = EventsManager.shared.getAllEvents()
         return events.first { $0.id == id }

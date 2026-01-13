@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct ManageResourcesView: View {
     @State private var resources: [Resource] = []
     @State private var showingEditView = false
@@ -67,10 +68,12 @@ struct ManageResourcesView: View {
         .onAppear(perform: loadResources)
     }
     
+    @MainActor
     private func loadResources() {
         resources = ResourcesManager.shared.getAllResources()
     }
     
+    @MainActor
     private func deleteResources(at offsets: IndexSet) {
         for index in offsets {
             ResourcesManager.shared.deleteResource(id: resources[index].id)

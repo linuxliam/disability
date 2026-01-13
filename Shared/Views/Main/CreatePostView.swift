@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct CreatePostView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState

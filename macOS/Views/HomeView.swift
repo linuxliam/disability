@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct HomeView: View {
     @Environment(AppState.self) var appState
     @State private var viewModel = HomeViewModel()
