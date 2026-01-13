@@ -76,17 +76,6 @@
             ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "53A5232FEB1E4BE9BFAD6EFA"
-            BuildableName = "DisabilityAdvocacy-iOS.app"
-            BlueprintName = "DisabilityAdvocacy-iOS"
-            ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -104,15 +93,6 @@
             ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "53A5232FEB1E4BE9BFAD6EFA"
-            BuildableName = "DisabilityAdvocacy-iOS.app"
-            BlueprintName = "DisabilityAdvocacy-iOS"
-            ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
