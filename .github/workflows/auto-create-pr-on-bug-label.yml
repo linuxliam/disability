@@ -81,11 +81,7 @@ jobs:
           
           # Commit the placeholder
           git add .github/auto-fix/issue-$ISSUE_NUM.md
-          git commit -m "fix(issue-$ISSUE_NUM): create branch for bug fix
-
-Automatically created for bug issue #$ISSUE_NUM
-
-Related: #$ISSUE_NUM"
+          git commit -m "fix(issue-$ISSUE_NUM): create branch for bug fix" -m "Automatically created for bug issue #$ISSUE_NUM" -m "Related: #$ISSUE_NUM"
           
           # Push branch
           git push -u origin "$BRANCH_NAME"
