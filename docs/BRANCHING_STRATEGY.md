@@ -20,16 +20,15 @@ This document outlines the branching strategy for the Disability Advocacy projec
 ### Supporting Branches
 
 #### Feature Branches
-- **Naming:** `feature/<milestone-version>/<feature-name>`
-- **Purpose:** New features or enhancements organized by milestone
+- **Naming:** `feature/<feature-name>`
+- **Purpose:** New features or enhancements
 - **Source:** Branched from `develop`
 - **Merge:** Back into `develop`
 - **Examples:**
-  - `feature/v0.2.0/resources-enhancements`
-  - `feature/v0.2.0/events-enhancements`
-  - `feature/v0.3.0/ios-accessibility-improvements`
-  - `feature/v0.3.0/macos-keyboard-shortcuts`
-  - `feature/v1.0.0-beta/user-documentation`
+  - `feature/ios-accessibility-improvements`
+  - `feature/macos-keyboard-shortcuts`
+  - `feature/shared-ui-components`
+  - `feature/offline-mode`
 
 #### Bugfix Branches
 - **Naming:** `bugfix/<bug-description>`

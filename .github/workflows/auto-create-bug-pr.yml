@@ -67,9 +67,9 @@ jobs:
           ISSUE_NUM=${{ github.event.issue.number }}
           BRANCH_NAME="${{ steps.check-branch.outputs.branch }}"
           
-          # Switch to develop branch
-          git checkout develop || git checkout -b develop origin/develop
-          git pull origin develop || true
+          # Switch to main branch
+          git checkout main || git checkout -b main origin/main
+          git pull origin main || true
           
           # Create new branch
           git checkout -b "$BRANCH_NAME"
@@ -135,7 +135,7 @@ Related: #$ISSUE_NUM"
               repo: context.repo.repo,
               title: `fix: ${issueTitle} (Issue #${issueNumber})`,
               head: branchName,
-              base: 'develop',
+              base: 'main',
               body: `## Description
 
 This PR was automatically created for bug issue #${issueNumber}.
