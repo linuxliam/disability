@@ -11,8 +11,12 @@ import SwiftUI
 struct CreatePostView: View {
     @Environment(\.dismiss) var dismiss
     @Environment(AppState.self) var appState
-    @State private var viewModel = CreatePostViewModel()
+    @State private var viewModel: CreatePostViewModel
     @State private var selectedCategoryString: String = PostCategory.discussion.rawValue
+    
+    init(communityViewModel: CommunityViewModel) {
+        _viewModel = State(initialValue: CreatePostViewModel(communityViewModel: communityViewModel))
+    }
 
     private var selectedCategory: PostCategory {
         PostCategory(rawValue: selectedCategoryString) ?? .discussion
@@ -79,13 +83,15 @@ struct CreatePostView: View {
             
             ToolbarItem(placement: .confirmationAction) {
                 Button(String(localized: "Post")) {
-                    viewModel.createPost(
-                        title: title,
-                        content: content,
-                        category: selectedCategory
-                    )
-                    appState.feedback.success(String(localized: "Post created successfully"))
-                    dismiss()
+                    Task {
+                        await viewModel.createPost(
+                            title: title,
+                            content: content,
+                            category: selectedCategory
+                        )
+                        appState.feedback.success(String(localized: "Post created successfully"))
+                        dismiss()
+                    }
                 }
                 .fontWeight(.semibold)
                 .disabled(!canPost)
@@ -99,13 +105,37 @@ import Observation
 @MainActor
 @Observable
 class CreatePostViewModel {
-    func createPost(title: String, content: String, category: PostCategory) {
-        // In a real implementation, this would send the post to an API
-        // For now, we'll just log it
-        AppLogger.info("Creating post: \(title)", log: AppLogger.general)
+    private let communityViewModel: CommunityViewModel
+    
+    init(communityViewModel: CommunityViewModel) {
+        self.communityViewModel = communityViewModel
+    }
+    
+    func createPost(title: String, content: String, category: PostCategory) async {
+        // Get the current user's name for the author field
+        let authorName: String
+        if let user = UserManager.shared.currentUser, !user.name.isEmpty {
+            authorName = user.name
+        } else {
+            // Fallback to a default name if no user is set
+            authorName = "Anonymous User"
+        }
         
-        // TODO: Integrate with CommunityViewModel to add the post
-        // This requires backend integration
+        // Create the new post
+        let newPost = CommunityPost(
+            author: authorName,
+            title: title.trimmingCharacters(in: .whitespacesAndNewlines),
+            content: content.trimmingCharacters(in: .whitespacesAndNewlines),
+            category: category,
+            datePosted: Date(),
+            replies: [],
+            likes: 0
+        )
+        
+        // Add the post to the community view model
+        communityViewModel.addPost(newPost)
+        
+        AppLogger.info("Post created successfully: \(newPost.title)", log: AppLogger.general)
     }
 }
 

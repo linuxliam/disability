@@ -153,7 +153,7 @@ struct CommunityView: View {
         }
         .sheet(isPresented: $showCreatePost) {
             NavigationStack {
-                CreatePostView()
+                CreatePostView(communityViewModel: viewModel)
             }
         }
         .appScreenChrome()
