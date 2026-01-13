@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct AppRow: View {
+    @Environment(\.themeManager) private var themeManager
+    
     let title: String
     var subtitle: String? = nil
     var systemImage: String? = nil
@@ -16,19 +18,19 @@ struct AppRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.body.weight(.semibold))
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(ColorTokens.textPrimary(theme: themeManager))
                 if let subtitle = subtitle, !subtitle.isEmpty {
                     Text(subtitle)
                         .lineLimit(2)
                         .font(.subheadline)
-                        .foregroundStyle(Color.secondaryText)
+                        .foregroundStyle(ColorTokens.textSecondary(theme: themeManager))
                 }
             }
             Spacer()
             if let trailing = trailingText {
                 Text(trailing)
                     .font(.caption.weight(.bold))
-                    .foregroundStyle(Color.tertiaryText)
+                    .foregroundStyle(ColorTokens.textTertiary(theme: themeManager))
             }
         }
         .padding(.vertical, 6)

@@ -1,16 +1,38 @@
 import SwiftUI
 
+// MARK: - Theme-Aware View Modifiers
+
+struct AppScreenChromeModifier: ViewModifier {
+    @Environment(\.themeManager) private var themeManager
+    
+    func body(content: Content) -> some View {
+        content
+            .background(ColorTokens.groupedBackground(theme: themeManager))
+    }
+}
+
+struct AppListBackgroundModifier: ViewModifier {
+    @Environment(\.themeManager) private var themeManager
+    
+    func body(content: Content) -> some View {
+        content
+            .background(ColorTokens.groupedBackground(theme: themeManager))
+    }
+}
+
 // MARK: - View Modifiers & Helpers
 extension View {
+    @MainActor
     func appScreenChrome() -> some View {
-        self.background(Color.groupedBackground)
+        self.modifier(AppScreenChromeModifier())
     }
     
+    @MainActor
     func appListBackground() -> some View {
         #if os(iOS)
         return self
             .scrollContentBackground(.hidden)
-            .background(Color.groupedBackground)
+            .modifier(AppListBackgroundModifier())
         #else
         return self.background(Color.clear)
         #endif
@@ -49,16 +71,22 @@ extension View {
         #endif
     }
     
-    // Text styles
+    // Text styles (theme-aware)
+    @MainActor
     func secondaryBody() -> some View {
-        self.font(.subheadline).foregroundStyle(Color.secondaryText)
+        self.font(.subheadline)
+            .foregroundStyle(Color.secondaryText) // Keep legacy for now, will migrate gradually
     }
     
+    @MainActor
     func captionText() -> some View {
-        self.font(.caption).foregroundStyle(Color.secondaryText)
+        self.font(.caption)
+            .foregroundStyle(Color.secondaryText) // Keep legacy for now, will migrate gradually
     }
     
+    @MainActor
     func emphasizedCaption() -> some View {
-        self.font(.caption.weight(.semibold)).foregroundStyle(Color.secondaryText)
+        self.font(.caption.weight(.semibold))
+            .foregroundStyle(Color.secondaryText) // Keep legacy for now, will migrate gradually
     }
 }

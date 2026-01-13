@@ -15,12 +15,39 @@ import Foundation
 
 struct AccessibilitySettingsView: View {
     @Environment(AppState.self) var appState
+    @Environment(\.themeManager) private var themeManager
     @Environment(\.dismiss) var dismiss
-    @State private var highContrast = false
-    @State private var largeText = false
-    @State private var reducedMotion = false
-    @State private var screenReaderOptimized = false
-    @State private var customFontSize: CGFloat = 14.0
+    
+    // Bind directly to theme manager
+    private var highContrast: Binding<Bool> {
+        Binding(
+            get: { themeManager.highContrast },
+            set: { themeManager.highContrast = $0 }
+        )
+    }
+    
+    private var reducedMotion: Binding<Bool> {
+        Binding(
+            get: { themeManager.reducedMotion },
+            set: { themeManager.reducedMotion = $0 }
+        )
+    }
+    
+    private var screenReaderOptimized: Binding<Bool> {
+        Binding(
+            get: { themeManager.screenReaderOptimized },
+            set: { themeManager.screenReaderOptimized = $0 }
+        )
+    }
+    
+    private var customFontSize: Binding<CGFloat> {
+        Binding(
+            get: { themeManager.customFontSize },
+            set: { themeManager.customFontSize = $0 }
+        )
+    }
+    
+    @State private var colorSchemeSelection: ColorScheme? = nil
     
     var body: some View {
         Form {
@@ -31,28 +58,38 @@ struct AccessibilitySettingsView: View {
             }
 
             Section {
-                Toggle(isOn: $highContrast) {
+                // Color Scheme Selection
+                Picker(selection: $colorSchemeSelection) {
+                    Text(String(localized: "System")).tag(ColorScheme?.none)
+                    Text(String(localized: "Light")).tag(ColorScheme?.some(.light))
+                    Text(String(localized: "Dark")).tag(ColorScheme?.some(.dark))
+                } label: {
+                    Label(String(localized: "Appearance"), systemImage: "circle.lefthalf.filled")
+                }
+                .onChange(of: colorSchemeSelection) { oldValue, newValue in
+                    themeManager.configuration.colorScheme = newValue
+                }
+                .onAppear {
+                    colorSchemeSelection = themeManager.configuration.colorScheme
+                }
+                
+                Toggle(isOn: highContrast) {
                     Label(String(localized: "High Contrast Mode"), systemImage: "circle.lefthalf.filled")
                 }
                 .accessibilityLabel("Enable high contrast mode")
-
-                Toggle(isOn: $largeText) {
-                    Label(String(localized: "Large Text"), systemImage: "textformat.size")
-                }
-                .accessibilityLabel("Enable large text")
 
                 VStack(alignment: .leading, spacing: 12) {
                     Label(String(localized: "Custom Font Size"), systemImage: "textformat")
                         .font(.subheadline.weight(.semibold))
                     
                     HStack(spacing: 16) {
-                        Text("\(Int(customFontSize))pt")
+                        Text("\(Int(customFontSize.wrappedValue * 14))pt")
                             .font(.caption.monospacedDigit())
                             .foregroundStyle(.secondary)
-                            .frame(width: 40)
+                            .frame(width: 50)
                         
-                        Slider(value: $customFontSize, in: 12...24, step: 1)
-                            .accessibilityLabel("Adjust font size")
+                        Slider(value: customFontSize, in: 0.8...2.0, step: 0.1)
+                            .accessibilityLabel("Adjust font size multiplier")
                     }
                 }
                 .padding(.vertical, 4)
@@ -62,7 +99,7 @@ struct AccessibilitySettingsView: View {
             }
             
             Section {
-                Toggle(isOn: $reducedMotion) {
+                Toggle(isOn: reducedMotion) {
                     Label(String(localized: "Reduce Motion"), systemImage: "move.3d")
                 }
                 .accessibilityLabel("Reduce animations and motion effects")
@@ -72,7 +109,7 @@ struct AccessibilitySettingsView: View {
             }
 
             Section {
-                Toggle(isOn: $screenReaderOptimized) {
+                Toggle(isOn: screenReaderOptimized) {
                     Label(String(localized: "Screen Reader Optimized"), systemImage: "waveform.circle.fill")
                 }
                 .accessibilityLabel("Optimize interface for screen readers")

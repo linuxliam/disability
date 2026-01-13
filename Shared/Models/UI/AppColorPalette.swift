@@ -53,6 +53,9 @@ extension ShapeStyle where Self == Color {
 // MARK: - App Color Roles
 
 /// Centralized semantic color roles backed by the asset catalog.
+/// 
+/// **Deprecated:** Use `ThemeManager` and `ColorTokens` for theme-aware colors instead.
+/// This enum is kept for backward compatibility during migration.
 enum AppColors {
     static var background: Color { .appBackground }
     static var groupedBackground: Color { .groupedBackground }
@@ -70,4 +73,20 @@ enum AppColors {
     static var primary: Color { .triadPrimary }
     static var secondary: Color { .triadSecondary }
     static var tertiary: Color { .triadTertiary }
+    
+    /// Theme-aware color accessor (preferred)
+    @MainActor
+    static func background(theme: ThemeManager) -> Color {
+        ColorTokens.background(theme: theme)
+    }
+    
+    @MainActor
+    static func surface(theme: ThemeManager) -> Color {
+        ColorTokens.surfacePrimary(theme: theme)
+    }
+    
+    @MainActor
+    static func textPrimary(theme: ThemeManager) -> Color {
+        ColorTokens.textPrimary(theme: theme)
+    }
 }

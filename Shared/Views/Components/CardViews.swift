@@ -35,6 +35,7 @@ enum CardElevation {
 
 // MARK: - Card View Modifiers
 struct CardModifier: ViewModifier {
+    @Environment(\.themeManager) private var themeManager
     var cornerRadius: CGFloat
     var padding: CGFloat
     var elevation: CardElevation
@@ -42,14 +43,14 @@ struct CardModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .padding(padding)
-            .background(Color.cardBackground)
+            .background(ColorTokens.surfacePrimary(theme: themeManager))
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.primary.opacity(0.06), lineWidth: 0.5)
+                    .stroke(ColorTokens.borderPrimary(theme: themeManager).opacity(0.3), lineWidth: 0.5)
             )
             .shadow(
-                color: Color.black.opacity(elevation.shadowOpacity * 0.5),
+                color: Color.black.opacity(elevation.shadowOpacity * (themeManager.colorScheme == .dark ? 0.7 : 0.5)),
                 radius: elevation.shadowRadius,
                 x: 0,
                 y: elevation.shadowRadius / 4
@@ -74,19 +75,25 @@ struct ElevatedCardModifier: ViewModifier {
 }
 
 struct CompactCardModifier: ViewModifier {
+    @Environment(\.themeManager) private var themeManager
     var cornerRadius: CGFloat = 12
     var padding: CGFloat = 16
     
     func body(content: Content) -> some View {
         content
             .padding(padding)
-            .background(Color.cardBackground)
+            .background(ColorTokens.surfacePrimary(theme: themeManager))
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
             .overlay(
                 RoundedRectangle(cornerRadius: cornerRadius)
-                    .stroke(Color.primary.opacity(0.05), lineWidth: 0.5)
+                    .stroke(ColorTokens.borderPrimary(theme: themeManager).opacity(0.2), lineWidth: 0.5)
             )
-            .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
+            .shadow(
+                color: Color.black.opacity(themeManager.colorScheme == .dark ? 0.3 : 0.05),
+                radius: 5,
+                x: 0,
+                y: 2
+            )
     }
 }
 

@@ -4,9 +4,16 @@
 //
 //  User accessibility preferences
 //
+//  Note: This model is kept for backward compatibility.
+//  New code should use ThemeManager for accessibility settings.
+//
 
 import SwiftUI
 
+/// Legacy accessibility settings model
+/// 
+/// **Deprecated:** Use `ThemeManager` for accessibility settings instead.
+/// This struct is kept for backward compatibility during migration.
 struct AccessibilitySettings {
     var highContrast: Bool = false
     var largeText: Bool = false
@@ -23,6 +30,16 @@ struct AccessibilitySettings {
     }
 
     static let defaultSettings = AccessibilitySettings()
+    
+    /// Create from ThemeManager
+    @MainActor
+    init(themeManager: ThemeManager) {
+        self.highContrast = themeManager.highContrast
+        self.largeText = themeManager.customFontSize > 1.0
+        self.reducedMotion = themeManager.reducedMotion
+        self.screenReaderOptimized = themeManager.screenReaderOptimized
+        self.customFontSize = themeManager.customFontSize * 14.0
+    }
 }
 
 

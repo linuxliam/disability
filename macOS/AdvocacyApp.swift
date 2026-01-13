@@ -19,7 +19,9 @@ struct AdvocacyApp: App {
             ZStack {
                 ContentView()
                     .environment(appState)
+                    .environment(appState.themeManager)
                     .environment(notificationManager)
+                    .preferredColorScheme(appState.themeManager.configuration.colorScheme)
                     .tint(.accentColor)
 
                 // Global toast overlay (parity with iOS)
