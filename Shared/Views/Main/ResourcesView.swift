@@ -82,8 +82,8 @@ struct ResourcesContentView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     private var emptyStateMessage: String {
-        if viewModel.selectedCategory != nil {
-            return String(localized: "Try selecting a different category or clearing the filter.")
+        if viewModel.selectedCategory != nil || viewModel.selectedTag != nil {
+            return String(localized: "Try selecting a different category or tag, or clearing the filters.")
         } else if !viewModel.searchText.isEmpty {
             return String(localized: "Try adjusting your search terms.")
         } else {
@@ -93,13 +93,25 @@ struct ResourcesContentView: View {
 
     // MARK: - Filter Buttons
     private var filterButtonRow: some View {
-        Picker(String(localized: "Category"), selection: $viewModel.selectedCategory) {
-            Text(String(localized: "All Categories")).tag(Optional<ResourceCategory>.none)
-            ForEach(ResourceCategory.allCases, id: \.self) { category in
-                Text(category.rawValue).tag(Optional(category))
+        VStack(spacing: LayoutConstants.spacingS) {
+            Picker(String(localized: "Category"), selection: $viewModel.selectedCategory) {
+                Text(String(localized: "All Categories")).tag(Optional<ResourceCategory>.none)
+                ForEach(ResourceCategory.allCases, id: \.self) { category in
+                    Text(category.rawValue).tag(Optional(category))
+                }
+            }
+            .pickerStyle(.menu)
+            
+            if !viewModel.availableTags.isEmpty {
+                Picker(String(localized: "Tag"), selection: $viewModel.selectedTag) {
+                    Text(String(localized: "All Tags")).tag(Optional<String>.none)
+                    ForEach(viewModel.availableTags, id: \.self) { tag in
+                        Text(tag).tag(Optional(tag))
+                    }
+                }
+                .pickerStyle(.menu)
             }
         }
-        .pickerStyle(.menu)
         .padding(.horizontal, LayoutConstants.screenHorizontalPadding)
     }
     
@@ -179,7 +191,7 @@ struct ResourcesContentView: View {
             icon: "magnifyingglass",
             title: String(localized: "No resources found"),
             message: emptyStateMessage,
-            primaryActionTitle: (viewModel.selectedCategory != nil || !viewModel.searchText.isEmpty) ? String(localized: "Clear all filters") : nil,
+            primaryActionTitle: (viewModel.selectedCategory != nil || viewModel.selectedTag != nil || !viewModel.searchText.isEmpty) ? String(localized: "Clear all filters") : nil,
             primaryAction: { viewModel.clearFilters() }
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
