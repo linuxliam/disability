@@ -1,0 +1,34 @@
+// iOS Platform Configuration
+// Platform-specific settings for iOS targets
+
+// Deployment Target
+IPHONEOS_DEPLOYMENT_TARGET = 18.0
+
+// Supported Platforms
+SUPPORTED_PLATFORMS = iphoneos iphonesimulator
+TARGETED_DEVICE_FAMILY = 1
+SUPPORTS_MACCATALYST = NO
+
+// SDK
+SDKROOT = iphoneos
+
+// Architecture
+ARCHS = arm64
+VALID_ARCHS = arm64
+ONLY_ACTIVE_ARCH = YES
+
+// Code Signing
+CODE_SIGN_STYLE = Automatic
+DEVELOPMENT_TEAM = G6374HUGH5
+
+// Info.plist
+GENERATE_INFOPLIST_FILE = NO
+INFOPLIST_FILE = iOS/Info.plist
+INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES
+INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES
+INFOPLIST_KEY_UILaunchScreen_Generation = YES
+INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight
+
+// Runtime Paths
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks

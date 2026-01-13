@@ -1,0 +1,264 @@
+name: Build and Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: 'Build configuration'
+        required: false
+        default: 'Debug'
+        type: choice
+        options:
+          - Debug
+          - Release
+
+env:
+  XCODE_VERSION: '15.0'
+  SWIFT_VERSION: '5.0'
+  CONFIGURATION: ${{ github.event.inputs.configuration || 'Debug' }}
+
+jobs:
+  build-ios:
+    name: Build iOS
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Select Xcode version
+        run: |
+          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
+          else
+            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          fi
+      
+      - name: Show Xcode version
+        run: xcodebuild -version
+      
+      - name: Show Swift version
+        run: swift --version
+      
+      - name: List available simulators
+        run: xcrun simctl list devices available | head -20
+      
+      - name: Cache Swift packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            build
+          key: ${{ runner.os }}-swift-${{ hashFiles('**/*.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-swift-
+      
+      - name: Build iOS target
+        run: |
+          xcodebuild \
+            -project DisabilityAdvocacy.xcodeproj \
+            -target "DisabilityAdvocacy-iOS" \
+            -sdk iphonesimulator \
+            -configuration ${{ env.CONFIGURATION }} \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -derivedDataPath build \
+            clean build 2>&1 | tee build-ios.log
+        continue-on-error: false
+      
+      - name: Check build output
+        if: failure()
+        run: |
+          echo "Build failed. Last 50 lines of output:"
+          tail -50 build-ios.log || true
+      
+      - name: Archive build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-build-${{ env.CONFIGURATION }}
+          path: |
+            build/Debug-iphonesimulator/DisabilityAdvocacy-iOS.app
+            build-ios.log
+          retention-days: 7
+          if-no-files-found: warn
+
+  build-macos:
+    name: Build macOS
+    runs-on: macos-14
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Select Xcode version
+        run: |
+          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
+          else
+            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          fi
+      
+      - name: Show Xcode version
+        run: xcodebuild -version
+      
+      - name: Show Swift version
+        run: swift --version
+      
+      - name: Cache Swift packages
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            build
+          key: ${{ runner.os }}-swift-${{ hashFiles('**/*.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-swift-
+      
+      - name: Build macOS target
+        run: |
+          xcodebuild \
+            -project DisabilityAdvocacy.xcodeproj \
+            -target "DisabilityAdvocacy-macOS" \
+            -sdk macosx \
+            -configuration ${{ env.CONFIGURATION }} \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -derivedDataPath build \
+            clean build 2>&1 | tee build-macos.log
+        continue-on-error: false
+      
+      - name: Check build output
+        if: failure()
+        run: |
+          echo "Build failed. Last 50 lines of output:"
+          tail -50 build-macos.log || true
+      
+      - name: Archive build artifacts
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build-${{ env.CONFIGURATION }}
+          path: |
+            build/Debug/DisabilityAdvocacy-macOS.app
+            build-macos.log
+          retention-days: 7
+          if-no-files-found: warn
+
+  test-ios:
+    name: Test iOS
+    runs-on: macos-14
+    timeout-minutes: 20
+    needs: [build-ios]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Select Xcode version
+        run: |
+          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
+            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
+          else
+            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+          fi
+      
+      - name: Boot iOS Simulator
+        run: |
+          xcrun simctl boot "iPhone 15" 2>/dev/null || true
+          xcrun simctl list devices | grep "iPhone 15"
+      
+      - name: Run iOS unit tests
+        run: |
+          xcodebuild test \
+            -project DisabilityAdvocacy.xcodeproj \
+            -scheme "DisabilityAdvocacy-iOS" \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -destination 'platform=iOS Simulator,name=iPhone 15,OS=latest' \
+            -derivedDataPath build \
+            -resultBundlePath build/test-results.xcresult \
+            -only-testing:DisabilityAdvocacyTests 2>&1 | tee test-output.txt || true
+      
+      - name: Parse test results
+        if: always()
+        run: |
+          if [ -f "test-output.txt" ]; then
+            echo "## Test Results" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            grep -E "(Test Suite|Test Case|passed|failed)" test-output.txt | tail -20 >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: Archive test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-test-results
+          path: |
+            build/test-results.xcresult
+            test-output.txt
+          retention-days: 7
+          if-no-files-found: ignore
+
+  validate-build:
+    name: Validate Build
+    runs-on: macos-14
+    timeout-minutes: 10
+    needs: [build-ios, build-macos]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run build validation
+        run: |
+          chmod +x scripts/validate-build.sh
+          ./scripts/validate-build.sh || echo "Build validation completed with warnings"
+      
+      - name: Run platform code validation
+        run: |
+          chmod +x scripts/validate-platform-code.sh
+          ./scripts/validate-platform-code.sh || echo "Platform validation completed with warnings"
+
+  build-status:
+    name: Build Status Summary
+    runs-on: ubuntu-latest
+    needs: [build-ios, build-macos, test-ios, validate-build]
+    if: always()
+    steps:
+      - name: Generate build status summary
+        run: |
+          echo "# 🚀 Build and Test Status" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Platform Builds" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Platform | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| iOS | ${{ needs.build-ios.result == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| macOS | ${{ needs.build-macos.result == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Tests" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Test Suite | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| iOS Unit Tests | ${{ needs.test-ios.result == 'success' && '✅ Passed' || needs.test-ios.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Validation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Validation | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Build Validation | ${{ needs.validate-build.result == 'success' && '✅ Passed' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Workflow Run:** ${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY

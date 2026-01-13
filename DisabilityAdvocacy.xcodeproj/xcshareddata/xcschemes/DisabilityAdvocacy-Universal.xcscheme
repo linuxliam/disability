@@ -20,6 +20,20 @@
                ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "F2D4BA4E0CE94DE5BA9D4F9C"
+               BuildableName = "DisabilityAdvocacy-macOS.app"
+               BlueprintName = "DisabilityAdvocacy-macOS"
+               ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -76,15 +90,6 @@
             ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "53A5232FEB1E4BE9BFAD6EFA"
-            BuildableName = "DisabilityAdvocacy-iOS.app"
-            BlueprintName = "DisabilityAdvocacy-iOS"
-            ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -104,15 +109,6 @@
             ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "53A5232FEB1E4BE9BFAD6EFA"
-            BuildableName = "DisabilityAdvocacy-iOS.app"
-            BlueprintName = "DisabilityAdvocacy-iOS"
-            ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

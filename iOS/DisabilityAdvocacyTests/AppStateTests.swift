@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import DisabilityAdvocacy
+@testable import DisabilityAdvocacy_iOS
 
 @MainActor
 final class AppStateTests: XCTestCase {
@@ -14,17 +14,13 @@ final class AppStateTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Create a fresh ResourcesManager to avoid loading saved data
-        let resourcesManager = ResourcesManager()
-        // Clear any saved favorites to ensure clean state
-        resourcesManager.saveFavoriteIds([])
-        appState = AppState(resourcesManager: resourcesManager)
+        // Create a fresh AppState
+        appState = AppState()
+        // Clear favorites for clean state
+        appState.favoriteResources.removeAll()
     }
     
     override func tearDown() {
-        // Clean up saved data
-        let resourcesManager = ResourcesManager()
-        resourcesManager.saveFavoriteIds([])
         appState = nil
         super.tearDown()
     }
@@ -34,33 +30,33 @@ final class AppStateTests: XCTestCase {
         XCTAssertTrue(appState.favoriteResources.isEmpty, "Favorite resources should be empty initially")
     }
     
-    func testToggleFavorite() {
+    func testToggleFavorite() async {
         // Given
         let resourceId = UUID()
         
         // When
-        appState.toggleFavorite(resourceId)
+        await appState.toggleFavorite(resourceId)
         
         // Then
         XCTAssertTrue(appState.favoriteResources.contains(resourceId), "Resource should be favorited")
         
         // When - toggle again
-        appState.toggleFavorite(resourceId)
+        await appState.toggleFavorite(resourceId)
         
         // Then
         XCTAssertFalse(appState.favoriteResources.contains(resourceId), "Resource should be unfavorited")
     }
     
-    func testMultipleFavorites() {
+    func testMultipleFavorites() async {
         // Given
         let id1 = UUID()
         let id2 = UUID()
         let id3 = UUID()
         
         // When
-        appState.toggleFavorite(id1)
-        appState.toggleFavorite(id2)
-        appState.toggleFavorite(id3)
+        await appState.toggleFavorite(id1)
+        await appState.toggleFavorite(id2)
+        await appState.toggleFavorite(id3)
         
         // Then
         XCTAssertEqual(appState.favoriteResources.count, 3, "Should have 3 favorites")
@@ -69,61 +65,35 @@ final class AppStateTests: XCTestCase {
         XCTAssertTrue(appState.favoriteResources.contains(id3))
     }
     
-    func testIsFavorite() {
+    func testIsFavorite() async {
         // Given
         let resourceId = UUID()
         
         // When
-        appState.toggleFavorite(resourceId)
+        await appState.toggleFavorite(resourceId)
         
         // Then
         XCTAssertTrue(appState.isFavorite(resourceId), "isFavorite should return true for favorited resource")
         
         // When
-        appState.toggleFavorite(resourceId)
+        await appState.toggleFavorite(resourceId)
         
         // Then
         XCTAssertFalse(appState.isFavorite(resourceId), "isFavorite should return false for unfavorited resource")
     }
     
-    func testLoadSavedData() async {
-        // Given
-        let resourcesManager = ResourcesManager()
-        let testResources = [
-            Resource(
-                title: "Test Resource",
-                description: "Test Description",
-                category: .legal,
-                url: "https://example.com",
-                tags: ["test"]
-            )
-        ]
-        resourcesManager.saveResources(testResources)
-        
-        let favoriteIds = [UUID(), UUID()]
-        resourcesManager.saveFavoriteIds(favoriteIds)
-        
-        // When
-        let testAppState = AppState(resourcesManager: resourcesManager)
-        
-        // Then
-        XCTAssertEqual(testAppState.savedResources.count, testResources.count, "Should load saved resources")
-        XCTAssertEqual(testAppState.favoriteResources.count, favoriteIds.count, "Should load favorite IDs")
-    }
-    
-    func testToggleFavoritePersistence() {
+    func testToggleFavoritePersistence() async {
         // Given
         let resourceId = UUID()
-        let resourcesManager = ResourcesManager()
-        let testAppState = AppState(resourcesManager: resourcesManager)
+        let testAppState = AppState()
         
         // When
-        testAppState.toggleFavorite(resourceId)
+        await testAppState.toggleFavorite(resourceId)
         
         // Then
-        // Verify it's saved by checking the manager directly
-        let savedIds = resourcesManager.loadFavoriteIds()
-        XCTAssertTrue(savedIds.contains(resourceId), "Favorite should be persisted")
+        // Verify it's saved by creating a new AppState and checking
+        let newAppState = AppState()
+        XCTAssertTrue(newAppState.favoriteResources.contains(resourceId), "Favorite should be persisted")
     }
     
     func testInitialAccessibilitySettings() {

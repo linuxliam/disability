@@ -1,0 +1,26 @@
+// macOS Platform Configuration
+// Platform-specific settings for macOS targets
+
+// Deployment Target
+MACOSX_DEPLOYMENT_TARGET = 15.0
+
+// Supported Platforms
+SUPPORTED_PLATFORMS = macosx
+
+// SDK
+SDKROOT = macosx
+
+// Architecture
+ARCHS = arm64 x86_64
+VALID_ARCHS = arm64 x86_64
+ONLY_ACTIVE_ARCH = NO
+
+// Code Signing
+CODE_SIGN_STYLE = Automatic
+
+// Info.plist
+GENERATE_INFOPLIST_FILE = NO
+INFOPLIST_FILE = macOS/Info.plist
+
+// Runtime Paths
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks
