@@ -30,7 +30,7 @@ echo ""
 
 # Setup main branch
 echo "📋 Protecting 'main' branch..."
-curl -X PUT \
+RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT \
   -H "Authorization: token $TOKEN" \
   -H "Accept: application/vnd.github.v3+json" \
   "https://api.github.com/repos/$REPO/branches/main/protection" \
@@ -48,13 +48,34 @@ curl -X PUT \
     "restrictions": null,
     "allow_force_pushes": false,
     "allow_deletions": false
-  }' 2>/dev/null && echo "✅ main branch protected" || echo "⚠️  main branch (may already be protected)"
+  }')
+
+HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+BODY=$(echo "$RESPONSE" | sed '$d')
+
+if [ "$HTTP_CODE" = "200" ]; then
+    echo "✅ main branch protected successfully!"
+elif [ "$HTTP_CODE" = "403" ]; then
+    if echo "$BODY" | grep -q "Upgrade to GitHub Pro"; then
+        echo "⚠️  Branch protection requires GitHub Pro for private repositories"
+        echo "   Options:"
+        echo "   1. Make repository public, or"
+        echo "   2. Upgrade to GitHub Pro"
+        echo "   3. Set up protection manually at: https://github.com/$REPO/settings/branches"
+    else
+        echo "⚠️  Permission denied. Check token permissions."
+    fi
+elif [ "$HTTP_CODE" = "404" ]; then
+    echo "⚠️  Repository or branch not found"
+else
+    echo "⚠️  main branch (HTTP $HTTP_CODE - may already be protected)"
+fi
 
 echo ""
 
 # Setup develop branch
 echo "📋 Protecting 'develop' branch..."
-curl -X PUT \
+RESPONSE=$(curl -s -w "\n%{http_code}" -X PUT \
   -H "Authorization: token $TOKEN" \
   -H "Accept: application/vnd.github.v3+json" \
   "https://api.github.com/repos/$REPO/branches/develop/protection" \
@@ -72,7 +93,24 @@ curl -X PUT \
     "restrictions": null,
     "allow_force_pushes": false,
     "allow_deletions": false
-  }' 2>/dev/null && echo "✅ develop branch protected" || echo "⚠️  develop branch (may already be protected)"
+  }')
+
+HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+BODY=$(echo "$RESPONSE" | sed '$d')
+
+if [ "$HTTP_CODE" = "200" ]; then
+    echo "✅ develop branch protected successfully!"
+elif [ "$HTTP_CODE" = "403" ]; then
+    if echo "$BODY" | grep -q "Upgrade to GitHub Pro"; then
+        echo "⚠️  Branch protection requires GitHub Pro for private repositories"
+    else
+        echo "⚠️  Permission denied. Check token permissions."
+    fi
+elif [ "$HTTP_CODE" = "404" ]; then
+    echo "⚠️  Branch 'develop' not found (create it first)"
+else
+    echo "⚠️  develop branch (HTTP $HTTP_CODE - may already be protected)"
+fi
 
 echo ""
 echo "✨ Setup complete!"
