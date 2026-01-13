@@ -1,0 +1,40 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppTheme.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Resource not found",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 104
+        }
+      },
+      {
+        "comment": "",
+        "key": "Event not found",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 111
+        }
+      },
+      {
+        "comment": "",
+        "key": "Post detail view not implemented",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 114
+        }
+      },
+      {
+        "comment": "",
+        "key": "Article detail view not implemented",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 116
+        }
+      }
+    ]
+  },
+  "version": 1
+}

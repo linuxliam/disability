@@ -99,7 +99,11 @@ struct LetterTemplateListView: View {
                     }
                 }
                 #if os(iOS)
-                .listStyle(.insetGrouped)
+                        #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
                 #else
                 .listStyle(.inset)
                 #endif

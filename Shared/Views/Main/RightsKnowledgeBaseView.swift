@@ -113,7 +113,11 @@ struct RightsKnowledgeBaseView: View {
                     .padding(.vertical, 4)
                 }
             }
-            .listStyle(.insetGrouped)
+                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
             #endif
         }
         .appListBackground()
@@ -215,7 +219,11 @@ struct LawDetailView: View {
             }
         }
         #if os(iOS)
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         #else
         .listStyle(.inset)
         #endif

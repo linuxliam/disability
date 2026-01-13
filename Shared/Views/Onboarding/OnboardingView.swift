@@ -65,7 +65,7 @@ struct OnboardingView: View {
                                 completeOnboarding()
                             }
                             .font(.body)
-                            .foregroundStyle(.secondaryText)
+                            .foregroundStyle(Color.secondaryText)
                             
                             Spacer()
                             
@@ -116,7 +116,7 @@ struct OnboardingPageView: View {
     let page: OnboardingPage
     
     var body: some View {
-        VStack(spacing: LayoutConstants.paddingXXXL) {
+        VStack(spacing: LayoutConstants.paddingXXL) {
             Spacer()
             
             // Icon
@@ -131,21 +131,21 @@ struct OnboardingPageView: View {
             Text(page.title)
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(Color.primaryText)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, LayoutConstants.screenHorizontalPadding)
             
             // Description
             Text(page.description)
                 .font(.body)
-                .foregroundStyle(.secondaryText)
+                .foregroundStyle(Color.secondaryText)
                 .multilineTextAlignment(.center)
-                .lineSpacing(LayoutConstants.lineSpacing)
-                .padding(.horizontal, LayoutConstants.contentHorizontalPadding)
+                .lineSpacing(4)
+                .padding(.horizontal, LayoutConstants.screenHorizontalPadding)
             
             Spacer()
         }
-        .padding(.vertical, LayoutConstants.paddingXXXL)
+        .padding(.vertical, LayoutConstants.paddingXXL)
     }
 }
 

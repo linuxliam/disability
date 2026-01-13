@@ -26,7 +26,7 @@ struct ManageResourcesView: View {
                                 .foregroundStyle(.primary)
                             Text(resource.category.rawValue)
                                 .font(.caption)
-                                .foregroundStyle(.secondaryText)
+                                .foregroundStyle(Color.secondaryText)
                         }
                         .padding(.vertical, 4)
                     }
@@ -45,7 +45,11 @@ struct ManageResourcesView: View {
                 .tint(.triadPrimary)
             }
         }
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         .appListBackground()
         .navigationTitle(String(localized: "Manage Resources"))
         .sheet(isPresented: $showingEditView) {

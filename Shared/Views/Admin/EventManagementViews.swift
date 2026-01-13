@@ -30,7 +30,7 @@ struct ManageEventsView: View {
                                 Text(event.date, style: .date)
                             }
                             .font(.caption)
-                            .foregroundStyle(.secondaryText)
+                            .foregroundStyle(Color.secondaryText)
                         }
                         .padding(.vertical, 4)
                     }
@@ -49,7 +49,11 @@ struct ManageEventsView: View {
                 .tint(.triadPrimary)
             }
         }
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         .appListBackground()
         .navigationTitle(String(localized: "Manage Events"))
         .sheet(isPresented: $showingEditView) {

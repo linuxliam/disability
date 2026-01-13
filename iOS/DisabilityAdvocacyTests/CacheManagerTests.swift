@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import DisabilityAdvocacy
+@testable import DisabilityAdvocacy_iOS
 
 final class CacheManagerTests: XCTestCase {
     var cacheManager: CacheManager!

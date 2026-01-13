@@ -43,7 +43,7 @@ class DataManager {
                 configurations: [modelConfiguration]
             )
         } catch {
-            print("Failed to create model container: \(error)")
+            AppLogger.error("Failed to create model container", error: error)
         }
     }
     
@@ -251,102 +251,5 @@ class DataManager {
 }
 
 // MARK: - JSON Storage Manager
-
-@MainActor
-class JSONStorageManager {
-    static let shared = JSONStorageManager()
-    
-    private init() {}
-    
-    private var documentsDirectory: URL {
-        FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-    }
-    
-    private func getFileURL(for filename: String) -> URL {
-        documentsDirectory.appendingPathComponent(filename)
-    }
-    
-    /// Copies a bundled JSON file to the Documents directory if it doesn't already exist.
-    func initializeFileFromBundle(filename: String) {
-        // #region agent log
-        AppLogger.agentDebugLog(location: "DataManager.swift:271", message: "Initializing file from bundle", data: ["filename": filename], hypothesisId: "3")
-        // #endregion
-        let fileURL = getFileURL(for: filename)
-        
-        // Only copy if it doesn't exist to avoid overwriting user changes
-        guard !FileManager.default.fileExists(atPath: fileURL.path) else {
-            // #region agent log
-            AppLogger.agentDebugLog(location: "DataManager.swift:276", message: "File already exists in Documents", data: ["filename": filename, "path": fileURL.path], hypothesisId: "3")
-            // #endregion
-            return
-        }
-        
-        // Remove extension for bundle lookup
-        let name = (filename as NSString).deletingPathExtension
-        let ext = (filename as NSString).pathExtension
-        
-        let bundleURL = Bundle.main.url(forResource: name, withExtension: ext)
-        // #region agent log
-        AppLogger.agentDebugLog(location: "DataManager.swift:283", message: "Bundle lookup result", data: ["filename": filename, "found": bundleURL != nil, "bundlePath": Bundle.main.bundlePath], hypothesisId: "1")
-        // #endregion
-        
-        guard let bundleURL = bundleURL else {
-            print("Warning: Bundled file \(filename) not found.")
-            return
-        }
-        
-        do {
-            try FileManager.default.copyItem(at: bundleURL, to: fileURL)
-            print("Initialized \(filename) in Documents directory.")
-            // #region agent log
-            AppLogger.agentDebugLog(location: "DataManager.swift:293", message: "File copied from bundle", data: ["filename": filename, "to": fileURL.path], hypothesisId: "1")
-            // #endregion
-        } catch {
-            print("Error initializing \(filename): \(error)")
-            // #region agent log
-            AppLogger.agentDebugLog(location: "DataManager.swift:297", message: "Error copying file", data: ["filename": filename, "error": error.localizedDescription], hypothesisId: "1")
-            // #endregion
-        }
-    }
-    
-    /// Loads an array of Codable objects from a JSON file in the Documents directory.
-    func load<T: Decodable>(filename: String) -> [T] {
-        let fileURL = getFileURL(for: filename)
-        
-        guard FileManager.default.fileExists(atPath: fileURL.path) else {
-            return []
-        }
-        
-        do {
-            let data = try Data(contentsOf: fileURL)
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .iso8601
-            return try decoder.decode([T].self, from: data)
-        } catch {
-            print("Error loading \(filename): \(error)")
-            return []
-        }
-    }
-    
-    /// Saves an array of Codable objects to a JSON file in the Documents directory.
-    func save<T: Encodable>(_ items: [T], filename: String) {
-        let fileURL = getFileURL(for: filename)
-        
-        do {
-            let encoder = JSONEncoder()
-            encoder.dateEncodingStrategy = .iso8601
-            encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-            let data = try encoder.encode(items)
-            try data.write(to: fileURL, options: [.atomic, .completeFileProtection])
-        } catch {
-            print("Error saving \(filename): \(error)")
-        }
-    }
-    
-    /// Returns the raw URL for the file in the Documents directory (useful for sharing).
-    func getLocalFileURL(for filename: String) -> URL? {
-        let fileURL = getFileURL(for: filename)
-        return FileManager.default.fileExists(atPath: fileURL.path) ? fileURL : nil
-    }
-}
+// Note: JSONStorageManager is now in its own file: JSONStorageManager.swift
 

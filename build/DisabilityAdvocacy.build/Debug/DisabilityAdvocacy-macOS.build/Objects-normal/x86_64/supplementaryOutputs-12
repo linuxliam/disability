@@ -1,0 +1,65 @@
+{
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Extensions/Image+Extensions.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/Image+Extensions.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/Image+Extensions.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/Image+Extensions.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/Image+Extensions.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/Image+Extensions.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Extensions/String+Extensions.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/String+Extensions.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/String+Extensions.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/String+Extensions.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/String+Extensions.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/String+Extensions.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Extensions/UIExtensions.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/UIExtensions.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/UIExtensions.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/UIExtensions.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/UIExtensions.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/UIExtensions.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Extensions/View+Typography.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/View+Typography.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/View+Typography.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/View+Typography.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/View+Typography.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/View+Typography.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Managers/CalendarManager.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/CalendarManager.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/CalendarManager.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/CalendarManager.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/CalendarManager.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/CalendarManager.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Managers/EventsManager.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/EventsManager.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/EventsManager.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/EventsManager.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/EventsManager.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/EventsManager.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Managers/NetworkManager.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/NetworkManager.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/NetworkManager.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/NetworkManager.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/NetworkManager.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/NetworkManager.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Managers/SystemSettingsManager.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/SystemSettingsManager.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/SystemSettingsManager.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/SystemSettingsManager.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/SystemSettingsManager.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/SystemSettingsManager.swiftdeps"
+  },
+  "/Users/liammatthews/Desktop/APP/DA/Shared/Utilities/PlatformUI.swift" : {
+    "const-values" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/PlatformUI.swiftconstvalues",
+    "dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/PlatformUI.d",
+    "diagnostics" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/PlatformUI.dia",
+    "object" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/PlatformUI.o",
+    "swift-dependencies" : "/Users/liammatthews/Desktop/APP/DA/build/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/x86_64/PlatformUI.swiftdeps"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Onboarding/LaunchScreenView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Disability Advocacy",
+        "location": {
+          "startingColumn": 40,
+          "startingLine": 55
+        }
+      },
+      {
+        "comment": "",
+        "key": "Empowering voices, building community",
+        "location": {
+          "startingColumn": 40,
+          "startingLine": 62
+        }
+      }
+    ]
+  },
+  "version": 1
+}

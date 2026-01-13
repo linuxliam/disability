@@ -31,10 +31,14 @@ class HomeViewModel {
     private let eventsManager: EventsManager
     private var loadTask: Task<Void, Never>?
     
-    init(resourcesManager: ResourcesManager = ResourcesManager(),
-         eventsManager: EventsManager = EventsManager()) {
+    init(resourcesManager: ResourcesManager, eventsManager: EventsManager) {
         self.resourcesManager = resourcesManager
         self.eventsManager = eventsManager
+    }
+    
+    @MainActor
+    convenience init() {
+        self.init(resourcesManager: ResourcesManager(), eventsManager: EventsManager())
     }
     
     func loadData(favoriteResourceIds: Set<UUID> = []) {

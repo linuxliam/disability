@@ -60,26 +60,6 @@ extension View {
             }
     }
 
-    /// Standard content container behavior (centers content on wide macOS windows / iPad landscape).
-    /// Used to prevent text lines from becoming too long on desktop.
-    @MainActor
-    func appContentFrame() -> some View {
-        self.modifier(_AppContentFrameModifier())
-    }
-
-    /// Standard navigation chrome for parity (material toolbar backgrounds where available).
-    @MainActor
-    func appNavigationChrome() -> some View {
-        #if os(iOS)
-        return self
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-        #else
-        // macOS: keep default toolbar behavior; background comes from appScreenBackground.
-        return self
-        #endif
-    }
-
     /// Standard tab bar chrome for iOS.
     @MainActor
     func appTabBarChrome() -> some View {
@@ -92,28 +72,8 @@ extension View {
         #endif
     }
 
-    /// Standard top-level chrome for most screens (background + nav chrome + max content width on wide displays).
-    @MainActor
-    func appScreenChrome() -> some View {
-        return self
-            .appScreenBackground()
-            .appNavigationChrome()
-            .appContentFrame()
-    }
-
-    /// Standard List styling/background on iOS (hide List's default background and use our grouped background).
-    @MainActor
-    func appListBackground() -> some View {
-        #if os(iOS)
-        return self
-            .scrollContentBackground(.hidden)
-            .background(AppTheme.groupedBackgroundColor)
-        #else
-        // On macOS, apply our grouped background to keep parity with iOS unless the platform default is desired.
-        return self
-            .background(AppTheme.groupedBackgroundColor)
-        #endif
-    }
+    // Note: appContentFrame, appNavigationChrome, appScreenChrome, and appListBackground
+    // are defined in Extensions/UIExtensions.swift
 
     @MainActor
     @ViewBuilder

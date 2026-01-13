@@ -1,0 +1,16 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/DataExportView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Export local data files to use as bundled resources in the project.",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 13
+        }
+      }
+    ]
+  },
+  "version": 1
+}

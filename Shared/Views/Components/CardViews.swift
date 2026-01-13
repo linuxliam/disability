@@ -239,7 +239,7 @@ struct AppDetailHeader<Trailing: View>: View {
             if let subtitle = subtitle {
                 Text(subtitle)
                     .font(.subheadline)
-                    .foregroundStyle(.secondaryText)
+                    .foregroundStyle(Color.secondaryText)
             }
         }
         .padding(20)
@@ -263,7 +263,7 @@ struct ResourceCard: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: LayoutConstants.contentGap) {
+        VStack(alignment: .leading, spacing: LayoutConstants.cardGap) {
             HStack(alignment: .firstTextBaseline, spacing: LayoutConstants.spacingS) {
                 AppChip(text: resource.category.rawValue, style: .primary)
 
@@ -347,7 +347,7 @@ struct EventCard: View {
             
             Image(systemName: "chevron.right")
                 .font(.caption2.weight(.bold))
-                .foregroundStyle(.tertiaryText)
+                .foregroundStyle(Color.tertiaryText)
         }
         .appCard(padding: LayoutConstants.paddingM, elevation: .standard)
     }
@@ -395,7 +395,7 @@ struct AppNavigationGridCard<V: Hashable>: View {
                         if let subtitle = subtitle {
                             Text(subtitle)
                                 .font(.caption)
-                                .foregroundStyle(.secondaryText)
+                                .foregroundStyle(Color.secondaryText)
                                 .lineLimit(2)
                         }
                     }
@@ -406,7 +406,7 @@ struct AppNavigationGridCard<V: Hashable>: View {
                         Spacer()
                         Image(systemName: "chevron.right")
                             .font(.caption2.weight(.bold))
-                            .foregroundStyle(.tertiaryText)
+                            .foregroundStyle(Color.tertiaryText)
                     }
                 }
             }
@@ -431,7 +431,7 @@ struct NewsArticleGridCard: View {
                 VStack(alignment: .leading, spacing: LayoutConstants.spacingS) {
                     Text(article.title)
                         .font(.headline.weight(.bold))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(Color.primaryText)
                         .lineLimit(2)
                     
                     Text(article.summary)
@@ -447,7 +447,7 @@ struct NewsArticleGridCard: View {
                     Spacer()
                     Image(systemName: "chevron.right")
                         .font(.caption)
-                        .foregroundStyle(.tertiaryText)
+                        .foregroundStyle(Color.tertiaryText)
                 }
             }
         }
@@ -470,11 +470,11 @@ struct AdvocacyToolGridCard: View {
                 VStack(alignment: .leading, spacing: LayoutConstants.spacingS) {
                     Text(tool.title)
                         .font(.headline.weight(.bold))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(Color.primaryText)
                     
                     Text(tool.description)
                         .font(.subheadline)
-                        .foregroundStyle(.secondaryText)
+                        .foregroundStyle(Color.secondaryText)
                         .lineLimit(3)
                 }
                 
@@ -504,18 +504,18 @@ struct CommunityPostGridCard: View {
                     Spacer()
                     Text(post.datePosted, style: .date)
                         .font(.caption)
-                        .foregroundStyle(.tertiaryText)
+                        .foregroundStyle(Color.tertiaryText)
                 }
                 
                 VStack(alignment: .leading, spacing: LayoutConstants.spacingS) {
                     Text(post.title)
                         .font(.headline.weight(.bold))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(Color.primaryText)
                         .lineLimit(2)
                     
                     Text(post.content)
                         .font(.subheadline)
-                        .foregroundStyle(.secondaryText)
+                        .foregroundStyle(Color.secondaryText)
                         .lineLimit(3)
                 }
                 
@@ -556,12 +556,12 @@ struct SearchResultGridCard: View {
                 VStack(alignment: .leading, spacing: LayoutConstants.spacingS) {
                     Text(result.title)
                         .font(.headline.weight(.bold))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(Color.primaryText)
                         .lineLimit(2)
                     
                     Text(result.summary)
                         .font(.subheadline)
-                        .foregroundStyle(.secondaryText)
+                        .foregroundStyle(Color.secondaryText)
                         .lineLimit(3)
                 }
                 
@@ -573,7 +573,7 @@ struct SearchResultGridCard: View {
                         .foregroundStyle(.primary)
                     Spacer()
                     Image(systemName: "arrow.right.circle.fill")
-                        .foregroundStyle(.tertiaryText)
+                        .foregroundStyle(Color.tertiaryText)
                 }
             }
         }
@@ -596,12 +596,12 @@ struct DisabilityLawGridCard: View {
                 VStack(alignment: .leading, spacing: LayoutConstants.spacingS) {
                     Text(law.name)
                         .font(.headline.weight(.bold))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(Color.primaryText)
                         .lineLimit(2)
                     
                     Text(law.description)
                         .font(.subheadline)
-                        .foregroundStyle(.secondaryText)
+                        .foregroundStyle(Color.secondaryText)
                         .lineLimit(3)
                 }
                 

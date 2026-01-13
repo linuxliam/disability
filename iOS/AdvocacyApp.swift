@@ -44,7 +44,7 @@ struct AppRootView: View {
             
             // Global toast overlay
             ToastStack(feedback: appState.feedback)
-                .ignoresSafeArea(.keyboard)
+                .ignoresSafeArea(.container, edges: .bottom)
         }
         .task {
             if UIAccessibility.isReduceMotionEnabled {

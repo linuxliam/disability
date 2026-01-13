@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import DisabilityAdvocacy
+@testable import DisabilityAdvocacy_iOS
 
 @MainActor
 final class TapInteractionTests: XCTestCase {

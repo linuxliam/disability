@@ -1,0 +1,24 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/FeedbackComponents.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%@: %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 57
+        }
+      },
+      {
+        "comment": "",
+        "key": "Dismiss notification",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 43
+        }
+      }
+    ]
+  },
+  "version": 1
+}

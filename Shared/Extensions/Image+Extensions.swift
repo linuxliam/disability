@@ -32,44 +32,40 @@ extension Image {
 }
 
 // MARK: - Category Icons
-extension Resource.Category {
-    var icon: Image {
+extension ResourceCategory {
+    var iconImage: Image {
         switch self {
         case .legal: return Image(systemName: "scale.3d")
         case .education: return Image(systemName: "book.closed.fill")
         case .healthcare: return Image(systemName: "cross.case.fill")
         case .employment: return Image(systemName: "briefcase.fill")
-        case .housing: return Image(systemName: "house.fill")
-        case .transportation: return Image(systemName: "car.fill")
         case .technology: return Image(systemName: "laptopcomputer")
-        case .advocacy: return Image(systemName: "megaphone.fill")
         case .community: return Image(systemName: "person.3.fill")
-        case .financial: return Image(systemName: "dollarsign.circle.fill")
+        case .government: return Image(systemName: "building.2.fill")
+        case .advocacy: return Image(systemName: "megaphone.fill")
         }
     }
 }
 
-extension Event.Category {
-    var icon: Image {
+extension EventCategory {
+    var iconImage: Image {
         switch self {
         case .workshop: return Image(systemName: "person.2.fill")
         case .conference: return Image(systemName: "building.2.fill")
-        case .networking: return Image(systemName: "network")
-        case .support: return Image(systemName: "hands.sparkles.fill")
-        case .advocacy: return Image(systemName: "megaphone.fill")
-        case .social: return Image(systemName: "party.popper.fill")
+        case .webinar: return Image(systemName: "video.fill")
+        case .rally: return Image(systemName: "megaphone.fill")
+        case .meeting: return Image(systemName: "person.3.fill")
+        case .training: return Image(systemName: "graduationcap.fill")
         }
     }
 }
 
-extension CommunityPost.Category {
-    var icon: Image {
+extension PostCategory {
+    var iconImage: Image {
         switch self {
         case .discussion: return Image(systemName: "bubble.left.and.bubble.right.fill")
-        case .question: return Image(systemName: "questionmark.circle.fill")
-        case .announcement: return Image(systemName: "megaphone.fill")
-        case .support: return Image(systemName: "heart.fill")
-        case .resource: return Image(systemName: "book.fill")
+        case .support: return Image(systemName: "hands.sparkles.fill")
+        case .advocacy: return Image(systemName: "megaphone.fill")
         }
     }
 }

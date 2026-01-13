@@ -7,7 +7,7 @@
 
 import XCTest
 import EventKit
-@testable import DisabilityAdvocacy
+@testable import DisabilityAdvocacy_iOS
 
 @MainActor
 final class CalendarManagerTests: XCTestCase {

@@ -230,7 +230,11 @@ struct ResourcesContentView: View {
                 )
             }
         }
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         .scrollContentBackground(.hidden)
         #endif
     }
@@ -280,7 +284,7 @@ struct ResourceListRow: View {
                 
                 Text(resource.description)
                     .font(.subheadline)
-                    .foregroundStyle(.secondaryText)
+                    .foregroundStyle(Color.secondaryText)
                     .lineLimit(2)
                 
                 HStack(spacing: LayoutConstants.spacingS) {
@@ -289,7 +293,7 @@ struct ResourceListRow: View {
                         systemImage: "tag.fill"
                     )
                     .font(.caption)
-                    .foregroundStyle(.secondaryText)
+                    .foregroundStyle(Color.secondaryText)
                     
                     if isFavorite {
                         Label(String(localized: "Favorited"), systemImage: "heart.fill")
@@ -370,7 +374,11 @@ struct ResourceDetailView: View {
             }
         }
         #if os(iOS)
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         #else
         .listStyle(.inset)
         #endif

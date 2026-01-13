@@ -1,0 +1,176 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/EventManagementViews.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Manage Events",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 58
+        }
+      },
+      {
+        "comment": "",
+        "key": "•",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 29
+        }
+      },
+      {
+        "comment": "",
+        "key": "Events",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 41
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 43
+        }
+      },
+      {
+        "comment": "",
+        "key": "New Event",
+        "location": {
+          "startingColumn": 59,
+          "startingLine": 141
+        }
+      },
+      {
+        "comment": "",
+        "key": "Edit Event",
+        "location": {
+          "startingColumn": 92,
+          "startingLine": 141
+        }
+      },
+      {
+        "comment": "",
+        "key": "Details",
+        "location": {
+          "startingColumn": 52,
+          "startingLine": 104
+        }
+      },
+      {
+        "comment": "",
+        "key": "Location & Type",
+        "location": {
+          "startingColumn": 52,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "Links (Optional)",
+        "location": {
+          "startingColumn": 52,
+          "startingLine": 123
+        }
+      },
+      {
+        "comment": "",
+        "key": "Accessibility",
+        "location": {
+          "startingColumn": 52,
+          "startingLine": 136
+        }
+      },
+      {
+        "comment": "",
+        "key": "Title",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 105
+        }
+      },
+      {
+        "comment": "",
+        "key": "Description",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 106
+        }
+      },
+      {
+        "comment": "",
+        "key": "Date",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 109
+        }
+      },
+      {
+        "comment": "",
+        "key": "Category",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 111
+        }
+      },
+      {
+        "comment": "",
+        "key": "Virtual Event",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 119
+        }
+      },
+      {
+        "comment": "",
+        "key": "Location",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 120
+        }
+      },
+      {
+        "comment": "",
+        "key": "Registration URL",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 124
+        }
+      },
+      {
+        "comment": "",
+        "key": "Event URL",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 129
+        }
+      },
+      {
+        "comment": "",
+        "key": "Accessibility Notes",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 137
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 144
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 147
+        }
+      }
+    ]
+  },
+  "version": 1
+}

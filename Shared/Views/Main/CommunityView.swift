@@ -120,7 +120,11 @@ struct CommunityView: View {
                                     )
                                 }
                             }
-                            .listStyle(.insetGrouped)
+                                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
                             #endif
                         }
                         .appListBackground()
@@ -223,7 +227,7 @@ struct PostDetailView: View {
                     VStack(alignment: .trailing, spacing: 4) {
                         Text(post.datePosted, style: .date)
                             .font(.caption)
-                            .foregroundStyle(.tertiaryText)
+                            .foregroundStyle(Color.tertiaryText)
                         
                         Label(post.author, systemImage: "person.circle.fill")
                             .emphasizedCaption()
@@ -266,7 +270,11 @@ struct PostDetailView: View {
             }
         }
         #if os(iOS)
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         #else
         .listStyle(.inset)
         #endif

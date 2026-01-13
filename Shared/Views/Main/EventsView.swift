@@ -121,7 +121,11 @@ struct EventsView: View {
                                     )
                                 }
                             }
-                            .listStyle(.insetGrouped)
+                                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
                             #endif
                         }
                     }
@@ -169,7 +173,7 @@ struct EventRow: View {
                     .fontWeight(.bold)
                 Text(monthAbbrev)
                     .font(.caption)
-                    .foregroundStyle(.secondaryText)
+                    .foregroundStyle(Color.secondaryText)
             }
             .frame(width: 50)
             .padding(.vertical, LayoutConstants.spacingS)
@@ -188,13 +192,13 @@ struct EventRow: View {
                 
                 Text(event.description)
                     .font(.subheadline)
-                    .foregroundStyle(.secondaryText)
+                    .foregroundStyle(Color.secondaryText)
                     .lineLimit(2)
                 
                 HStack {
                     Label(locationText, systemImage: locationIcon)
                         .font(.caption)
-                        .foregroundStyle(.secondaryText)
+                        .foregroundStyle(Color.secondaryText)
                     
                     if event.accessibilityNotes != nil {
                         HStack(spacing: 4) {
@@ -291,7 +295,11 @@ struct EventDetailView: View {
             }
         }
         #if os(iOS)
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         #else
         .listStyle(.inset)
         #endif

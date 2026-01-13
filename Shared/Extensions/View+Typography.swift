@@ -90,68 +90,8 @@ struct PillButton: View {
     }
 }
 
-// MARK: - Enhanced Search Bar with iMessage Style
-struct EnhancedSearchBar: View {
-    @Binding var text: String
-    let placeholder: String
-    
-    @FocusState private var isFocused: Bool
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    
-    init(text: Binding<String>, placeholder: String = String(localized: "Search...")) {
-        self._text = text
-        self.placeholder = placeholder
-    }
-    
-    var body: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "magnifyingglass")
-                .font(.system(size: 16, weight: .medium))
-                .foregroundStyle(.secondary)
-            
-            TextField(placeholder, text: $text)
-                .textFieldStyle(.plain)
-                .font(.system(size: 17))
-                .focused($isFocused)
-                .accessibilityLabel(placeholder)
-                .onChange(of: text) { oldValue, newValue in
-                    if !newValue.isEmpty {
-                        AppLogger.tap("Search Field", context: "Text entered: '\(newValue)'")
-                    }
-                }
-            
-            if !text.isEmpty {
-                Button(action: {
-                    HapticManager.light()
-                    text = ""
-                    isFocused = false
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.system(size: 16))
-                        .foregroundStyle(.secondary)
-                }
-                .accessibilityLabel(String(localized: "Clear search"))
-                .transition(.scale.combined(with: .opacity))
-            }
-        }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
-        .background(
-            Capsule()
-                .fill(.ultraThinMaterial)
-                .background(
-                    Capsule()
-                        .fill(Color.secondary.opacity(0.1))
-                )
-        )
-        .overlay(
-            Capsule()
-                .stroke(isFocused ? AnyShapeStyle(.tint.opacity(0.3)) : AnyShapeStyle(Color.clear), lineWidth: 1.5)
-        )
-        .animation(reduceMotion ? nil : .spring(response: 0.2, dampingFraction: 0.7), value: isFocused)
-        .animation(reduceMotion ? nil : .spring(response: 0.2, dampingFraction: 0.7), value: text.isEmpty)
-    }
-}
+// MARK: - Enhanced Search Bar
+// Note: EnhancedSearchBar is defined in Views/Components/EnhancedSearchBar.swift
 
 // MARK: - Typography System
 enum AppTypography {
@@ -195,22 +135,22 @@ struct TypographyModifier: ViewModifier {
 extension Text {
     /// Applies primary text styling
     func primaryTextStyle() -> Text {
-        self.foregroundStyle(.primaryText)
+        self.foregroundStyle(Color.primaryText)
     }
     
     /// Applies secondary text styling
     func secondaryTextStyle() -> Text {
-        self.foregroundStyle(.secondaryText)
+        self.foregroundStyle(Color.secondaryText)
     }
     
     /// Applies section header styling
     func sectionHeaderStyle() -> Text {
-        self.font(.title3).fontWeight(.bold).foregroundStyle(.primaryText)
+        self.font(.title3).fontWeight(.bold).foregroundStyle(Color.primaryText)
     }
     
     /// Applies body text with line spacing
     func bodyTextStyle() -> some View {
-        self.font(.body).foregroundStyle(.secondaryText).lineSpacing(LayoutConstants.lineSpacing)
+        self.font(.body).foregroundStyle(Color.secondaryText).lineSpacing(4)
     }
 
     // Typography System Helpers
@@ -238,17 +178,13 @@ extension Text {
         self.modifier(TypographyModifier(font: AppTypography.body, color: .primaryText))
     }
     
-    func secondaryBody() -> some View {
-        self.modifier(TypographyModifier(font: AppTypography.bodySmall, color: .secondaryText))
-    }
+    // Note: secondaryBody() for View is defined in UIExtensions.swift
     
     func captionText() -> some View {
         self.modifier(TypographyModifier(font: AppTypography.caption, color: .tertiaryText))
     }
     
-    func emphasizedCaption() -> some View {
-        self.modifier(TypographyModifier(font: AppTypography.caption.weight(.semibold), color: .secondaryText))
-    }
+    // Note: emphasizedCaption() is defined in Text extension above (line 187)
     
     func labelText() -> some View {
         self.modifier(TypographyModifier(font: AppTypography.label, color: .primaryText, weight: .medium))
@@ -282,17 +218,9 @@ extension View {
         self.modifier(TypographyModifier(font: AppTypography.body, color: .primaryText))
     }
     
-    func secondaryBody() -> some View {
-        self.modifier(TypographyModifier(font: AppTypography.bodySmall, color: .secondaryText))
-    }
-    
-    func captionText() -> some View {
-        self.modifier(TypographyModifier(font: AppTypography.caption, color: .tertiaryText))
-    }
-    
-    func emphasizedCaption() -> some View {
-        self.modifier(TypographyModifier(font: AppTypography.caption.weight(.semibold), color: .secondaryText))
-    }
+    // Note: secondaryBody() is defined in UIExtensions.swift
+    // Note: captionText() is defined in Text extension above (line 183)
+    // Note: emphasizedCaption() is defined in Text extension above
     
     func labelText() -> some View {
         self.modifier(TypographyModifier(font: AppTypography.label, color: .primaryText, weight: .medium))
@@ -310,7 +238,7 @@ extension View {
     
     /// Applies standard section spacing
     func sectionSpacing() -> some View {
-        self.padding(.bottom, LayoutConstants.sectionSpacing)
+        self.padding(.bottom, LayoutConstants.sectionGap)
     }
     
     /// Applies button styling with standard height and corner radius

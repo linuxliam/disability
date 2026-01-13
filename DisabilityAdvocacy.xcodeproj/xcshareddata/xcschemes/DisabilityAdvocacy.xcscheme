@@ -35,7 +35,7 @@
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "469485C42F0736740002B78E"
+               BlueprintIdentifier = "A787BB4B9E5E4A4092088898"
                BuildableName = "DisabilityAdvocacyTests.xctest"
                BlueprintName = "DisabilityAdvocacyTests"
                ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
@@ -47,7 +47,7 @@
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "469485EF2F0736AC0002B78E"
+               BlueprintIdentifier = "6D40DB7C8AAC486BA4747B5E"
                BuildableName = "DisabilityAdvocacyUITests.xctest"
                BlueprintName = "DisabilityAdvocacyUITests"
                ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
@@ -70,12 +70,21 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
+            BlueprintIdentifier = "53A5232FEB1E4BE9BFAD6EFA"
+            BuildableName = "DisabilityAdvocacy-iOS.app"
+            BlueprintName = "DisabilityAdvocacy-iOS"
+            ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
             BlueprintIdentifier = "945FEF4C421343D4931F4152"
             BuildableName = "DisabilityAdvocacy.app"
             BlueprintName = "DisabilityAdvocacy"
             ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -93,6 +102,15 @@
             ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "945FEF4C421343D4931F4152"
+            BuildableName = "DisabilityAdvocacy.app"
+            BlueprintName = "DisabilityAdvocacy"
+            ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

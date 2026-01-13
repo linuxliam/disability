@@ -1,0 +1,24 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AppState.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Removed from favorites",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 47
+        }
+      },
+      {
+        "comment": "",
+        "key": "Added to favorites",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 50
+        }
+      }
+    ]
+  },
+  "version": 1
+}

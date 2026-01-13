@@ -12,7 +12,7 @@
 
 import XCTest
 import SwiftUI
-@testable import DisabilityAdvocacy
+@testable import DisabilityAdvocacy_iOS
 
 final class ImageExtensionsTests: XCTestCase {
     

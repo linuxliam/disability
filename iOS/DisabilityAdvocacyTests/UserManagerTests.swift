@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import DisabilityAdvocacy
+@testable import DisabilityAdvocacy_iOS
 
 @MainActor
 final class UserManagerTests: XCTestCase {
@@ -178,7 +178,7 @@ final class UserManagerTests: XCTestCase {
             location: "Test City"
         )
         _ = await manager.saveUser(testUser)
-        manager.deleteUser()
+        await manager.deleteUser()
         
         // When
         let result = await manager.loadUser()

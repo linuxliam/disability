@@ -107,7 +107,11 @@ struct AdminDashboardView: View {
                     Text(String(localized: "Export local changes back to the project source files."))
                 }
             }
-            .listStyle(.insetGrouped)
+                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
             #endif
         }
         .appListBackground()

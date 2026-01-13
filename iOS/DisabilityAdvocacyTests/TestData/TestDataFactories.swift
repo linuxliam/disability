@@ -6,7 +6,7 @@
 //
 
 import Foundation
-@testable import DisabilityAdvocacy
+@testable import DisabilityAdvocacy_iOS
 
 /// Factory for creating test Resource objects
 struct ResourceFactory {

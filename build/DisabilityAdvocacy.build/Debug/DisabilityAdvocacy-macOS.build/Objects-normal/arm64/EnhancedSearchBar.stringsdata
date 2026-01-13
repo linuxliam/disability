@@ -1,0 +1,16 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/EnhancedSearchBar.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Clear",
+        "location": {
+          "startingColumn": 55,
+          "startingLine": 22
+        }
+      }
+    ]
+  },
+  "version": 1
+}

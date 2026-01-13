@@ -1,0 +1,96 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/macOS/Extensions/ContextualMenuExtensions.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Remove from Favorites",
+        "location": {
+          "startingColumn": 72,
+          "startingLine": 28
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add to Favorites",
+        "location": {
+          "startingColumn": 98,
+          "startingLine": 28
+        }
+      },
+      {
+        "comment": "",
+        "key": "Open in Browser",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 39
+        }
+      },
+      {
+        "comment": "",
+        "key": "Copy Link",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 47
+        }
+      },
+      {
+        "comment": "",
+        "key": "Share",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add to Calendar",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 67
+        }
+      },
+      {
+        "comment": "",
+        "key": "Open Registration",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 76
+        }
+      },
+      {
+        "comment": "",
+        "key": "Copy Link",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 84
+        }
+      },
+      {
+        "comment": "",
+        "key": "Share",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 91
+        }
+      },
+      {
+        "comment": "",
+        "key": "Copy Text",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 107
+        }
+      },
+      {
+        "comment": "",
+        "key": "Share",
+        "location": {
+          "startingColumn": 23,
+          "startingLine": 113
+        }
+      }
+    ]
+  },
+  "version": 1
+}

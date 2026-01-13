@@ -1,5 +1,6 @@
 import Foundation
 import Observation
+import SwiftUI
 
 @MainActor
 @Observable
@@ -7,6 +8,20 @@ class AppState {
     var selectedTab: AppTab = .home
     var favoriteResources: Set<UUID> = AppState.loadFavorites()
     var feedback = FeedbackViewModel()
+    
+    // Navigation paths
+    var homePath = NavigationPath()
+    var libraryPath = NavigationPath()
+    var connectPath = NavigationPath()
+    var settingsPath = NavigationPath()
+    var newsPath = NavigationPath()
+    var adminPath = NavigationPath()
+    
+    // Sheet presentation
+    var showProfile = false
+    var showAccessibilitySettings = false
+    var showSearch = false
+    var showKeyboardShortcuts = false
     
     static private let favoritesKey = "favoriteResourceIds"
     

@@ -22,7 +22,7 @@ struct ProfileSection<Content: View>: View {
                 Text(title)
                     .font(.title3)
                     .fontWeight(.bold)
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(Color.primaryText)
             }
             
             content
@@ -35,7 +35,7 @@ struct ProfileSection<Content: View>: View {
             RoundedRectangle(cornerRadius: LayoutConstants.cardCornerRadius)
                 .stroke(Color("borderColor").opacity(0.2), lineWidth: 0.5)
         )
-        .shadow(color: Color.black.opacity(LayoutConstants.cardShadowOpacity), radius: LayoutConstants.cardShadowRadius, x: 0, y: LayoutConstants.cardShadowRadius / 2)
+        .shadow(color: Color.black.opacity(0.1), radius: LayoutConstants.cardShadowRadius, x: 0, y: LayoutConstants.cardShadowRadius / 2)
     }
 }
 
@@ -49,12 +49,12 @@ struct ProfileInfoRow: View {
         HStack {
             Text(label)
                 .font(.subheadline)
-                .foregroundStyle(.secondaryText)
+                .foregroundStyle(Color.secondaryText)
             Spacer()
             Text(value)
                 .font(.subheadline)
                 .fontWeight(.medium)
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(Color.primaryText)
         }
     }
 }
@@ -73,7 +73,7 @@ struct ProfileTextField: View {
             Text(title)
                 .font(.subheadline)
                 .fontWeight(.medium)
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(Color.primaryText)
             
             TextField("Enter \(title.lowercased())", text: $text)
                 #if os(iOS)
@@ -176,7 +176,7 @@ struct AccessibilityNeedsEditor: View {
             // Quick add buttons
             Text(String(localized: "Common Needs"))
                 .font(.caption)
-                .foregroundStyle(.secondaryText)
+                .foregroundStyle(Color.secondaryText)
             
             LazyVGrid(columns: [GridItem(.adaptive(minimum: 120), spacing: 8)], alignment: .leading, spacing: 8) {
                 ForEach(commonNeeds, id: \.self) { need in
@@ -189,12 +189,12 @@ struct AccessibilityNeedsEditor: View {
                             .font(.caption)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
-                            .background(needs.contains(need) ? Color.accentGreen.opacity(0.2) : Color.groupedBackground)
-                            .foregroundStyle(needs.contains(need) ? .accentGreen : .primaryText)
+                            .background(needs.contains(need) ? Color("accentGreen").opacity(0.2) : Color.groupedBackground)
+                            .foregroundStyle(needs.contains(need) ? Color("accentGreen") : .primaryText)
                             .cornerRadius(LayoutConstants.buttonCornerRadius)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
-                                    .stroke(needs.contains(need) ? Color.accentGreen : Color("borderColor").opacity(0.2), lineWidth: 1)
+                                    .stroke(needs.contains(need) ? Color("accentGreen") : Color("borderColor").opacity(0.2), lineWidth: 1)
                             )
                     }
                     .accessibilityLabel(needs.contains(need) ? "\(need), selected" : "\(need), not selected")
@@ -237,7 +237,7 @@ struct AccessibilityNeedsEditor: View {
                     ForEach(needs, id: \.self) { need in
                         HStack {
                             Image(systemName: "checkmark.circle.fill")
-                                .foregroundStyle(.accentGreen)
+                                .foregroundStyle(Color("accentGreen"))
                             Text(need)
                                 .font(.subheadline)
                             Spacer()
@@ -247,11 +247,11 @@ struct AccessibilityNeedsEditor: View {
                                 Image(systemName: "xmark.circle.fill")
                                     .accessibilityLabel("Remove \(need)")
                                     .accessibilityHint("Double tap to remove this accessibility need")
-                                    .foregroundStyle(.secondaryText)
+                                    .foregroundStyle(Color.secondaryText)
                             }
                         }
                         .padding(LayoutConstants.spacingM)
-                        .background(Color.accentGreen.opacity(0.1))
+                        .background(Color("accentGreen").opacity(0.1))
                         .cornerRadius(LayoutConstants.buttonCornerRadius)
                     }
                 }

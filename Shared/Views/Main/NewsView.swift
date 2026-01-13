@@ -50,7 +50,11 @@ struct NewsView: View {
                         .buttonStyle(.plain)
                         .contentShape(Rectangle())
                     }
-                    .listStyle(.insetGrouped)
+                            #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
                     .scrollDismissesKeyboard(.interactively)
                     #endif
                 }
@@ -163,7 +167,11 @@ struct ArticleDetailView: View {
             }
         }
         #if os(iOS)
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         #else
         .listStyle(.inset)
         #endif

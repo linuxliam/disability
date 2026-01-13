@@ -1,0 +1,56 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/AdvocacyToolsView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Advocacy Tools",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 109
+        }
+      },
+      {
+        "comment": "",
+        "key": "Available Tools",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 59
+        }
+      },
+      {
+        "comment": "",
+        "key": "Advocacy Tool",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 139
+        }
+      },
+      {
+        "comment": "",
+        "key": "About This Tool",
+        "location": {
+          "startingColumn": 40,
+          "startingLine": 154
+        }
+      },
+      {
+        "comment": "",
+        "key": "Coming Soon",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 163
+        }
+      },
+      {
+        "comment": "",
+        "key": "We're working on implementing %@. This feature will be available in a future update.",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 166
+        }
+      }
+    ]
+  },
+  "version": 1
+}

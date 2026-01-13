@@ -1,0 +1,192 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/ResourcesView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Resources",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 20
+        }
+      },
+      {
+        "comment": "",
+        "key": "Resources",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 49
+        }
+      },
+      {
+        "comment": "",
+        "key": "Clear",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 53
+        }
+      },
+      {
+        "comment": "",
+        "key": "Try selecting a different category or clearing the filter.",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 86
+        }
+      },
+      {
+        "comment": "",
+        "key": "Try adjusting your search terms.",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 88
+        }
+      },
+      {
+        "comment": "",
+        "key": "No resources available at this time.",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 90
+        }
+      },
+      {
+        "comment": "",
+        "key": "Category",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 96
+        }
+      },
+      {
+        "comment": "",
+        "key": "All Categories",
+        "location": {
+          "startingColumn": 36,
+          "startingLine": 97
+        }
+      },
+      {
+        "comment": "",
+        "key": "Unable to Load Resources",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 140
+        }
+      },
+      {
+        "comment": "",
+        "key": "No resources found",
+        "location": {
+          "startingColumn": 38,
+          "startingLine": 180
+        }
+      },
+      {
+        "comment": "",
+        "key": "Clear all filters",
+        "location": {
+          "startingColumn": 122,
+          "startingLine": 182
+        }
+      },
+      {
+        "comment": "",
+        "key": "All Resources",
+        "location": {
+          "startingColumn": 127,
+          "startingLine": 195
+        }
+      },
+      {
+        "comment": "",
+        "key": "%@, %@",
+        "location": {
+          "startingColumn": 29,
+          "startingLine": 308
+        }
+      },
+      {
+        "comment": "",
+        "key": "Favorited",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 299
+        }
+      },
+      {
+        "comment": "",
+        "key": "Resource Details",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 385
+        }
+      },
+      {
+        "comment": "",
+        "key": "About",
+        "location": {
+          "startingColumn": 21,
+          "startingLine": 346
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tags",
+        "location": {
+          "startingColumn": 25,
+          "startingLine": 354
+        }
+      },
+      {
+        "comment": "",
+        "key": "Visit Website",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 395
+        }
+      },
+      {
+        "comment": "",
+        "key": "Share",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 406
+        }
+      },
+      {
+        "comment": "",
+        "key": "URL copied",
+        "location": {
+          "startingColumn": 69,
+          "startingLine": 418
+        }
+      },
+      {
+        "comment": "",
+        "key": "Copy",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 420
+        }
+      },
+      {
+        "comment": "",
+        "key": "Search resources...",
+        "location": {
+          "startingColumn": 71,
+          "startingLine": 469
+        }
+      },
+      {
+        "comment": "",
+        "key": "Double tap to clear the search text",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 471
+        }
+      }
+    ]
+  },
+  "version": 1
+}

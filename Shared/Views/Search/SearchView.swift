@@ -257,7 +257,11 @@ struct SearchView: View {
                     }
                 }
             }
-            .listStyle(.insetGrouped)
+                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
             #endif
         }
         .onChange(of: viewModel.searchText) { oldValue, newValue in
@@ -373,7 +377,7 @@ struct QuickSearchCard: View {
                     
                     Image(systemName: "chevron.right")
                         .font(.caption2.weight(.bold))
-                        .foregroundStyle(.tertiaryText)
+                        .foregroundStyle(Color.tertiaryText)
                 }
             }
         }

@@ -98,7 +98,11 @@ struct AdvocacyToolsView: View {
                     )
                 }
             }
-            .listStyle(.insetGrouped)
+                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
             #endif
         }
         .appListBackground()
@@ -169,7 +173,11 @@ struct ToolDetailView: View {
             }
         }
         #if os(iOS)
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         #else
         .listStyle(.inset)
         #endif

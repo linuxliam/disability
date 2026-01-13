@@ -1,0 +1,120 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/ResourceManagementViews.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Manage Resources",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 54
+        }
+      },
+      {
+        "comment": "",
+        "key": "Resources",
+        "location": {
+          "startingColumn": 28,
+          "startingLine": 37
+        }
+      },
+      {
+        "comment": "",
+        "key": "Add",
+        "location": {
+          "startingColumn": 34,
+          "startingLine": 39
+        }
+      },
+      {
+        "comment": "",
+        "key": "New Resource",
+        "location": {
+          "startingColumn": 62,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "Edit Resource",
+        "location": {
+          "startingColumn": 98,
+          "startingLine": 118
+        }
+      },
+      {
+        "comment": "",
+        "key": "Details",
+        "location": {
+          "startingColumn": 52,
+          "startingLine": 96
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tags",
+        "location": {
+          "startingColumn": 52,
+          "startingLine": 114
+        }
+      },
+      {
+        "comment": "",
+        "key": "Title",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 97
+        }
+      },
+      {
+        "comment": "",
+        "key": "Description",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 98
+        }
+      },
+      {
+        "comment": "",
+        "key": "Category",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 101
+        }
+      },
+      {
+        "comment": "",
+        "key": "URL (Optional)",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 107
+        }
+      },
+      {
+        "comment": "",
+        "key": "Tags (comma separated)",
+        "location": {
+          "startingColumn": 45,
+          "startingLine": 115
+        }
+      },
+      {
+        "comment": "",
+        "key": "Cancel",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 121
+        }
+      },
+      {
+        "comment": "",
+        "key": "Save",
+        "location": {
+          "startingColumn": 42,
+          "startingLine": 124
+        }
+      }
+    ]
+  },
+  "version": 1
+}

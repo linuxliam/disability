@@ -1,0 +1,40 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/SkeletonComponents.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Basic",
+        "location": {
+          "startingColumn": 1,
+          "startingLine": 180
+        }
+      },
+      {
+        "comment": "",
+        "key": "Events",
+        "location": {
+          "startingColumn": 1,
+          "startingLine": 180
+        }
+      },
+      {
+        "comment": "",
+        "key": "Posts",
+        "location": {
+          "startingColumn": 1,
+          "startingLine": 180
+        }
+      },
+      {
+        "comment": "",
+        "key": "Resources",
+        "location": {
+          "startingColumn": 1,
+          "startingLine": 180
+        }
+      }
+    ]
+  },
+  "version": 1
+}

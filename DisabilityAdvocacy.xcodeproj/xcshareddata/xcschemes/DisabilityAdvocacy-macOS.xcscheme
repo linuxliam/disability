@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A0B1C2D3E4F5061728394A5B"
+               BlueprintIdentifier = "F2D4BA4E0CE94DE5BA9D4F9C"
                BuildableName = "DisabilityAdvocacy-macOS.app"
                BlueprintName = "DisabilityAdvocacy-macOS"
                ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
@@ -44,7 +44,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A0B1C2D3E4F5061728394A5B"
+            BlueprintIdentifier = "F2D4BA4E0CE94DE5BA9D4F9C"
             BuildableName = "DisabilityAdvocacy-macOS.app"
             BlueprintName = "DisabilityAdvocacy-macOS"
             ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">
@@ -61,7 +61,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A0B1C2D3E4F5061728394A5B"
+            BlueprintIdentifier = "F2D4BA4E0CE94DE5BA9D4F9C"
             BuildableName = "DisabilityAdvocacy-macOS.app"
             BlueprintName = "DisabilityAdvocacy-macOS"
             ReferencedContainer = "container:DisabilityAdvocacy.xcodeproj">

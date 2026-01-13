@@ -53,7 +53,11 @@ struct KeyboardShortcutsView: View {
             }
         }
         #if os(iOS)
+                #if os(iOS)
         .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
         #else
         .listStyle(.inset)
         #endif
@@ -85,12 +89,12 @@ struct ShortcutRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(item.command)
                     .font(.body)
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(Color.primaryText)
                 
                 if !item.description.isEmpty {
                     Text(item.description)
                         .font(.caption)
-                        .foregroundStyle(.secondaryText)
+                        .foregroundStyle(Color.secondaryText)
                 }
             }
             

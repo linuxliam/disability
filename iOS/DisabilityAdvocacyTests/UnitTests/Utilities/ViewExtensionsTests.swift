@@ -10,7 +10,7 @@
 
 import XCTest
 import SwiftUI
-@testable import DisabilityAdvocacy
+@testable import DisabilityAdvocacy_iOS
 
 final class ViewExtensionsTests: XCTestCase {
     
@@ -18,15 +18,15 @@ final class ViewExtensionsTests: XCTestCase {
     
     func testSectionHeader_Initialization() {
         // Given
-        let title = "Test Section"
+        let title: LocalizedStringKey = "Test Section"
         let icon = "star.fill"
         
         // When
-        let header = SectionHeader(title: title, icon: icon)
+        let header = AppSectionHeader(title: title, systemImage: icon)
         
         // Then
         // Verify it can be created (if we could access properties, we'd check them)
-        XCTAssertNotNil(header, "SectionHeader should be created")
+        XCTAssertNotNil(header, "AppSectionHeader should be created")
     }
     
     // MARK: - PillButton Tests

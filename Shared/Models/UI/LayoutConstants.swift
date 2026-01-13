@@ -22,8 +22,8 @@ enum LayoutConstants {
     static let sectionGap: CGFloat = 20
     
     // Cards
-    static let cardCornerRadius: CGFloat = AppConstants.Layout.cardCornerRadius
-    static let cardPadding: CGFloat = AppConstants.Layout.defaultPadding
+    static let cardCornerRadius: CGFloat = 12
+    static let cardPadding: CGFloat = 16
     static let cardGap: CGFloat = 16
     static let cardShadowRadius: CGFloat = 10
     

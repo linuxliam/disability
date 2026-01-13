@@ -1,0 +1,40 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/SearchResult.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Resource",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 80
+        }
+      },
+      {
+        "comment": "",
+        "key": "Event",
+        "location": {
+          "startingColumn": 47,
+          "startingLine": 81
+        }
+      },
+      {
+        "comment": "",
+        "key": "Post",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 82
+        }
+      },
+      {
+        "comment": "",
+        "key": "Article",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 83
+        }
+      }
+    ]
+  },
+  "version": 1
+}

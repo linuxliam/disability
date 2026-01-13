@@ -1,0 +1,16 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/StatsComponents.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "%lld",
+        "location": {
+          "startingColumn": 22,
+          "startingLine": 40
+        }
+      }
+    ]
+  },
+  "version": 1
+}

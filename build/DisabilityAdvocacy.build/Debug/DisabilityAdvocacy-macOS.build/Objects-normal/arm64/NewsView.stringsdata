@@ -1,0 +1,72 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/NewsView.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "News & Updates",
+        "location": {
+          "startingColumn": 44,
+          "startingLine": 64
+        }
+      },
+      {
+        "comment": "",
+        "key": "Loading news...",
+        "location": {
+          "startingColumn": 56,
+          "startingLine": 17
+        }
+      },
+      {
+        "comment": "",
+        "key": "No articles available",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 21
+        }
+      },
+      {
+        "comment": "",
+        "key": "Check back soon for the latest news and updates.",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 22
+        }
+      },
+      {
+        "comment": "",
+        "key": "Source: %@",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 115
+        }
+      },
+      {
+        "comment": "",
+        "key": "Article",
+        "location": {
+          "startingColumn": 26,
+          "startingLine": 178
+        }
+      },
+      {
+        "comment": "",
+        "key": "Summary",
+        "location": {
+          "startingColumn": 40,
+          "startingLine": 151
+        }
+      },
+      {
+        "comment": "",
+        "key": "Share Article",
+        "location": {
+          "startingColumn": 27,
+          "startingLine": 157
+        }
+      }
+    ]
+  },
+  "version": 1
+}

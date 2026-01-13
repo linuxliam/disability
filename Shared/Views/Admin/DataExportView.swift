@@ -12,7 +12,7 @@ struct DataExportView: View {
         VStack(alignment: .leading, spacing: 16) {
             Text(String(localized: "Export local data files to use as bundled resources in the project."))
                 .font(.subheadline)
-                .foregroundStyle(.secondaryText)
+                .foregroundStyle(Color.secondaryText)
             
             HStack(spacing: 12) {
                 exportButton(filename: "Resources.json", icon: "book.fill", color: .triadPrimary)

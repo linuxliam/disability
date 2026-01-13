@@ -94,7 +94,11 @@ struct LibraryView: View {
                         .tint(.triadSecondary)
                 }
             }
-            .listStyle(.insetGrouped)
+                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
             #endif
         }
         .appListBackground()
@@ -174,7 +178,11 @@ struct ConnectView: View {
                         .tint(.triadPrimary)
                 }
             }
-            .listStyle(.insetGrouped)
+                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
             #endif
         }
         .appListBackground()
@@ -255,7 +263,7 @@ struct SettingsView: View {
                                                 
                                                 Text(String(localized: "Manage system notification settings"))
                                                     .font(.caption)
-                                                    .foregroundStyle(.secondaryText)
+                                                    .foregroundStyle(Color.secondaryText)
                                                     .lineLimit(2)
                                             }
                                             
@@ -265,7 +273,7 @@ struct SettingsView: View {
                                                 Spacer()
                                                 Image(systemName: "arrow.up.forward.app")
                                                     .font(.caption2.weight(.bold))
-                                                    .foregroundStyle(.tertiaryText)
+                                                    .foregroundStyle(Color.tertiaryText)
                                             }
                                         }
                                     }
@@ -323,7 +331,7 @@ struct SettingsView: View {
                                                 
                                                 Text(String(localized: "External resources and governmental support"))
                                                     .font(.caption)
-                                                    .foregroundStyle(.secondaryText)
+                                                    .foregroundStyle(Color.secondaryText)
                                                     .lineLimit(2)
                                             }
                                             
@@ -333,7 +341,7 @@ struct SettingsView: View {
                                                 Spacer()
                                                 Image(systemName: "safari.fill")
                                                     .font(.caption2.weight(.bold))
-                                                    .foregroundStyle(.tertiaryText)
+                                                    .foregroundStyle(Color.tertiaryText)
                                             }
                                         }
                                     }
@@ -400,7 +408,11 @@ struct SettingsView: View {
                         .tint(.triadPrimary)
                 }
             }
-            .listStyle(.insetGrouped)
+                    #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
             #endif
         }
         .appListBackground()

@@ -1,0 +1,16 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/ProfileToolbarButton.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Profile",
+        "location": {
+          "startingColumn": 47,
+          "startingLine": 9
+        }
+      }
+    ]
+  },
+  "version": 1
+}

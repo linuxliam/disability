@@ -35,7 +35,7 @@ struct LoadingView: View {
             
             Text(message)
                 .font(.body)
-                .foregroundStyle(.secondaryText)
+                .foregroundStyle(Color.secondaryText)
                 .opacity(opacity)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -74,7 +74,7 @@ struct LoadingOverlay: View {
                 
                 Text(String(localized: "Loading..."))
                     .font(.subheadline)
-                    .foregroundStyle(.secondaryText)
+                    .foregroundStyle(Color.secondaryText)
             }
             .padding(LayoutConstants.paddingXL)
             .background(Color.cardBackground)

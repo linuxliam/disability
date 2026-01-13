@@ -33,9 +33,9 @@ struct SkeletonView: View {
                     .scaleEffect(x: 2)
                     .offset(x: phase * geometry.size.width)
                     .onAppear {
-                        withAnimation(Animation.linear(duration: 1.5).repeatForever(autoreverses: false)) {
-                            phase = 1
-                        }
+                    withAnimation(Animation.linear(duration: AppConstants.Skeleton.shimmerDuration).repeatForever(autoreverses: false)) {
+                        phase = 1
+                    }
                     }
                 }
             }
@@ -56,68 +56,32 @@ extension View {
 
 struct SkeletonRow: View {
     var body: some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(alignment: .top, spacing: AppConstants.Skeleton.rowSpacing) {
             SkeletonView()
-                .frame(width: 50, height: 50)
-                .cornerRadius(10)
+                .frame(width: AppConstants.Skeleton.avatarSize, height: AppConstants.Skeleton.avatarSize)
+                .cornerRadius(AppConstants.Skeleton.cornerRadius)
             
             VStack(alignment: .leading, spacing: 8) {
                 SkeletonView()
-                    .frame(height: 18)
-                    .frame(width: 200)
+                    .frame(height: AppConstants.Skeleton.titleHeight)
+                    .frame(width: AppConstants.Skeleton.titleWidth)
                 
                 SkeletonView()
-                    .frame(height: 14)
-                    .frame(width: 150)
+                    .frame(height: AppConstants.Skeleton.subtitleHeight)
+                    .frame(width: AppConstants.Skeleton.subtitleWidth)
                 
                 SkeletonView()
-                    .frame(height: 14)
-                    .frame(width: 100)
+                    .frame(height: AppConstants.Skeleton.subtitleHeight)
+                    .frame(width: AppConstants.Skeleton.shortTextWidth)
             }
             Spacer()
         }
-        .padding(.vertical, 8)
+        .padding(.vertical, AppConstants.Skeleton.verticalPadding)
     }
 }
 
 // MARK: - Event Skeleton Row
-
-struct EventSkeletonRow: View {
-    var body: some View {
-        HStack(alignment: .top, spacing: LayoutConstants.spacingL) {
-            // Date Badge placeholder
-            SkeletonView()
-                .frame(width: 50, height: 60)
-                .cornerRadius(LayoutConstants.buttonCornerRadius)
-            
-            VStack(alignment: .leading, spacing: LayoutConstants.paddingS) {
-                // Title placeholder
-                SkeletonView()
-                    .frame(height: 22)
-                    .frame(maxWidth: 200)
-                
-                // Location placeholder
-                HStack(spacing: LayoutConstants.spacingS) {
-                    SkeletonView()
-                        .frame(width: 14, height: 14)
-                        .mask(Circle())
-                    SkeletonView()
-                        .frame(width: 120, height: 14)
-                }
-                
-                // Accessibility info placeholder
-                SkeletonView()
-                    .frame(width: 140, height: 12)
-            }
-            
-            Spacer()
-        }
-        .padding()
-        .background(Color.cardBackground)
-        .cornerRadius(LayoutConstants.cardCornerRadius)
-        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 2)
-    }
-}
+// Note: EventSkeletonRow is defined in Views/Components/EventSkeletonRow.swift
 
 // MARK: - Post Skeleton Row
 
@@ -232,7 +196,11 @@ struct ResourceSkeletonRow: View {
         }
     }
     #if os(iOS)
-    .listStyle(.insetGrouped)
+            #if os(iOS)
+        .listStyle(.insetGrouped)
+        #else
+        .listStyle(.sidebar)
+        #endif
     #else
     .listStyle(.inset)
     #endif

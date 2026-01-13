@@ -1,0 +1,88 @@
+{
+  "source": "/Users/liammatthews/Desktop/APP/DA/Shared/Models/Navigation/NavigationModels.swift",
+  "tables": {
+    "Localizable": [
+      {
+        "comment": "",
+        "key": "Home",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 27
+        }
+      },
+      {
+        "comment": "",
+        "key": "News & Updates",
+        "location": {
+          "startingColumn": 46,
+          "startingLine": 28
+        }
+      },
+      {
+        "comment": "",
+        "key": "Resources",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 29
+        }
+      },
+      {
+        "comment": "",
+        "key": "Advocacy Tools",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 30
+        }
+      },
+      {
+        "comment": "",
+        "key": "Community",
+        "location": {
+          "startingColumn": 51,
+          "startingLine": 31
+        }
+      },
+      {
+        "comment": "",
+        "key": "Events",
+        "location": {
+          "startingColumn": 48,
+          "startingLine": 32
+        }
+      },
+      {
+        "comment": "",
+        "key": "Library",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 33
+        }
+      },
+      {
+        "comment": "",
+        "key": "Connect",
+        "location": {
+          "startingColumn": 49,
+          "startingLine": 34
+        }
+      },
+      {
+        "comment": "",
+        "key": "Settings",
+        "location": {
+          "startingColumn": 50,
+          "startingLine": 35
+        }
+      },
+      {
+        "comment": "",
+        "key": "Data Management",
+        "location": {
+          "startingColumn": 56,
+          "startingLine": 36
+        }
+      }
+    ]
+  },
+  "version": 1
+}
