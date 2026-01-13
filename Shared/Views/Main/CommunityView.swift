@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct CommunityView: View {
     @Environment(AppState.self) var appState
     @State private var viewModel = CommunityViewModel()
