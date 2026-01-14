@@ -17,8 +17,9 @@ class LetterTemplateViewModel {
     var generatedLetter: String = ""
     var isLoading: Bool = false
     
-    init() {
-        loadTemplates()
+    nonisolated init() {
+        // Templates will be loaded on MainActor when loadTemplates() is called
+        // This allows initialization from non-isolated contexts
     }
     
     func loadTemplates() {

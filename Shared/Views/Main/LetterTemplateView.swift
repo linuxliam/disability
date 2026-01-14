@@ -25,6 +25,11 @@ struct LetterTemplateView: View {
         } else {
             LetterTemplateListView(viewModel: viewModel, selectedCategory: $selectedCategory, filteredTemplates: filteredTemplates)
         }
+        .onAppear {
+            if viewModel.templates.isEmpty {
+                viewModel.loadTemplates()
+            }
+        }
     }
 }
 

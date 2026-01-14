@@ -10,8 +10,8 @@ import SwiftUI
 @MainActor
 struct SearchView: View {
     @State private var viewModel: SearchViewModel
-    @State private var communityViewModel = CommunityViewModel()
-    @State private var newsViewModel = NewsViewModel()
+    @State private var communityViewModel: CommunityViewModel
+    @State private var newsViewModel: NewsViewModel
     @Environment(AppState.self) var appState: AppState
     
     init() {

@@ -18,6 +18,11 @@ class CommunityViewModel: BaseViewModelProtocol {
     
     private var loadTask: Task<Void, Never>?
     
+    nonisolated init() {
+        // Empty initializer - all properties are initialized with default values
+        // Actual initialization happens on MainActor when properties are accessed
+    }
+    
     func loadPosts() {
         loadTask?.cancel()
         
