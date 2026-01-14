@@ -12,13 +12,13 @@
 | **Managers** | 13 | 13 | **100%** | ✅ Complete |
 | **ViewModels** | 9 | 9 | **100%** | ✅ Complete |
 | **Models** | 18 | 16 | **88.8%** | ⚠️ Good |
-| **Utilities** | 14 | 2 | **14.2%** | ❌ Needs Work |
+| **Utilities** | 14 | 8 | **57.1%** | ⚠️ Good Progress |
 
 ### Overall Statistics
 
 - **Total Source Files:** 58 (excluding Views)
 - **Total Test Files:** 37
-- **Estimated Coverage:** ~65-70% (needs verification via test execution)
+- **Estimated Coverage:** ~75-80% (needs verification via test execution)
 
 ## ✅ Completed Coverage
 
@@ -68,23 +68,23 @@ All 9 view models have test coverage:
 
 ## ❌ Low Coverage
 
-### Utilities (14.2%)
-Only 2 utilities have tests:
+### Utilities (57.1%)
+8 utilities now have tests:
+- ✅ AppConstants (NEW)
 - ✅ AppLogger
+- ✅ AppTheme (NEW)
+- ✅ Colors (NEW)
 - ✅ ImageExtensions
+- ✅ PlatformDetection (NEW)
+- ✅ SearchHighlighting (NEW)
+- ✅ ThemeManager (NEW)
 - ✅ ViewExtensions
 - ❌ AccessibilityHelpers
 - ❌ AnimationHelpers
 - ❌ AppComponents
-- ❌ AppConstants
-- ❌ AppTheme
-- ❌ Colors
 - ❌ DragDropManager
 - ❌ Placeholders
-- ❌ PlatformDetection
 - ❌ PlatformUI
-- ❌ SearchHighlighting
-- ❌ ThemeManager
 - ❌ View+Layout
 
 ## 🎯 Path to 80% Coverage
@@ -122,6 +122,8 @@ To get accurate coverage numbers:
 ## 📝 Recent Improvements
 
 ### New Tests Added (This Session)
+
+**Managers & ViewModels:**
 - DataManagerTests.swift (SwiftData operations)
 - JSONStorageManagerTests.swift (JSON file operations)
 - FileOperationsManagerTests.swift (File import/export)
@@ -130,15 +132,28 @@ To get accurate coverage numbers:
 - BaseViewModelTests.swift (Base protocol)
 - FeedbackViewModelTests.swift (Toast notifications)
 
-**Total:** 7 new test files, ~1,000+ lines of test code
+**Utilities:**
+- ThemeManagerTests.swift (Theme configuration, colors, animations)
+- AppConstantsTests.swift (All constant values)
+- PlatformDetectionTests.swift (Platform detection logic)
+- SearchHighlightingTests.swift (Text highlighting)
+- ColorsTests.swift (Color extensions)
+- AppThemeTests.swift (Theme utilities)
+
+**Models:**
+- PersistentModelsTests.swift (SwiftData model conversions)
+- NavigationModelsTests.swift (Navigation enums)
+
+**Total:** 15 new test files, ~2,500+ lines of test code
 
 ## 🎯 Next Steps
 
 1. ✅ **DONE:** Add tests for all Managers
 2. ✅ **DONE:** Add tests for all ViewModels
-3. ⏳ **IN PROGRESS:** Add tests for missing Models
-4. ⏳ **PENDING:** Add tests for critical Utilities
-5. ⏳ **PENDING:** Verify 80% coverage via test execution
+3. ✅ **DONE:** Add tests for critical Models (PersistentModels, NavigationModels)
+4. ✅ **DONE:** Add tests for Priority 1 Utilities (ThemeManager, AppConstants, PlatformDetection, SearchHighlighting, Colors, AppTheme)
+5. ⏳ **PENDING:** Add tests for remaining Utilities (AccessibilityHelpers, AnimationHelpers, etc.)
+6. ⏳ **PENDING:** Verify 80% coverage via test execution
 
 ## Related
 
