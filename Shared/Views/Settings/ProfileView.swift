@@ -10,6 +10,7 @@ import SwiftUI
 import UIKit
 #endif
 
+@MainActor
 struct ProfileView: View {
     @Environment(AppState.self) var appState
     @Environment(\.dismiss) var dismiss

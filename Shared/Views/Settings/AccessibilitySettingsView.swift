@@ -13,6 +13,7 @@ import AppKit
 // Force import of the model
 import Foundation
 
+@MainActor
 struct AccessibilitySettingsView: View {
     @Environment(AppState.self) var appState
     @Environment(\.themeManager) private var themeManager
