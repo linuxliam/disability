@@ -162,10 +162,13 @@ class SearchViewModel {
             }
         }
 
-        // Sort results by relevance (use pre-computed lowercase query)
+        // Sort results by relevance (cache lowercased titles to avoid repeated operations)
         searchResults = results.sorted { result1, result2 in
-            let title1Match = result1.title.lowercased().contains(lowerQuery)
-            let title2Match = result2.title.lowercased().contains(lowerQuery)
+            // Cache lowercased titles to avoid repeated string operations
+            let title1Lower = result1.title.lowercased()
+            let title2Lower = result2.title.lowercased()
+            let title1Match = title1Lower.contains(lowerQuery)
+            let title2Match = title2Lower.contains(lowerQuery)
 
             if title1Match != title2Match {
                 return title1Match
@@ -212,10 +215,10 @@ class SearchViewModel {
     }
 
     private func matches(query: String, article: NewsArticle) -> Bool {
-        return article.title.localizedCaseInsensitiveContains(query) ||
-               article.summary.localizedCaseInsensitiveContains(query) ||
-               article.category.localizedCaseInsensitiveContains(query) ||
-               article.source.localizedCaseInsensitiveContains(query)
+        return article.title.lowercased().contains(query) ||
+               article.summary.lowercased().contains(query) ||
+               article.category.lowercased().contains(query) ||
+               article.source.lowercased().contains(query)
     }
     
     // MARK: - Recent Searches
