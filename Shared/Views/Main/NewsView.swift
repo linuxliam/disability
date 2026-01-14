@@ -155,10 +155,10 @@ struct ArticleDetailView: View {
             // Share Action Section
             Section {
                 AppShareButton(
-                    item: .article(article),
+                    item: AppShareButton.ShareableItem.article(article),
                     label: "Share Article",
                     systemImage: "square.and.arrow.up",
-                    style: .button
+                    style: AppShareButton.ShareButtonStyle.button
                 )
                 .fontWeight(.semibold)
                 .frame(maxWidth: .infinity)

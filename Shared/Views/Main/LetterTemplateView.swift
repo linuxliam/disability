@@ -20,10 +20,12 @@ struct LetterTemplateView: View {
     }
     
     var body: some View {
-        if let template = viewModel.selectedTemplate {
-            LetterEditorView(viewModel: viewModel, template: template)
-        } else {
-            LetterTemplateListView(viewModel: viewModel, selectedCategory: $selectedCategory, filteredTemplates: filteredTemplates)
+        Group {
+            if let template = viewModel.selectedTemplate {
+                LetterEditorView(viewModel: viewModel, template: template)
+            } else {
+                LetterTemplateListView(viewModel: viewModel, selectedCategory: $selectedCategory, filteredTemplates: filteredTemplates)
+            }
         }
         .onAppear {
             if viewModel.templates.isEmpty {
@@ -194,10 +196,10 @@ struct LetterEditorView: View {
                             Spacer()
                             
                             AppShareButton(
-                                item: .text(viewModel.generatedLetter),
+                                item: AppShareButton.ShareableItem.text(viewModel.generatedLetter),
                                 label: "Share",
                                 systemImage: "square.and.arrow.up",
-                                style: .icon
+                                style: AppShareButton.ShareButtonStyle.icon
                             )
                             .font(.title3.weight(.semibold))
                             .foregroundStyle(.triadPrimary)
@@ -244,7 +246,7 @@ struct LetterEditorView: View {
                     .cornerRadius(16)
                 
                 VStack(alignment: .leading, spacing: 6) {
-                    AppChip(text: template.category.rawValue, style: .primary)
+                    AppChip(text: template.category.rawValue, style: AppChip.Style.primary)
                     
                     Text(template.title)
                         .font(.headline.weight(.bold))

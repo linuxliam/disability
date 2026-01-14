@@ -420,10 +420,10 @@ struct ResourceDetailView: View {
                 
                 HStack(spacing: 12) {
                     AppShareButton(
-                        item: .url(url),
+                        item: AppShareButton.ShareableItem.url(url),
                         label: String(localized: "Share"),
                         systemImage: "square.and.arrow.up",
-                        style: .button
+                        style: AppShareButton.ShareButtonStyle.button
                     )
                     .font(.subheadline.weight(.medium))
                     .foregroundStyle(.primary)

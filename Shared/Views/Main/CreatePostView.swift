@@ -107,7 +107,7 @@ import Observation
 class CreatePostViewModel {
     private let communityViewModel: CommunityViewModel
     
-    init(communityViewModel: CommunityViewModel) {
+    nonisolated init(communityViewModel: CommunityViewModel) {
         self.communityViewModel = communityViewModel
     }
     
