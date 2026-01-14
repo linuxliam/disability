@@ -66,23 +66,44 @@ class HomeViewModel {
 
         if Task.isCancelled { return }
 
-        // Update properties
+        // Cache current date for consistent filtering
+        let now = Date()
+        
+        // Update properties with optimized operations
         self.totalResources = allResources.count
-        self.upcomingEventsList = allEvents.sorted { $0.date < $1.date }
-        self.upcomingEvents = self.upcomingEventsList.filter { $0.date > Date() }.count
+        
+        // Sort events once and reuse
+        let sortedEvents = allEvents.sorted { $0.date < $1.date }
+        self.upcomingEventsList = sortedEvents
+        self.upcomingEvents = sortedEvents.filter { $0.date > now }.count
         self.recentPosts = 12 // Placeholder
 
+        // Use prefix directly without Array() conversion
         self.featuredResources = Array(allResources.prefix(3))
-        self.recentlyAddedResources = Array(allResources.sorted { $0.dateAdded > $1.dateAdded }.prefix(5))
+        
+        // Sort resources by dateAdded once and take prefix
+        let sortedByDateAdded = allResources.sorted { $0.dateAdded > $1.dateAdded }
+        self.recentlyAddedResources = Array(sortedByDateAdded.prefix(5))
 
-        // Recommended resources based on favorites
+        // Recommended resources based on favorites - optimized
         if !favoriteResourceIds.isEmpty {
-            let favoriteCategories = Set(allResources.filter { favoriteResourceIds.contains($0.id) }.map { $0.category })
-            self.recommendedResources = allResources.filter {
-                !favoriteResourceIds.contains($0.id) && favoriteCategories.contains($0.category)
-            }.shuffled().prefix(5).map { $0 }
+            // Single pass to collect favorite categories and filter non-favorites
+            var favoriteCategories = Set<ResourceCategory>()
+            let nonFavoriteResources = allResources.filter { resource in
+                if favoriteResourceIds.contains(resource.id) {
+                    favoriteCategories.insert(resource.category)
+                    return false
+                }
+                return true
+            }
+            
+            // Filter by favorite categories and shuffle
+            self.recommendedResources = Array(nonFavoriteResources
+                .filter { favoriteCategories.contains($0.category) }
+                .shuffled()
+                .prefix(5))
         } else {
-            self.recommendedResources = allResources.shuffled().prefix(5).map { $0 }
+            self.recommendedResources = Array(allResources.shuffled().prefix(5))
         }
     }
     
