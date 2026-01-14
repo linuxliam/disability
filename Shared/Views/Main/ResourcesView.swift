@@ -70,6 +70,7 @@ struct ResourcesViewWithCategory: View {
 }
 
 // MARK: - Resources Content View (for navigation destinations)
+@MainActor
 struct ResourcesContentView: View {
     @Environment(AppState.self) private var appState: AppState
     @Bindable var viewModel: ResourcesViewModel

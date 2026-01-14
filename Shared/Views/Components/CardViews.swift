@@ -34,6 +34,7 @@ enum CardElevation {
 }
 
 // MARK: - Card View Modifiers
+@MainActor
 struct CardModifier: ViewModifier {
     @Environment(\.themeManager) private var themeManager
     var cornerRadius: CGFloat
@@ -74,6 +75,7 @@ struct ElevatedCardModifier: ViewModifier {
     }
 }
 
+@MainActor
 struct CompactCardModifier: ViewModifier {
     @Environment(\.themeManager) private var themeManager
     var cornerRadius: CGFloat = 12
@@ -261,6 +263,7 @@ struct AppDetailHeader<Trailing: View>: View {
 }
 
 // MARK: - Entity Cards
+@MainActor
 struct ResourceCard: View {
     let resource: Resource
     @Environment(AppState.self) var appState

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct AppChip: View {
     @Environment(\.themeManager) private var themeManager
     
