@@ -1,79 +1,102 @@
 name: CI - Status Summary
 
 on:
-  workflow_run:
-    workflows: 
-      - "CI - Build iOS"
-      - "CI - Build macOS"
-      - "CI - Test iOS"
-      - "CI - Test macOS"
-      - "CI - Post-Build Validation"
-      - "CI - Security Scan"
-      - "CI - Code Quality"
-    types:
-      - completed
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   status-summary:
     name: 📊 Status Summary
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion != 'cancelled'
     steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
       - name: 📊 Generate Summary
         uses: actions/github-script@v7
         with:
           script: |
             const workflows = [
-              'CI - Build iOS',
-              'CI - Build macOS',
-              'CI - Test iOS',
-              'CI - Test macOS',
-              'CI - Post-Build Validation',
-              'CI - Security Scan',
-              'CI - Code Quality'
+              { name: 'CI - Build iOS', file: 'ci-build-ios.yml' },
+              { name: 'CI - Build macOS', file: 'ci-build-macos.yml' },
+              { name: 'CI - Test iOS', file: 'ci-test-ios.yml' },
+              { name: 'CI - Test macOS', file: 'ci-test-macos.yml' },
+              { name: 'CI - Post-Build Validation', file: 'ci-post-build-validation.yml' },
+              { name: 'CI - Security Scan', file: 'ci-security-scan.yml' },
+              { name: 'CI - Code Quality', file: 'ci-code-quality.yml' }
             ];
             
-            const runId = context.payload.workflow_run?.id;
             const owner = context.repo.owner;
             const repo = context.repo.repo;
+            const sha = context.sha;
+            const ref = context.ref;
             
-            let summary = "# 🚀 Build Status\n\n";
+            let summary = "# 🚀 Build Status Summary\n\n";
+            summary += `**Commit:** ${sha.substring(0, 7)}\n`;
+            summary += `**Branch:** ${ref.replace('refs/heads/', '')}\n\n`;
+            
             summary += "## 📦 Builds\n";
-            summary += "- iOS: Check individual workflow\n";
-            summary += "- macOS: Check individual workflow\n";
+            summary += "- **iOS:** Check [CI - Build iOS](https://github.com/${owner}/${repo}/actions/workflows/ci-build-ios.yml) workflow\n";
+            summary += "- **macOS:** Check [CI - Build macOS](https://github.com/${owner}/${repo}/actions/workflows/ci-build-macos.yml) workflow\n";
             summary += "\n";
+            
             summary += "## 🧪 Tests\n";
-            summary += "- iOS: Check individual workflow\n";
-            summary += "- macOS: Check individual workflow\n";
+            summary += "- **iOS:** Check [CI - Test iOS](https://github.com/${owner}/${repo}/actions/workflows/ci-test-ios.yml) workflow\n";
+            summary += "- **macOS:** Check [CI - Test macOS](https://github.com/${owner}/${repo}/actions/workflows/ci-test-macos.yml) workflow\n";
             summary += "\n";
+            
             summary += "## ✅ Validation\n";
-            summary += "- Code Quality: Check individual workflow\n";
-            summary += "- Post-Build: Check individual workflow\n";
-            summary += "- Security: Check individual workflow\n";
+            summary += "- **Code Quality:** Check [CI - Code Quality](https://github.com/${owner}/${repo}/actions/workflows/ci-code-quality.yml) workflow\n";
+            summary += "- **Post-Build:** Check [CI - Post-Build Validation](https://github.com/${owner}/${repo}/actions/workflows/ci-post-build-validation.yml) workflow\n";
+            summary += "- **Security:** Check [CI - Security Scan](https://github.com/${owner}/${repo}/actions/workflows/ci-security-scan.yml) workflow\n";
             summary += "\n";
+            
             summary += "## ⚡ Performance Tips\n";
             summary += "- Cache hits reduce build times significantly\n";
             summary += "- Parallel jobs run concurrently for faster completion\n";
             summary += "- Use workflow_dispatch to skip unnecessary steps\n";
             summary += "\n";
-            summary += "## 🔗 Individual Workflows\n";
             
+            summary += "## 🔗 All CI Workflows\n";
             for (const workflow of workflows) {
-              summary += `- [${workflow}](https://github.com/${owner}/${repo}/actions/workflows/${workflow.replace(/\s+/g, '-').toLowerCase()}.yml)\n`;
+              const workflowUrl = `https://github.com/${owner}/${repo}/actions/workflows/${workflow.file}`;
+              summary += `- [${workflow.name}](${workflowUrl})\n`;
+            }
+            
+            // Try to get recent workflow runs
+            try {
+              const runs = await github.rest.actions.listWorkflowRunsForRepo({
+                owner,
+                repo,
+                per_page: 10,
+              });
+              
+              summary += "\n## 📊 Recent Workflow Runs\n";
+              summary += "| Workflow | Status | Conclusion |\n";
+              summary += "|----------|--------|------------|\n";
+              
+              for (const run of runs.data.workflow_runs.slice(0, 7)) {
+                const status = run.status;
+                const conclusion = run.conclusion || 'pending';
+                const workflowName = run.name;
+                const runUrl = run.html_url;
+                summary += `| [${workflowName}](${runUrl}) | ${status} | ${conclusion} |\n`;
+              }
+            } catch (error) {
+              console.log('Could not fetch workflow runs:', error.message);
             }
             
             core.summary = summary;
-            
-            // Try to find the triggering workflow run
-            if (runId) {
-              const run = await github.rest.actions.getWorkflowRun({
-                owner,
-                repo,
-                run_id: runId,
-              });
-              
-              console.log(`Workflow: ${run.data.name}`);
-              console.log(`Status: ${run.data.status}`);
-              console.log(`Conclusion: ${run.data.conclusion}`);
-            }

@@ -120,5 +120,7 @@ jobs:
       - name: ⏱️ Job Duration
         if: always()
         run: |
-          DURATION=$(((${{ steps.timer.outputs.result }} - ${{ env.WORKFLOW_START }}) / 1000))
+          START_TIME=${{ steps.timer.outputs.result }}
+          END_TIME=$(date +%s)000
+          DURATION=$(( (END_TIME - START_TIME) / 1000 ))
           echo "⏱️ iOS Tests (${{ matrix.device }}) completed in ${DURATION}s"

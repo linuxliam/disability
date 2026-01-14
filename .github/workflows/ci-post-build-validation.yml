@@ -1,10 +1,16 @@
 name: CI - Post-Build Validation
 
 on:
-  workflow_run:
-    workflows: ["CI - Build iOS", "CI - Build macOS"]
-    types:
-      - completed
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
 
 env:
@@ -91,7 +97,11 @@ jobs:
           echo "### 📝 Documentation" >> $GITHUB_STEP_SUMMARY
           DOCUMENTED_FUNCTIONS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -exec grep -c "///" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
           TOTAL_FUNCTIONS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -exec grep -c "^[[:space:]]*func " {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
-          DOC_COVERAGE=$([ "$TOTAL_FUNCTIONS" -gt 0 ] && echo "scale=1; $DOCUMENTED_FUNCTIONS * 100 / $TOTAL_FUNCTIONS" | bc || echo "0")
+          if [ "$TOTAL_FUNCTIONS" -gt 0 ]; then
+            DOC_COVERAGE=$(awk "BEGIN {printf \"%.1f\", ($DOCUMENTED_FUNCTIONS * 100 / $TOTAL_FUNCTIONS)}")
+          else
+            DOC_COVERAGE="0"
+          fi
           echo "- **Documented Functions:** $DOCUMENTED_FUNCTIONS / $TOTAL_FUNCTIONS" >> $GITHUB_STEP_SUMMARY
           echo "- **Documentation Coverage:** ${DOC_COVERAGE}%" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -131,5 +141,7 @@ jobs:
       - name: ⏱️ Job Duration
         if: always()
         run: |
-          DURATION=$(((${{ steps.timer.outputs.result }} - ${{ env.WORKFLOW_START }}) / 1000))
+          START_TIME=${{ steps.timer.outputs.result }}
+          END_TIME=$(date +%s)000
+          DURATION=$(( (END_TIME - START_TIME) / 1000 ))
           echo "⏱️ Post-Build Validation completed in ${DURATION}s"
