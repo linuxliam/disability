@@ -84,7 +84,7 @@ struct CommunityView: View {
                                 ScrollView {
                                     VStack(alignment: .leading, spacing: LayoutConstants.sectionHeaderSpacing) {
                                         AppSectionHeader(
-                                            title: selectedCategory != nil ? LocalizedStringKey(selectedCategory!.rawValue) : "Community Discussions",
+                                            title: selectedCategory.map { LocalizedStringKey($0.rawValue) } ?? "Community Discussions",
                                             systemImage: "bubble.left.and.bubble.right.fill"
                                         )
                                         .padding(.bottom, LayoutConstants.spacingS)
@@ -116,7 +116,7 @@ struct CommunityView: View {
                                     }
                                 } header: {
                                     AppSectionHeader(
-                                        title: selectedCategory != nil ? LocalizedStringKey(selectedCategory!.rawValue) : "Community Discussions",
+                                        title: selectedCategory.map { LocalizedStringKey($0.rawValue) } ?? "Community Discussions",
                                         systemImage: "bubble.left.and.bubble.right.fill"
                                     )
                                 }

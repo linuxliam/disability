@@ -12,7 +12,7 @@ extension View {
     func accessibilityCard(title: String, description: String? = nil) -> some View {
         self
             .accessibilityElement(children: .combine)
-            .accessibilityLabel(description != nil ? "\(title), \(description!)" : title)
+            .accessibilityLabel(description.map { "\(title), \($0)" } ?? title)
             .accessibilityAddTraits(.isButton)
     }
     

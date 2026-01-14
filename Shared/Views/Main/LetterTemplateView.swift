@@ -98,7 +98,7 @@ struct LetterTemplateListView: View {
                         }
                     } header: {
                         AppSectionHeader(
-                            title: selectedCategory != nil ? LocalizedStringKey(selectedCategory!.rawValue) : "All Templates",
+                            title: selectedCategory.map { LocalizedStringKey($0.rawValue) } ?? "All Templates",
                             systemImage: selectedCategory?.icon ?? "doc.text.fill"
                         )
                         .tint(.triadPrimary)

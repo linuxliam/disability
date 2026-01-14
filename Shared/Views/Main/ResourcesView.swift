@@ -207,7 +207,7 @@ struct ResourcesContentView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: LayoutConstants.sectionHeaderSpacing) {
                     AppSectionHeader(
-                        title: viewModel.selectedCategory != nil ? LocalizedStringKey(viewModel.selectedCategory!.rawValue) : "All Resources",
+                        title: viewModel.selectedCategory.map { LocalizedStringKey($0.rawValue) } ?? "All Resources",
                         systemImage: viewModel.selectedCategory?.icon ?? "books.vertical.fill",
                         subtitle: !viewModel.searchText.isEmpty ? "Searching for \"\(viewModel.searchText)\"" : nil
                     )
@@ -239,7 +239,7 @@ struct ResourcesContentView: View {
                 }
             } header: {
                 AppSectionHeader(
-                    title: viewModel.selectedCategory != nil ? LocalizedStringKey(viewModel.selectedCategory!.rawValue) : "All Resources",
+                    title: viewModel.selectedCategory.map { LocalizedStringKey($0.rawValue) } ?? "All Resources",
                     systemImage: viewModel.selectedCategory?.icon ?? "books.vertical.fill",
                     subtitle: !viewModel.searchText.isEmpty ? "Searching for \"\(viewModel.searchText)\"" : nil
                 )

@@ -93,7 +93,7 @@ struct EventsView: View {
                                 ScrollView {
                                     VStack(alignment: .leading, spacing: LayoutConstants.sectionHeaderSpacing) {
                                         AppSectionHeader(
-                                            title: viewModel.selectedCategory != nil ? LocalizedStringKey(viewModel.selectedCategory!.rawValue) : "Upcoming Events",
+                                            title: viewModel.selectedCategory.map { LocalizedStringKey($0.rawValue) } ?? "Upcoming Events",
                                             systemImage: "calendar"
                                         )
                                         .padding(.bottom, LayoutConstants.spacingS)
@@ -125,7 +125,7 @@ struct EventsView: View {
                                     }
                                 } header: {
                                     AppSectionHeader(
-                                        title: viewModel.selectedCategory != nil ? LocalizedStringKey(viewModel.selectedCategory!.rawValue) : "Upcoming Events",
+                                        title: viewModel.selectedCategory.map { LocalizedStringKey($0.rawValue) } ?? "Upcoming Events",
                                         systemImage: "calendar"
                                     )
                                 }

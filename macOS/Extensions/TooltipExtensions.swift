@@ -10,7 +10,7 @@ import SwiftUI
 extension View {
     /// Adds a tooltip with keyboard shortcut hint
     func helpTooltip(_ text: String, shortcut: String? = nil) -> some View {
-        self.help(shortcut != nil ? "\(text) (\(shortcut!))" : text)
+        self.help(shortcut.map { "\(text) (\($0))" } ?? text)
     }
     
     /// Adds a tooltip with standard macOS formatting
