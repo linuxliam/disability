@@ -154,14 +154,17 @@ struct ArticleDetailView: View {
             
             // Share Action Section
             Section {
-                ShareLink(item: "\(article.title)\n\n\(article.summary)\n\nSource: \(article.source)") {
-                    Label("Share Article", systemImage: "square.and.arrow.up")
-                        .fontWeight(.semibold)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 12))
-                        .foregroundStyle(.white)
-                }
+                AppShareButton(
+                    item: .article(article),
+                    label: "Share Article",
+                    systemImage: "square.and.arrow.up",
+                    style: .button
+                )
+                .fontWeight(.semibold)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 12)
+                .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 12))
+                .foregroundStyle(.white)
                 .buttonStyle(.plain)
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets())

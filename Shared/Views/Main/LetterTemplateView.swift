@@ -193,11 +193,14 @@ struct LetterEditorView: View {
                             
                             Spacer()
                             
-                            ShareLink(item: viewModel.generatedLetter, subject: Text(template.title)) {
-                                Image(systemName: "square.and.arrow.up")
-                                    .font(.title3.weight(.semibold))
-                                    .foregroundStyle(.triadPrimary)
-                            }
+                            AppShareButton(
+                                item: .text(viewModel.generatedLetter),
+                                label: "Share",
+                                systemImage: "square.and.arrow.up",
+                                style: .icon
+                            )
+                            .font(.title3.weight(.semibold))
+                            .foregroundStyle(.triadPrimary)
                         }
                         
                         Text(viewModel.generatedLetter)

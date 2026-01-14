@@ -419,15 +419,18 @@ struct ResourceDetailView: View {
                 }
                 
                 HStack(spacing: 12) {
-                    ShareLink(item: url) {
-                        Label(String(localized: "Share"), systemImage: "square.and.arrow.up")
-                            .font(.subheadline.weight(.medium))
-                            .foregroundStyle(.primary)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 44)
-                            .background(Color.secondary.opacity(0.1))
-                            .cornerRadius(12)
-                    }
+                    AppShareButton(
+                        item: .url(url),
+                        label: String(localized: "Share"),
+                        systemImage: "square.and.arrow.up",
+                        style: .button
+                    )
+                    .font(.subheadline.weight(.medium))
+                    .foregroundStyle(.primary)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(Color.secondary.opacity(0.1))
+                    .cornerRadius(12)
                     
                     Button(action: {
                         PlatformUI.copyToClipboard(urlString)

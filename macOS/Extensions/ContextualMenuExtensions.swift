@@ -50,7 +50,9 @@ extension View {
             
             Divider()
             
-            Button(action: onShare) {
+            Button(action: {
+                shareResource(resource)
+            }) {
                 Label("Share", systemImage: "square.and.arrow.up")
             }
         }
@@ -87,7 +89,9 @@ extension View {
             
             Divider()
             
-            Button(action: onShare) {
+            Button(action: {
+                shareEvent(event)
+            }) {
                 Label("Share", systemImage: "square.and.arrow.up")
             }
         }
@@ -109,10 +113,96 @@ extension View {
             
             Divider()
             
-            Button(action: onShare) {
+            Button(action: {
+                sharePost(post)
+            }) {
                 Label("Share", systemImage: "square.and.arrow.up")
             }
         }
+    }
+    
+    // MARK: - Share Helpers
+    
+    private func shareResource(_ resource: Resource) {
+        guard let window = NSApplication.shared.keyWindow,
+              let contentView = window.contentView else { return }
+        
+        var shareItems: [Any] = []
+        let shareText = """
+        \(resource.title)
+        
+        \(resource.description)
+        
+        Category: \(resource.category.rawValue)
+        """
+        shareItems.append(shareText)
+        
+        if let urlString = resource.url, let url = URL(string: urlString) {
+            shareItems.append(url)
+        }
+        
+        let sharingServicePicker = NSSharingServicePicker(items: shareItems)
+        sharingServicePicker.show(relativeTo: .zero, of: contentView, preferredEdge: .minY)
+    }
+    
+    private func shareEvent(_ event: Event) {
+        guard let window = NSApplication.shared.keyWindow,
+              let contentView = window.contentView else { return }
+        
+        var shareItems: [Any] = []
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        
+        var shareText = """
+        \(event.title)
+        
+        \(event.description)
+        
+        Date: \(dateFormatter.string(from: event.date))
+        Location: \(event.location)
+        """
+        
+        if event.isVirtual {
+            shareText += "\nVirtual Event"
+        }
+        
+        if let registrationURL = event.registrationURL {
+            shareText += "\nRegistration: \(registrationURL)"
+        }
+        
+        if let accessibilityNotes = event.accessibilityNotes {
+            shareText += "\n\nAccessibility: \(accessibilityNotes)"
+        }
+        
+        shareItems.append(shareText)
+        
+        if let registrationURL = event.registrationURL, let url = URL(string: registrationURL) {
+            shareItems.append(url)
+        }
+        
+        if let eventURL = event.eventURL, let url = URL(string: eventURL) {
+            shareItems.append(url)
+        }
+        
+        let sharingServicePicker = NSSharingServicePicker(items: shareItems)
+        sharingServicePicker.show(relativeTo: .zero, of: contentView, preferredEdge: .minY)
+    }
+    
+    private func sharePost(_ post: CommunityPost) {
+        guard let window = NSApplication.shared.keyWindow,
+              let contentView = window.contentView else { return }
+        
+        let shareText = """
+        \(post.title)
+        
+        \(post.content)
+        
+        Author: \(post.author)
+        """
+        
+        let sharingServicePicker = NSSharingServicePicker(items: [shareText])
+        sharingServicePicker.show(relativeTo: .zero, of: contentView, preferredEdge: .minY)
     }
 }
 #endif
