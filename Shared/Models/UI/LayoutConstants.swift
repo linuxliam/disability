@@ -80,6 +80,9 @@ enum LayoutConstants {
     
     // MARK: - Theme-Aware Spacing
     
+    // Note: ThemeManager is in the same module (Shared) and accessible without explicit import
+    // Both LayoutConstants and ThemeManager are part of the Shared module
+    
     /// Get spacing value adjusted for theme
     @MainActor
     static func spacing(_ base: CGFloat, theme: ThemeManager) -> CGFloat {
