@@ -21,7 +21,9 @@ class EventsViewModel: BaseViewModelProtocol {
     var dateFilter: EventDateFilter = .upcoming
     
     var filteredEvents: [Event] {
-        events.filtered(category: selectedCategory, dateFilter: dateFilter)
+        // Cache current date to ensure consistent filtering within a single view update
+        let now = Date()
+        return events.filtered(category: selectedCategory, dateFilter: dateFilter, currentDate: now)
     }
     
     private let eventsManager: EventsManager
