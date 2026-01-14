@@ -1,4 +1,4 @@
-name: Release
+name: Create Release and Build Artifacts
 
 on:
   push:
@@ -19,18 +19,18 @@ env:
   XCODE_VERSION: '15.0'
 
 jobs:
-  create-release:
-    name: Create GitHub Release
+  create-github-release:
+    name: 🚀 Create GitHub Release
     runs-on: macos-14
     permissions:
       contents: write
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Source Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
       
-      - name: Get version
+      - name: 📋 Extract Version Number
         id: version
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
@@ -42,7 +42,7 @@ jobs:
           echo "tag=v$VERSION" >> $GITHUB_OUTPUT
           echo "Version: $VERSION"
       
-      - name: Generate changelog
+      - name: 📝 Generate Changelog
         id: changelog
         run: |
           VERSION="${{ steps.version.outputs.version }}"
@@ -74,7 +74,7 @@ jobs:
           echo "$CHANGELOG" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
       
-      - name: Create Release
+      - name: 🏷️ Create GitHub Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -85,14 +85,14 @@ jobs:
           draft: false
           prerelease: false
       
-      - name: Build Release Artifacts
+      - name: 🔧 Configure Xcode Version
+        run: |
+          sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
+      
+      - name: 🔨 Build iOS Release Archive
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           
-          # Select Xcode version
-          sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          
-          # Build iOS
           xcodebuild archive \
             -project DisabilityAdvocacy.xcodeproj \
             -scheme "DisabilityAdvocacy-iOS" \
@@ -100,8 +100,11 @@ jobs:
             -archivePath build/Release/DisabilityAdvocacy-iOS.xcarchive \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO
+      
+      - name: 🔨 Build macOS Release Archive
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
           
-          # Build macOS
           xcodebuild archive \
             -project DisabilityAdvocacy.xcodeproj \
             -scheme "DisabilityAdvocacy-macOS" \
@@ -110,7 +113,7 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO
       
-      - name: Upload Release Artifacts
+      - name: 📦 Upload Release Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: release-artifacts-${{ steps.version.outputs.version }}

@@ -1,4 +1,4 @@
-name: Stale Issue and PR Management
+name: Stale Issue and Pull Request Management
 
 on:
   schedule:
@@ -7,14 +7,14 @@ on:
   workflow_dispatch:
 
 jobs:
-  stale:
-    name: Mark Stale Issues and PRs
+  mark-stale-issues-and-prs:
+    name: 🏷️ Mark Stale Issues and Pull Requests
     runs-on: ubuntu-latest
     permissions:
       issues: write
       pull-requests: write
     steps:
-      - name: Mark stale issues and PRs
+      - name: 🏷️ Mark Stale Issues and Pull Requests
         uses: actions/stale@v9
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}

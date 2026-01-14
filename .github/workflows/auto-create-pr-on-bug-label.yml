@@ -1,4 +1,4 @@
-name: Auto-Create PR for Bug Issues
+name: Auto-Create Pull Request for Bug Issues
 
 on:
   issues:
@@ -8,23 +8,23 @@ env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
-  create-bug-pr:
-    name: Create PR for Bug Issue
+  create-pull-request-for-bug:
+    name: 🐛 Create Pull Request for Bug Issue
     runs-on: ubuntu-latest
     if: github.event.label.name == 'bug' && github.event.action == 'labeled'
     steps:
-      - name: Checkout code
+      - name: 📥 Checkout Source Code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Configure Git
+      - name: ⚙️ Configure Git User
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
       
-      - name: Check if PR already exists
+      - name: 🔍 Check if Pull Request Already Exists
         id: check-pr
         uses: actions/github-script@v7
         with:
@@ -48,7 +48,7 @@ jobs:
             core.setOutput('hasPr', hasPr);
             return hasPr;
       
-      - name: Check if branch already exists
+      - name: 🔍 Check if Branch Already Exists
         id: check-branch
         run: |
           ISSUE_NUM=${{ github.event.issue.number }}
@@ -61,7 +61,7 @@ jobs:
           fi
           echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
       
-      - name: Create branch and initial commit
+      - name: 🌿 Create Branch and Initial Commit
         if: steps.check-pr.outputs.hasPr == 'false' && steps.check-branch.outputs.exists == 'false'
         run: |
           ISSUE_NUM=${{ github.event.issue.number }}
@@ -86,7 +86,7 @@ jobs:
           # Push branch
           git push -u origin "$BRANCH_NAME"
       
-      - name: Create Pull Request
+      - name: 🔨 Create Pull Request
         if: steps.check-pr.outputs.hasPr == 'false'
         uses: actions/github-script@v7
         with:
@@ -168,7 +168,7 @@ jobs:
               body: commentBody
             });
       
-      - name: Summary
+      - name: 📋 Summary
         if: always()
         run: |
           echo "## Auto-Create PR Summary" >> $GITHUB_STEP_SUMMARY
