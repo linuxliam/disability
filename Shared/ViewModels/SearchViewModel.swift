@@ -210,10 +210,10 @@ class SearchViewModel {
     }
 
     private func matches(query: String, article: NewsArticle) -> Bool {
-        return article.title.localizedCaseInsensitiveContains(query) ||
-               article.summary.localizedCaseInsensitiveContains(query) ||
-               article.category.localizedCaseInsensitiveContains(query) ||
-               article.source.localizedCaseInsensitiveContains(query)
+        return article.title.lowercased().contains(query) ||
+               article.summary.lowercased().contains(query) ||
+               article.category.lowercased().contains(query) ||
+               article.source.lowercased().contains(query)
     }
     
     // MARK: - Recent Searches
