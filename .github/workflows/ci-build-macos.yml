@@ -1,0 +1,174 @@
+name: CI - Build macOS
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: 'Build configuration (Debug or Release)'
+        required: false
+        default: 'Debug'
+        type: choice
+        options:
+          - Debug
+          - Release
+
+env:
+  XCODE_VERSION: '15.1'
+  CONFIGURATION: ${{ github.event.inputs.configuration || 'Debug' }}
+
+jobs:
+  build-macos:
+    name: 💻 Build macOS (${{ matrix.configuration }})
+    runs-on: macos-14
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        configuration: [Debug, Release]
+    steps:
+      - name: ⏱️ Start Timer
+        uses: actions/github-script@v7
+        id: timer
+        with:
+          script: |
+            core.exportVariable('WORKFLOW_START', Date.now())
+            return Date.now()
+      
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+      
+      - name: 📦 Cache Build Artifacts
+        uses: actions/cache@v4
+        id: cache-build
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+            build
+          key: ${{ runner.os }}-macos-${{ matrix.configuration }}-${{ hashFiles('**/*.swift', '**/project.pbxproj', '**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-macos-${{ matrix.configuration }}-
+            ${{ runner.os }}-macos-
+      
+      - name: 🔨 Build
+        run: |
+          set -o pipefail
+          BUILD_START=$(date +%s)
+          xcodebuild \
+            -project DisabilityAdvocacy.xcodeproj \
+            -scheme "DisabilityAdvocacy-macOS" \
+            -sdk macosx \
+            -configuration ${{ matrix.configuration }} \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -derivedDataPath build \
+            clean build \
+            2>&1 | tee build-macos-${{ matrix.configuration }}.log || BUILD_EXIT_CODE=$?
+          
+          BUILD_END=$(date +%s)
+          BUILD_DURATION=$((BUILD_END - BUILD_START))
+          echo "⏱️ Build took ${BUILD_DURATION}s"
+          
+          if [ ${BUILD_EXIT_CODE:-0} -ne 0 ]; then
+            echo "## ❌ Build Failed (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⏱️ **Build Duration:** ${BUILD_DURATION}s" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Extract error types
+            COMPILATION_ERRORS=$(grep -c "error:" build-macos-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
+            LINKER_ERRORS=$(grep -c "Undefined symbol\|ld:" build-macos-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
+            
+            echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
+            echo "- **Compilation Errors:** $COMPILATION_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Linker Errors:** $LINKER_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show compilation errors
+            if [ "$COMPILATION_ERRORS" -gt 0 ]; then
+              echo "### Compilation Errors" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              grep "error:" build-macos-${{ matrix.configuration }}.log | head -30 >> $GITHUB_STEP_SUMMARY || true
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            # Show last 50 lines for context
+            echo "### Full Build Log (Last 50 lines)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 build-macos-${{ matrix.configuration }}.log >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            
+            exit ${BUILD_EXIT_CODE:-1}
+          fi
+      
+      - name: ✅ Validate Bundle
+        if: success()
+        run: |
+          # Try multiple possible paths for the built app
+          APP_PATH=""
+          POSSIBLE_PATHS=(
+            "build/Build/Products/${{ matrix.configuration }}/DisabilityAdvocacy-macOS.app"
+            "build/${{ matrix.configuration }}/DisabilityAdvocacy-macOS.app"
+            "build/Build/Products/DisabilityAdvocacy-macOS.app"
+          )
+          
+          for path in "${POSSIBLE_PATHS[@]}"; do
+            if [ -d "$path" ] && [ -f "$path/Contents/Info.plist" ]; then
+              APP_PATH="$path"
+              break
+            fi
+          done
+          
+          if [ -z "$APP_PATH" ]; then
+            echo "⚠️ App bundle not found in expected locations. Searching..."
+            FOUND_PATH=$(find build -name "DisabilityAdvocacy-macOS.app" -type d 2>/dev/null | head -1)
+            if [ -n "$FOUND_PATH" ]; then
+              APP_PATH="$FOUND_PATH"
+              echo "✅ Found app bundle at: $APP_PATH"
+            else
+              echo "❌ App bundle not found anywhere in build directory"
+              exit 1
+            fi
+          fi
+          
+          if [ -n "$APP_PATH" ]; then
+            echo "✅ Found app bundle at: $APP_PATH"
+            [ -d "$APP_PATH" ] && [ -f "$APP_PATH/Contents/Info.plist" ] || exit 1
+          else
+            echo "❌ App bundle validation failed"
+            exit 1
+          fi
+      
+      - name: 📤 Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build-${{ matrix.configuration }}
+          path: |
+            build-macos-${{ matrix.configuration }}.log
+          retention-days: 7
+          compression-level: 6
+      
+      - name: ⏱️ Job Duration
+        if: always()
+        run: |
+          DURATION=$(((${{ steps.timer.outputs.result }} - ${{ env.WORKFLOW_START }}) / 1000))
+          CACHE_STATUS=${{ steps.cache-build.outputs.cache-hit == 'true' && '✅ Cache Hit' || '❌ Cache Miss' }}
+          echo "⏱️ macOS Build (${{ matrix.configuration }}) completed in ${DURATION}s (${CACHE_STATUS})"

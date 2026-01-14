@@ -1,0 +1,135 @@
+name: CI - Post-Build Validation
+
+on:
+  workflow_run:
+    workflows: ["CI - Build iOS", "CI - Build macOS"]
+    types:
+      - completed
+  workflow_dispatch:
+
+env:
+  XCODE_VERSION: '15.1'
+
+jobs:
+  post-build-validation:
+    name: ✅ Post-Build Validation
+    runs-on: macos-14
+    timeout-minutes: 5
+    steps:
+      - name: ⏱️ Start Timer
+        uses: actions/github-script@v7
+        id: timer
+        with:
+          script: |
+            core.exportVariable('WORKFLOW_START', Date.now())
+            return Date.now()
+      
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+      
+      - name: ✅ Run Validation Scripts
+        run: |
+          chmod +x scripts/validate-build.sh scripts/validate-platform-code.sh || true
+          ./scripts/validate-build.sh || echo "⚠️ Build validation warnings"
+          ./scripts/validate-platform-code.sh || echo "⚠️ Platform validation warnings"
+      
+      - name: 📊 Check Code Metrics
+        run: |
+          echo "## 📊 Code Quality Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Basic Metrics
+          echo "### 📈 Basic Metrics" >> $GITHUB_STEP_SUMMARY
+          SWIFT_FILES=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" | wc -l | tr -d ' ')
+          TOTAL_LINES=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec wc -l {} \; | awk '{s+=$1} END {print s}' || echo "0")
+          AVG_LINES_PER_FILE=$([ "$SWIFT_FILES" -gt 0 ] && echo $((TOTAL_LINES / SWIFT_FILES)) || echo "0")
+          echo "- **Total Swift Files:** $SWIFT_FILES" >> $GITHUB_STEP_SUMMARY
+          echo "- **Total Lines of Code:** $TOTAL_LINES" >> $GITHUB_STEP_SUMMARY
+          echo "- **Average Lines per File:** $AVG_LINES_PER_FILE" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Code Quality Issues
+          echo "### ⚠️ Code Quality Issues" >> $GITHUB_STEP_SUMMARY
+          FORCE_UNWRAPS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -not -path "*/UITests/*" -exec grep -l "\w+!\s*\(\.\|\[\|,\|)\|\]\|\}\|;\)" {} \; 2>/dev/null | wc -l | tr -d ' ' || echo "0")
+          PRINT_STATEMENTS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -not -path "*/UITests/*" -exec grep -c "print(" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          TODO_COUNT=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "TODO\|FIXME\|XXX\|HACK" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          FORCE_TRY=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -not -path "*/UITests/*" -exec grep -c "try!" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          echo "- **Force Unwraps:** $FORCE_UNWRAPS files (production code)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Print Statements:** $PRINT_STATEMENTS (should use AppLogger)" >> $GITHUB_STEP_SUMMARY
+          echo "- **TODO/FIXME/XXX/HACK:** $TODO_COUNT comments" >> $GITHUB_STEP_SUMMARY
+          echo "- **Force Try Statements:** $FORCE_TRY" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Code Complexity
+          echo "### 🔍 Code Complexity" >> $GITHUB_STEP_SUMMARY
+          LONG_FUNCTIONS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -not -path "*/UITests/*" -exec awk '/^[[:space:]]*(func|init|var|let)[[:space:]]/ {start=NR; in_func=1} in_func && /^[[:space:]]*}/ {if(NR-start>50) print FILENAME":"start; in_func=0}' {} \; 2>/dev/null | wc -l | tr -d ' ' || echo "0")
+          LARGE_FILES=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -not -path "*/UITests/*" -exec wc -l {} \; 2>/dev/null | awk '$1 > 500 {count++} END {print count+0}' || echo "0")
+          DEEP_NESTING=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -not -path "*/UITests/*" -exec awk '{nesting=gsub(/\{/, ""); nesting-=gsub(/\}/, ""); if(nesting>4) print FILENAME":"NR}' {} \; 2>/dev/null | wc -l | tr -d ' ' || echo "0")
+          echo "- **Long Functions (>50 lines):** $LONG_FUNCTIONS" >> $GITHUB_STEP_SUMMARY
+          echo "- **Large Files (>500 lines):** $LARGE_FILES" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deep Nesting (>4 levels):** $DEEP_NESTING instances" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Code Patterns
+          echo "### 🎯 Code Patterns" >> $GITHUB_STEP_SUMMARY
+          GUARD_STATEMENTS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "guard " {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          IF_LET=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "if let\|if var" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          OPTIONAL_CHAINING=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "?\\." {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          NIL_COALESCING=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "??" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          echo "- **Guard Statements:** $GUARD_STATEMENTS (good practice)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Optional Binding (if let):** $IF_LET" >> $GITHUB_STEP_SUMMARY
+          echo "- **Optional Chaining (?.):** $OPTIONAL_CHAINING" >> $GITHUB_STEP_SUMMARY
+          echo "- **Nil Coalescing (??):** $NIL_COALESCING" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Documentation
+          echo "### 📝 Documentation" >> $GITHUB_STEP_SUMMARY
+          DOCUMENTED_FUNCTIONS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -exec grep -c "///" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          TOTAL_FUNCTIONS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -exec grep -c "^[[:space:]]*func " {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          DOC_COVERAGE=$([ "$TOTAL_FUNCTIONS" -gt 0 ] && echo "scale=1; $DOCUMENTED_FUNCTIONS * 100 / $TOTAL_FUNCTIONS" | bc || echo "0")
+          echo "- **Documented Functions:** $DOCUMENTED_FUNCTIONS / $TOTAL_FUNCTIONS" >> $GITHUB_STEP_SUMMARY
+          echo "- **Documentation Coverage:** ${DOC_COVERAGE}%" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Deprecated APIs
+          echo "### 🚫 Deprecated APIs" >> $GITHUB_STEP_SUMMARY
+          DEPRECATED=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "@available.*deprecated\|#available.*deprecated" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          DISPATCH_QUEUE=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "DispatchQueue\|dispatch_" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          echo "- **Deprecated API Usage:** $DEPRECATED" >> $GITHUB_STEP_SUMMARY
+          echo "- **DispatchQueue Usage:** $DISPATCH_QUEUE (consider async/await)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Test Coverage
+          echo "### 🧪 Test Coverage" >> $GITHUB_STEP_SUMMARY
+          TEST_FILES=$(find . -path "*/Tests/*" -name "*.swift" 2>/dev/null | wc -l | tr -d ' ' || echo "0")
+          TEST_FUNCTIONS=$(find . -path "*/Tests/*" -name "*.swift" -exec grep -c "func test" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
+          echo "- **Test Files:** $TEST_FILES" >> $GITHUB_STEP_SUMMARY
+          echo "- **Test Functions:** $TEST_FUNCTIONS" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Summary
+          echo "### 📋 Summary" >> $GITHUB_STEP_SUMMARY
+          if [ "$FORCE_UNWRAPS" -eq 0 ] && [ "$PRINT_STATEMENTS" -eq 0 ] && [ "$FORCE_TRY" -eq 0 ]; then
+            echo "✅ **Excellent code quality!** No critical issues found." >> $GITHUB_STEP_SUMMARY
+          elif [ "$FORCE_UNWRAPS" -lt 5 ] && [ "$PRINT_STATEMENTS" -lt 10 ]; then
+            echo "⚠️ **Good code quality** with minor issues to address." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Code quality needs improvement.** Consider addressing the issues above." >> $GITHUB_STEP_SUMMARY
+          fi
+      
+      - name: ✅ Validate Resources
+        run: |
+          [ -f "Resources/Assets.xcassets/Contents.json" ] || echo "⚠️ Assets.xcassets missing"
+          [ -f "Resources/Events.json" ] || echo "⚠️ Events.json missing"
+          [ -f "Resources/Resources.json" ] || echo "⚠️ Resources.json missing"
+      
+      - name: ⏱️ Job Duration
+        if: always()
+        run: |
+          DURATION=$(((${{ steps.timer.outputs.result }} - ${{ env.WORKFLOW_START }}) / 1000))
+          echo "⏱️ Post-Build Validation completed in ${DURATION}s"

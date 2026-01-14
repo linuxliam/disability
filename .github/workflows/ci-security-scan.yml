@@ -1,0 +1,44 @@
+name: CI - Security Scan
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    name: 🔒 Security Scan
+    runs-on: macos-14
+    timeout-minutes: 3
+    steps:
+      - name: ⏱️ Start Timer
+        uses: actions/github-script@v7
+        id: timer
+        with:
+          script: |
+            core.exportVariable('WORKFLOW_START', Date.now())
+            return Date.now()
+      
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🔒 Scan for Secrets
+        run: |
+          SECRET_PATTERNS=("api[_-]?key" "secret" "token" "password")
+          for pattern in "${SECRET_PATTERNS[@]}"; do
+            grep -r -i "$pattern" --include="*.swift" --include="*.plist" . 2>/dev/null | grep -v ".git" | head -5 || true
+          done
+      
+      - name: ⏱️ Job Duration
+        if: always()
+        run: |
+          DURATION=$(((${{ steps.timer.outputs.result }} - ${{ env.WORKFLOW_START }}) / 1000))
+          echo "⏱️ Security Scan completed in ${DURATION}s"

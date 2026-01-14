@@ -1,0 +1,52 @@
+name: CI - Validate Project
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+env:
+  XCODE_VERSION: '15.1'
+
+jobs:
+  validate-project:
+    name: ✅ Project Structure Validation
+    runs-on: macos-14
+    timeout-minutes: 3
+    steps:
+      - name: ⏱️ Start Timer
+        uses: actions/github-script@v7
+        id: timer
+        with:
+          script: |
+            core.exportVariable('WORKFLOW_START', Date.now())
+            return Date.now()
+      
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+      
+      - name: ✅ Validate Project
+        run: |
+          [ -f "DisabilityAdvocacy.xcodeproj/project.pbxproj" ] || exit 1
+          [ -f "iOS/Info.plist" ] || exit 1
+          [ -f "macOS/Info.plist" ] || exit 1
+          xcodebuild -list -project DisabilityAdvocacy.xcodeproj || exit 1
+      
+      - name: ⏱️ Job Duration
+        if: always()
+        run: |
+          DURATION=$(((${{ steps.timer.outputs.result }} - ${{ env.WORKFLOW_START }}) / 1000))
+          echo "⏱️ Project Validation completed in ${DURATION}s"

@@ -1,0 +1,67 @@
+name: CI - Validate Dependencies
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+env:
+  XCODE_VERSION: '15.1'
+
+jobs:
+  validate-dependencies:
+    name: 📦 Dependency Validation
+    runs-on: macos-14
+    timeout-minutes: 5
+    outputs:
+      cache-hit: ${{ steps.cache-spm.outputs.cache-hit }}
+    steps:
+      - name: ⏱️ Start Timer
+        uses: actions/github-script@v7
+        id: timer
+        with:
+          script: |
+            core.exportVariable('WORKFLOW_START', Date.now())
+            return Date.now()
+      
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+      
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+      
+      - name: 📦 Cache Swift Package Manager
+        uses: actions/cache@v4
+        id: cache-spm
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+            ~/.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved', '**/project.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+      
+      - name: 📦 Resolve Dependencies
+        if: steps.cache-spm.outputs.cache-hit != 'true'
+        run: |
+          if grep -r "packageReferences" DisabilityAdvocacy.xcodeproj/project.pbxproj > /dev/null 2>&1; then
+            xcodebuild -resolvePackageDependencies -project DisabilityAdvocacy.xcodeproj || exit 1
+          fi
+      
+      - name: ⏱️ Job Duration
+        if: always()
+        run: |
+          DURATION=$(((${{ steps.timer.outputs.result }} - ${{ env.WORKFLOW_START }}) / 1000))
+          CACHE_STATUS=${{ steps.cache-spm.outputs.cache-hit == 'true' && '✅ Cache Hit' || '❌ Cache Miss' }}
+          echo "⏱️ Dependency Validation completed in ${DURATION}s (${CACHE_STATUS})"
