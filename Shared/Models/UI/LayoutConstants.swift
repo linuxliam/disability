@@ -1,4 +1,5 @@
 import SwiftUI
+// Note: ThemeManager is in the same module (Shared) and is accessible without explicit import
 
 /// Layout constants for consistent spacing and sizing
 /// These values are theme-aware and can be adjusted based on accessibility settings

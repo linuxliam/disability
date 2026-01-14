@@ -50,29 +50,27 @@ struct AppCommands: Commands {
         CommandGroup(replacing: .newItem) {}
         
         CommandGroup(after: .newItem) {
-            // Note: Import resources functionality can be added to AppState if needed
-            // Button("Import Resources...") {
-            //     Task { await appState.importResources() }
-            // }
-            // .keyboardShortcut("i", modifiers: [.command, .shift])
+            Button("Import Resources...") {
+                Task { await appState.importResources() }
+            }
+            .keyboardShortcut("i", modifiers: [.command, .shift])
             
-            // Note: Import/Export functionality can be added to AppState if needed
-            // Button("Import Events...") {
-            //     Task { await appState.importEvents() }
-            // }
-            // .keyboardShortcut("i", modifiers: [.command, .option])
+            Button("Import Events...") {
+                Task { await appState.importEvents() }
+            }
+            .keyboardShortcut("i", modifiers: [.command, .option])
             
-            // Divider()
+            Divider()
             
-            // Button("Export Resources...") {
-            //     Task { await appState.exportResources() }
-            // }
-            // .keyboardShortcut("e", modifiers: [.command, .shift])
+            Button("Export Resources...") {
+                Task { await appState.exportResources() }
+            }
+            .keyboardShortcut("e", modifiers: [.command, .shift])
             
-            // Button("Export Events...") {
-            //     Task { await appState.exportEvents() }
-            // }
-            // .keyboardShortcut("e", modifiers: [.command, .option])
+            Button("Export Events...") {
+                Task { await appState.exportEvents() }
+            }
+            .keyboardShortcut("e", modifiers: [.command, .option])
         }
         
         CommandGroup(replacing: .textEditing) {

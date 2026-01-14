@@ -111,9 +111,17 @@ extension View {
                         Text(String(localized: "Event not found"))
                     }
                 case .post:
-                    Text(String(localized: "Post detail view not implemented"))
+                    if let postId = result.postId {
+                        PostDetailViewWrapper(postId: postId)
+                    } else {
+                        Text(String(localized: "Post not found"))
+                    }
                 case .article:
-                    Text(String(localized: "Article detail view not implemented"))
+                    if let articleId = result.articleId {
+                        ArticleDetailViewWrapper(articleId: articleId)
+                    } else {
+                        Text(String(localized: "Article not found"))
+                    }
                 }
             }
             .navigationDestination(for: AppTab.self) { tab in

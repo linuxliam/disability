@@ -2,22 +2,81 @@
 //  DataExportView.swift
 //  Disability Advocacy
 //
-//  View for exporting local data changes.
+//  View for importing and exporting data files.
 //
 
 import SwiftUI
 
 @MainActor
 struct DataExportView: View {
+    @Environment(AppState.self) private var appState
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text(String(localized: "Export local data files to use as bundled resources in the project."))
+        VStack(alignment: .leading, spacing: 20) {
+            Text(String(localized: "Import and export data files for backup or sharing."))
                 .font(.subheadline)
                 .foregroundStyle(Color.secondaryText)
             
-            HStack(spacing: 12) {
-                exportButton(filename: "Resources.json", icon: "book.fill", color: .triadPrimary)
-                exportButton(filename: "Events.json", icon: "calendar", color: .triadSecondary)
+            #if os(macOS)
+            // Import Section
+            VStack(alignment: .leading, spacing: 12) {
+                Text(String(localized: "Import"))
+                    .font(.headline)
+                    .foregroundStyle(Color.primaryText)
+                
+                HStack(spacing: 12) {
+                    importButton(
+                        title: String(localized: "Import Resources"),
+                        icon: "square.and.arrow.down.fill",
+                        color: .triadPrimary
+                    ) {
+                        Task {
+                            await appState.importResources()
+                        }
+                    }
+                    
+                    importButton(
+                        title: String(localized: "Import Events"),
+                        icon: "square.and.arrow.down.fill",
+                        color: .triadSecondary
+                    ) {
+                        Task {
+                            await appState.importEvents()
+                        }
+                    }
+                }
+            }
+            
+            Divider()
+            #endif
+            
+            // Export Section
+            VStack(alignment: .leading, spacing: 12) {
+                Text(String(localized: "Export"))
+                    .font(.headline)
+                    .foregroundStyle(Color.primaryText)
+                
+                HStack(spacing: 12) {
+                    exportButton(
+                        title: String(localized: "Export Resources"),
+                        icon: "square.and.arrow.up.fill",
+                        color: .triadPrimary
+                    ) {
+                        Task {
+                            await appState.exportResources()
+                        }
+                    }
+                    
+                    exportButton(
+                        title: String(localized: "Export Events"),
+                        icon: "square.and.arrow.up.fill",
+                        color: .triadSecondary
+                    ) {
+                        Task {
+                            await appState.exportEvents()
+                        }
+                    }
+                }
             }
         }
         .padding(LayoutConstants.cardPadding)
@@ -29,38 +88,41 @@ struct DataExportView: View {
         )
     }
     
+    #if os(macOS)
     @MainActor
-    private func exportButton(filename: String, icon: String, color: Color) -> some View {
-        let fileURL = DataManager.shared.getJSONStorageManager().getLocalFileURL(for: filename)
-        
-        return Group {
-            if let url = fileURL {
-                ShareLink(item: url) {
-                    HStack(spacing: 8) {
-                        Image(systemName: icon)
-                        Text(filename)
-                            .font(.subheadline.weight(.semibold))
-                    }
-                    .padding(.vertical, 12)
-                    .padding(.horizontal, 16)
-                    .frame(maxWidth: .infinity)
-                    .background(color.opacity(0.1))
-                    .foregroundStyle(color)
-                    .cornerRadius(10)
-                }
-            } else {
-                HStack(spacing: 8) {
-                    Image(systemName: "exclamationmark.triangle")
-                    Text(filename)
-                        .font(.subheadline)
-                }
-                .padding(.vertical, 12)
-                .padding(.horizontal, 16)
-                .frame(maxWidth: .infinity)
-                .background(Color.secondary.opacity(0.1))
-                .foregroundStyle(.secondary)
-                .cornerRadius(10)
+    private func importButton(title: String, icon: String, color: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: icon)
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
             }
+            .padding(.vertical, 12)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity)
+            .background(color.opacity(0.1))
+            .foregroundStyle(color)
+            .cornerRadius(10)
         }
+        .buttonStyle(.plain)
+    }
+    #endif
+    
+    @MainActor
+    private func exportButton(title: String, icon: String, color: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: icon)
+                Text(title)
+                    .font(.subheadline.weight(.semibold))
+            }
+            .padding(.vertical, 12)
+            .padding(.horizontal, 16)
+            .frame(maxWidth: .infinity)
+            .background(color.opacity(0.1))
+            .foregroundStyle(color)
+            .cornerRadius(10)
+        }
+        .buttonStyle(.plain)
     }
 }
