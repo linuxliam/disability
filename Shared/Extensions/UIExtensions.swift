@@ -90,3 +90,4 @@ extension View {
             .foregroundStyle(Color.secondaryText) // Keep legacy for now, will migrate gradually
     }
 }
+

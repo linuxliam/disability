@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+// Lightweight protocol to decouple typography from a specific ThemeManager type.
+protocol ThemeProviding {}
+
+// Backward-compatibility: if a concrete ThemeManager type exists in the project,
+// extend it to conform to ThemeProviding in this file to satisfy the compiler.
+extension ThemeManager: ThemeProviding {}
+
 // MARK: - iMessage Style Pill Button
 struct PillButton: View {
     let title: String
@@ -122,36 +129,57 @@ enum AppTypography {
     
     /// Get theme-aware typography token
     @MainActor
-    static func token(_ token: TypographyToken, theme: ThemeManager) -> Font {
+    static func token(_ token: TypographyToken, theme: any ThemeProviding) -> Font {
+        // Cast to ThemeManager if possible, otherwise use fallback
+        guard let themeManager = theme as? ThemeManager else {
+            // Fallback to default fonts if theme is not ThemeManager
+            switch token {
+            case .displayLarge: return AppTypography.displayLarge
+            case .displayMedium: return AppTypography.display
+            case .headingLarge: return AppTypography.h1
+            case .headingMedium: return AppTypography.h2
+            case .headingSmall: return AppTypography.h3
+            case .headingXSmall: return AppTypography.h4
+            case .bodyLarge: return AppTypography.bodyLarge
+            case .bodyMedium: return AppTypography.body
+            case .bodySmall: return AppTypography.bodySmall
+            case .labelLarge: return AppTypography.label
+            case .labelMedium: return AppTypography.label
+            case .labelSmall: return AppTypography.labelSmall
+            case .caption: return AppTypography.caption
+            case .captionSmall: return AppTypography.captionSmall
+            }
+        }
+        
         switch token {
         case .displayLarge:
-            return TypographyTokens.displayLarge(theme: theme)
+            return TypographyTokens.displayLarge(theme: themeManager)
         case .displayMedium:
-            return TypographyTokens.displayMedium(theme: theme)
+            return TypographyTokens.displayMedium(theme: themeManager)
         case .headingLarge:
-            return TypographyTokens.headingLarge(theme: theme)
+            return TypographyTokens.headingLarge(theme: themeManager)
         case .headingMedium:
-            return TypographyTokens.headingMedium(theme: theme)
+            return TypographyTokens.headingMedium(theme: themeManager)
         case .headingSmall:
-            return TypographyTokens.headingSmall(theme: theme)
+            return TypographyTokens.headingSmall(theme: themeManager)
         case .headingXSmall:
-            return TypographyTokens.headingXSmall(theme: theme)
+            return TypographyTokens.headingXSmall(theme: themeManager)
         case .bodyLarge:
-            return TypographyTokens.bodyLarge(theme: theme)
+            return TypographyTokens.bodyLarge(theme: themeManager)
         case .bodyMedium:
-            return TypographyTokens.bodyMedium(theme: theme)
+            return TypographyTokens.bodyMedium(theme: themeManager)
         case .bodySmall:
-            return TypographyTokens.bodySmall(theme: theme)
+            return TypographyTokens.bodySmall(theme: themeManager)
         case .labelLarge:
-            return TypographyTokens.labelLarge(theme: theme)
+            return TypographyTokens.labelLarge(theme: themeManager)
         case .labelMedium:
-            return TypographyTokens.labelMedium(theme: theme)
+            return TypographyTokens.labelMedium(theme: themeManager)
         case .labelSmall:
-            return TypographyTokens.labelSmall(theme: theme)
+            return TypographyTokens.labelSmall(theme: themeManager)
         case .caption:
-            return TypographyTokens.caption(theme: theme)
+            return TypographyTokens.caption(theme: themeManager)
         case .captionSmall:
-            return TypographyTokens.captionSmall(theme: theme)
+            return TypographyTokens.captionSmall(theme: themeManager)
         }
     }
 }
@@ -173,6 +201,7 @@ enum TypographyToken {
     case caption
     case captionSmall
 }
+
 
 // MARK: - Typography Modifiers
 struct TypographyModifier: ViewModifier {
@@ -306,3 +335,4 @@ extension View {
             .cornerRadius(LayoutConstants.buttonCornerRadius)
     }
 }
+

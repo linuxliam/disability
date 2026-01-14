@@ -6,6 +6,11 @@ DerivedData/
 *.xcuserstate
 *.xcuserdatad
 
+# Build logs
+build-*.log
+build-audit-*.log
+build-*-issues.log
+
 # Xcode
 *.xcbkptlist
 *.xcscmblueprint
