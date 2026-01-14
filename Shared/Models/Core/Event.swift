@@ -63,23 +63,30 @@ enum EventDateFilter: String, CaseIterable {
 // MARK: - Event Filtering Extension
 extension Array where Element == Event {
     /// Filters events by category and date filter, sorts by date
-    func filtered(category: EventCategory?, dateFilter: EventDateFilter) -> [Event] {
-        var filtered = self
-        
-        if let category = category {
-            filtered = filtered.filter { $0.category == category }
+    /// - Parameters:
+    ///   - category: Optional category filter
+    ///   - dateFilter: Date filter type (all, upcoming, past)
+    ///   - currentDate: Current date for filtering (defaults to Date(), but can be provided for testing/consistency)
+    func filtered(category: EventCategory?, dateFilter: EventDateFilter, currentDate: Date = Date()) -> [Event] {
+        // Single-pass filtering: combine all filters in one operation
+        let filtered = self.filter { event in
+            // Category filter
+            if let category = category, event.category != category {
+                return false
+            }
+            
+            // Date filter
+            switch dateFilter {
+            case .all:
+                return true
+            case .upcoming:
+                return event.date >= currentDate
+            case .past:
+                return event.date < currentDate
+            }
         }
         
-        let now = Date()
-        switch dateFilter {
-        case .all:
-            break
-        case .upcoming:
-            filtered = filtered.filter { $0.date >= now }
-        case .past:
-            filtered = filtered.filter { $0.date < now }
-        }
-        
+        // Sort once at the end
         return filtered.sorted { $0.date < $1.date }
     }
 }
