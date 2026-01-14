@@ -1,0 +1,791 @@
+Command line invocation:
+    /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project DisabilityAdvocacy.xcodeproj -scheme DisabilityAdvocacy-macOS -configuration Debug clean build
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:macOS, arch:arm64, id:00006030-0004691A3428001C, name:My Mac }
+{ platform:macOS, arch:x86_64, id:00006030-0004691A3428001C, name:My Mac }
+{ platform:macOS, name:Any Mac }
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+** CLEAN SUCCEEDED **
+
+--- xcodebuild: WARNING: Using the first of multiple matching destinations:
+{ platform:macOS, arch:arm64, id:00006030-0004691A3428001C, name:My Mac }
+{ platform:macOS, arch:x86_64, id:00006030-0004691A3428001C, name:My Mac }
+{ platform:macOS, name:Any Mac }
+ComputePackagePrebuildTargetDependencyGraph
+
+Prepare packages
+
+CreateBuildRequest
+
+SendProjectDescription
+
+CreateBuildOperation
+
+ComputeTargetDependencyGraph
+note: Building targets in dependency order
+note: Target dependency graph (1 target)
+    Target 'DisabilityAdvocacy-macOS' in project 'DisabilityAdvocacy' (no dependencies)
+
+GatherProvisioningInputs
+
+CreateBuildDescription
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -v -E -dM -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -x c -c /dev/null
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/usr/bin/actool --version --output-format xml1
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc --version
+
+ExecuteExternalTool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ld -version_details
+
+Build description signature: 61abe5c27c34b97490b87c422da957a0
+Build description path: /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/XCBuildData/61abe5c27c34b97490b87c422da957a0.xcbuilddata
+ClangStatCache /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk /Users/liammatthews/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/macosx26.2-25C57-3885c01c3e6b6a337905948deab2002e00fa09913b459cbbc988d1f6730289ae.sdkstatcache
+    cd /Users/liammatthews/Desktop/APP/DA/DisabilityAdvocacy.xcodeproj
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang-stat-cache /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -o /Users/liammatthews/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/macosx26.2-25C57-3885c01c3e6b6a337905948deab2002e00fa09913b459cbbc988d1f6730289ae.sdkstatcache
+
+CreateBuildDirectory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products
+    cd /Users/liammatthews/Desktop/APP/DA/DisabilityAdvocacy.xcodeproj
+    builtin-create-build-directory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products
+
+CreateBuildDirectory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex
+    cd /Users/liammatthews/Desktop/APP/DA/DisabilityAdvocacy.xcodeproj
+    builtin-create-build-directory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex
+
+CreateBuildDirectory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+    cd /Users/liammatthews/Desktop/APP/DA/DisabilityAdvocacy.xcodeproj
+    builtin-create-build-directory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/ExplicitPrecompiledModules
+    cd /Users/liammatthews/Desktop/APP/DA/DisabilityAdvocacy.xcodeproj
+    builtin-create-build-directory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/ExplicitPrecompiledModules
+
+CreateBuildDirectory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/EagerLinkingTBDs/Debug
+    cd /Users/liammatthews/Desktop/APP/DA/DisabilityAdvocacy.xcodeproj
+    builtin-create-build-directory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/EagerLinkingTBDs/Debug
+
+CreateBuildDirectory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug
+    cd /Users/liammatthews/Desktop/APP/DA/DisabilityAdvocacy.xcodeproj
+    builtin-create-build-directory /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-a476190f0f7449ce656518bf9ee59410-VFS/all-product-headers.yaml
+    cd /Users/liammatthews/Desktop/APP/DA/DisabilityAdvocacy.xcodeproj
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-a476190f0f7449ce656518bf9ee59410-VFS/all-product-headers.yaml
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.DependencyStaticMetadataFileList (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.DependencyStaticMetadataFileList
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-own-target-headers.hmap (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-own-target-headers.hmap
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-project-headers.hmap (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-project-headers.hmap
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.hmap (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.hmap
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-generated-files.hmap (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-generated-files.hmap
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS-OutputFileMap.json (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS-OutputFileMap.json
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftFileList (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftFileList
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_const_extract_protocols.json (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_const_extract_protocols.json
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftConstValuesFileList (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftConstValuesFileList
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.LinkFileList (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.LinkFileList
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-all-target-headers.hmap (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-all-target-headers.hmap
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.DependencyMetadataFileList (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.DependencyMetadataFileList
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-all-non-framework-target-headers.hmap (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-all-non-framework-target-headers.hmap
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-DebugDylibPath-normal-arm64.txt (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-DebugDylibPath-normal-arm64.txt
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-DebugDylibInstallName-normal-arm64.txt (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-DebugDylibInstallName-normal-arm64.txt
+
+WriteAuxiliaryFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/Entitlements.plist (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    write-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/Entitlements.plist
+
+MkDir /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /bin/mkdir -p /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app
+
+MkDir /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /bin/mkdir -p /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents
+
+MkDir /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /bin/mkdir -p /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources
+
+MkDir /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /bin/mkdir -p /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS
+
+ProcessProductPackaging /Users/liammatthews/Desktop/APP/DA/macOS/AdvocacyApp.entitlements /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.app.xcent (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+    Entitlements:
+    
+    {
+    "com.apple.security.app-sandbox" = 1;
+    "com.apple.security.files.downloads.read-write" = 1;
+    "com.apple.security.files.movies.read-write" = 0;
+    "com.apple.security.files.music.read-write" = 0;
+    "com.apple.security.files.pictures.read-write" = 0;
+    "com.apple.security.files.user-selected.read-write" = 1;
+    "com.apple.security.get-task-allow" = 1;
+    "com.apple.security.network.client" = 1;
+    "com.apple.security.network.server" = 0;
+    "com.apple.security.personal-information.addressbook" = 0;
+    "com.apple.security.personal-information.calendars" = 1;
+}
+    
+    builtin-productPackagingUtility /Users/liammatthews/Desktop/APP/DA/macOS/AdvocacyApp.entitlements -entitlements -format xml -o /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.app.xcent
+
+ProcessProductPackagingDER /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.app.xcent /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.app.xcent.der (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /usr/bin/derq query -f xml -i /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.app.xcent -o /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.app.xcent.der --raw
+
+Ld /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/__preview.dylib normal (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos15.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -O0 -L/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -F/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -install_name @rpath/DisabilityAdvocacy-macOS.debug.dylib -rdynamic -Xlinker -no_deduplicate -Xlinker -dependency_info -Xlinker /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_dependency_info.dat -Xlinker -no_adhoc_codesign -o /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/__preview.dylib
+
+GenerateAssetSymbols /Users/liammatthews/Desktop/APP/DA/Resources/Assets.xcassets (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/liammatthews/Desktop/APP/DA/Resources/Assets.xcassets --compile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources --output-format human-readable-text --notices --warnings --export-dependency-info /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_dependencies --output-partial-info-plist /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_generated_info.plist --app-icon AppIcon --enable-on-demand-resources NO --development-region en --target-device mac --minimum-deployment-target 15.0 --platform macosx --bundle-identifier com.disabilityadvocacy.macos --generate-swift-asset-symbol-extensions NO --generate-swift-asset-symbols /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/GeneratedAssetSymbols.swift --generate-objc-asset-symbols /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/GeneratedAssetSymbols.h --generate-asset-symbol-index /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/* com.apple.actool.compilation-results */
+/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/GeneratedAssetSymbols-Index.plist
+/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/GeneratedAssetSymbols.h
+/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/GeneratedAssetSymbols.swift
+
+
+CpResource /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources/Resources.json /Users/liammatthews/Desktop/APP/DA/Resources/Resources.json (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/liammatthews/Desktop/APP/DA/Resources/Resources.json /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources
+
+CpResource /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources/PrivacyInfo.xcprivacy /Users/liammatthews/Desktop/APP/DA/Resources/PrivacyInfo.xcprivacy (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/liammatthews/Desktop/APP/DA/Resources/PrivacyInfo.xcprivacy /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources
+
+CpResource /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources/Localizable.xcstrings /Users/liammatthews/Desktop/APP/DA/Resources/Localizable.xcstrings (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/liammatthews/Desktop/APP/DA/Resources/Localizable.xcstrings /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources
+
+CpResource /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources/Events.json /Users/liammatthews/Desktop/APP/DA/Resources/Events.json (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks /Users/liammatthews/Desktop/APP/DA/Resources/Events.json /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources
+
+MkDir /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_output/thinned (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /bin/mkdir -p /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_output/thinned
+
+MkDir /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_output/unthinned (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /bin/mkdir -p /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_output/unthinned
+
+CompileAssetCatalogVariant thinned /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources /Users/liammatthews/Desktop/APP/DA/Resources/Assets.xcassets (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /Applications/Xcode.app/Contents/Developer/usr/bin/actool /Users/liammatthews/Desktop/APP/DA/Resources/Assets.xcassets --compile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_output/thinned --output-format human-readable-text --notices --warnings --export-dependency-info /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_dependencies_thinned --output-partial-info-plist /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_generated_info.plist_thinned --app-icon AppIcon --enable-on-demand-resources NO --development-region en --target-device mac --minimum-deployment-target 15.0 --platform macosx
+/* com.apple.actool.compilation-results */
+/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_generated_info.plist_thinned
+/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_output/thinned/Assets.car
+
+
+SwiftDriver DisabilityAdvocacy-macOS normal arm64 com.apple.xcode.tools.swift.compiler (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-SwiftDriver -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name DisabilityAdvocacy_macOS -Onone -enforce-exclusivity\=checked @/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-macos15.0 -g -module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -F /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -emit-localized-strings -emit-localized-strings-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64 -c -j11 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/macosx26.2-25C57-3885c01c3e6b6a337905948deab2002e00fa09913b459cbbc988d1f6730289ae.sdkstatcache -output-file-map /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_const_extract_protocols.json -Xcc -iquote -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-generated-files.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-own-target-headers.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-all-target-headers.hmap -Xcc -iquote -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-project-headers.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/include -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources-normal/arm64 -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/arm64 -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS-Swift.h -working-directory /Users/liammatthews/Desktop/APP/DA -experimental-emit-module-separately -disable-cmo
+
+LinkAssetCatalog /Users/liammatthews/Desktop/APP/DA/Resources/Assets.xcassets (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-linkAssetCatalog --thinned /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_output/thinned --thinned-dependencies /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_dependencies_thinned --thinned-info-plist-content /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_generated_info.plist_thinned --unthinned /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_output/unthinned --unthinned-dependencies /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_dependencies_unthinned --unthinned-info-plist-content /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_generated_info.plist_unthinned --output /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources --plist-output /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_generated_info.plist
+note: Emplaced /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources/Assets.car (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+ProcessInfoPlistFile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Info.plist /Users/liammatthews/Desktop/APP/DA/macOS/Info.plist (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-infoPlistUtility /Users/liammatthews/Desktop/APP/DA/macOS/Info.plist -producttype com.apple.product-type.application -genpkginfo /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/PkgInfo -expandbuildsettings -platform macosx -additionalcontentfile /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/assetcatalog_generated_info.plist -o /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Info.plist
+
+SwiftCompile normal arm64 Compiling\ CalendarManager.swift,\ SystemSettingsManager.swift,\ String+Extensions.swift,\ Image+Extensions.swift,\ View+Typography.swift,\ UIExtensions.swift,\ PlatformUI.swift,\ AppComponents.swift,\ AnimationHelpers.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/CalendarManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/SystemSettingsManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Extensions/String+Extensions.swift /Users/liammatthews/Desktop/APP/DA/Shared/Extensions/Image+Extensions.swift /Users/liammatthews/Desktop/APP/DA/Shared/Extensions/View+Typography.swift /Users/liammatthews/Desktop/APP/DA/Shared/Extensions/UIExtensions.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/PlatformUI.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppComponents.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AnimationHelpers.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/CalendarManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/SystemSettingsManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Extensions/String+Extensions.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Extensions/Image+Extensions.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Extensions/View+Typography.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Extensions/UIExtensions.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/PlatformUI.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppComponents.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AnimationHelpers.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ ProfileView.swift,\ AccessibilitySettingsView.swift,\ KeyboardShortcutsView.swift,\ AdminDashboardView.swift,\ EventManagementViews.swift,\ DataExportView.swift,\ ResourceManagementViews.swift,\ AppDetailContainer.swift,\ NavigationViews.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Settings/ProfileView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Settings/AccessibilitySettingsView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Settings/KeyboardShortcutsView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/AdminDashboardView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/EventManagementViews.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/DataExportView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/ResourceManagementViews.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Navigation/AppDetailContainer.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Navigation/NavigationViews.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Settings/ProfileView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Settings/AccessibilitySettingsView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Settings/KeyboardShortcutsView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/AdminDashboardView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/EventManagementViews.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/DataExportView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Admin/ResourceManagementViews.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Navigation/AppDetailContainer.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Navigation/NavigationViews.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ DataManager.swift,\ WindowManager.swift,\ UserManager.swift,\ JSONStorageManager.swift,\ CacheManager.swift,\ HapticManager.swift,\ FileOperationsManager.swift,\ NotificationManager.swift,\ NetworkManager.swift,\ EventsManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/DataManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/WindowManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/UserManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/JSONStorageManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/CacheManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/HapticManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/FileOperationsManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/NotificationManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/NetworkManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/EventsManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/DataManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/WindowManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/UserManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/JSONStorageManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/CacheManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/HapticManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/FileOperationsManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/NotificationManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/NetworkManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/EventsManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ View+Layout.swift,\ AccessibilityHelpers.swift,\ AppTheme.swift,\ AppConstants.swift,\ DragDropManager.swift,\ Colors.swift,\ AppLogger.swift,\ Placeholders.swift,\ SearchHighlighting.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/View+Layout.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AccessibilityHelpers.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppTheme.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppConstants.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/DragDropManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/Colors.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppLogger.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/Placeholders.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/SearchHighlighting.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/View+Layout.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AccessibilityHelpers.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppTheme.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppConstants.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/DragDropManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/Colors.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/AppLogger.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/Placeholders.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/SearchHighlighting.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+/Users/liammatthews/Desktop/APP/DA/Shared/Utilities/SearchHighlighting.swift:70:17: warning: initialization of immutable value 'lowerQuery' was never used; consider replacing with assignment to '_' or removing it
+            let lowerQuery = query.lowercased()
+            ~~~~^~~~~~~~~~
+            _
+
+SwiftCompile normal arm64 Compiling\ FeedbackViewModel.swift,\ HomeViewModel.swift,\ EventsViewModel.swift,\ BaseViewModel.swift,\ SearchViewModel.swift,\ NewsViewModel.swift,\ CommunityViewModel.swift,\ ResourcesViewModel.swift,\ LetterTemplateViewModel.swift,\ ResourcesManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/FeedbackViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/HomeViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/EventsViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/BaseViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/SearchViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/NewsViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/CommunityViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/ResourcesViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/LetterTemplateViewModel.swift /Users/liammatthews/Desktop/APP/DA/Shared/Managers/ResourcesManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/FeedbackViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/HomeViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/EventsViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/BaseViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/SearchViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/NewsViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/CommunityViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/ResourcesViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/ViewModels/LetterTemplateViewModel.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Managers/ResourcesManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ SearchView.swift,\ AppSectionHeader.swift,\ ProfileComponents.swift,\ AppChip.swift,\ FeedbackComponents.swift,\ AppRow.swift,\ StatsComponents.swift,\ SkeletonComponents.swift,\ ProfileToolbarButton.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Search/SearchView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/AppSectionHeader.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/ProfileComponents.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/AppChip.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/FeedbackComponents.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/AppRow.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/StatsComponents.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/SkeletonComponents.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/ProfileToolbarButton.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Search/SearchView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/AppSectionHeader.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/ProfileComponents.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/AppChip.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/FeedbackComponents.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/AppRow.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/StatsComponents.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/SkeletonComponents.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/ProfileToolbarButton.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ CreatePostView.swift,\ AdvocacyToolsView.swift,\ LetterTemplateView.swift,\ NewsView.swift,\ RightsKnowledgeBaseView.swift,\ EventsView.swift,\ CommunityView.swift,\ LaunchScreenView.swift,\ OnboardingView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/CreatePostView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/AdvocacyToolsView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/LetterTemplateView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/NewsView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/RightsKnowledgeBaseView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/EventsView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/CommunityView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Onboarding/LaunchScreenView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Onboarding/OnboardingView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/CreatePostView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/AdvocacyToolsView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/LetterTemplateView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/NewsView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/RightsKnowledgeBaseView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/EventsView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/CommunityView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Onboarding/LaunchScreenView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Onboarding/OnboardingView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ NavigationModels.swift,\ PersistentModels.swift,\ AdvocacyApp.swift,\ ContextualMenuExtensions.swift,\ TooltipExtensions.swift,\ AccessibilityExtensions.swift,\ HomeView.swift,\ ContentView.swift,\ GeneratedAssetSymbols.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Navigation/NavigationModels.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Persistence/PersistentModels.swift /Users/liammatthews/Desktop/APP/DA/macOS/AdvocacyApp.swift /Users/liammatthews/Desktop/APP/DA/macOS/Extensions/ContextualMenuExtensions.swift /Users/liammatthews/Desktop/APP/DA/macOS/Extensions/TooltipExtensions.swift /Users/liammatthews/Desktop/APP/DA/macOS/Extensions/AccessibilityExtensions.swift /Users/liammatthews/Desktop/APP/DA/macOS/Views/HomeView.swift /Users/liammatthews/Desktop/APP/DA/macOS/Views/ContentView.swift /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Navigation/NavigationModels.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Persistence/PersistentModels.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/macOS/AdvocacyApp.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/macOS/Extensions/ContextualMenuExtensions.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/macOS/Extensions/TooltipExtensions.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/macOS/Extensions/AccessibilityExtensions.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/macOS/Views/HomeView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/macOS/Views/ContentView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/GeneratedAssetSymbols.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftEmitModule normal arm64 Emitting\ module\ for\ DisabilityAdvocacy_macOS (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+EmitSwiftModule normal arm64 (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ AppState.swift,\ AppColorPalette.swift,\ AccessibilitySettings.swift,\ ThemeManager.swift,\ ThemeConfiguration.swift,\ ColorTokens.swift,\ TypographyTokens.swift,\ ButtonStyles.swift,\ LayoutConstants.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AppState.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AppColorPalette.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AccessibilitySettings.swift /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/ThemeManager.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/ThemeConfiguration.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/ColorTokens.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/TypographyTokens.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/ButtonStyles.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/LayoutConstants.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AppState.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AppColorPalette.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AccessibilitySettings.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Utilities/ThemeManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/ThemeConfiguration.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/ColorTokens.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/TypographyTokens.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/ButtonStyles.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/LayoutConstants.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ FeatureHighlight.swift,\ EmptyStateView.swift,\ CardViews.swift,\ EnhancedSearchBar.swift,\ EventSkeletonRow.swift,\ LoadingView.swift,\ AppEmptyState.swift,\ ResourcesView.swift,\ FavoritesView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/FeatureHighlight.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/EmptyStateView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/CardViews.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/EnhancedSearchBar.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/EventSkeletonRow.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/LoadingView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/AppEmptyState.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/ResourcesView.swift /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/FavoritesView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/FeatureHighlight.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/EmptyStateView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/CardViews.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/EnhancedSearchBar.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/EventSkeletonRow.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/LoadingView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Components/AppEmptyState.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/ResourcesView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Views/Main/FavoritesView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 Compiling\ AdaptiveLayout.swift,\ CommunityPost.swift,\ Event.swift,\ SearchResult.swift,\ AppError.swift,\ User.swift,\ Resource.swift,\ RightsInfo.swift,\ LetterTemplate.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AdaptiveLayout.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/CommunityPost.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/Event.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/SearchResult.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/AppError.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/User.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/Resource.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/RightsInfo.swift /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/LetterTemplate.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/UI/AdaptiveLayout.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/CommunityPost.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/Event.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/SearchResult.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/AppError.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/User.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/Resource.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/RightsInfo.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftCompile normal arm64 /Users/liammatthews/Desktop/APP/DA/Shared/Models/Core/LetterTemplate.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+
+SwiftDriverJobDiscovery normal arm64 Compiling View+Layout.swift, AccessibilityHelpers.swift, AppTheme.swift, AppConstants.swift, DragDropManager.swift, Colors.swift, AppLogger.swift, Placeholders.swift, SearchHighlighting.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling CalendarManager.swift, SystemSettingsManager.swift, String+Extensions.swift, Image+Extensions.swift, View+Typography.swift, UIExtensions.swift, PlatformUI.swift, AppComponents.swift, AnimationHelpers.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling AppState.swift, AppColorPalette.swift, AccessibilitySettings.swift, ThemeManager.swift, ThemeConfiguration.swift, ColorTokens.swift, TypographyTokens.swift, ButtonStyles.swift, LayoutConstants.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling DataManager.swift, WindowManager.swift, UserManager.swift, JSONStorageManager.swift, CacheManager.swift, HapticManager.swift, FileOperationsManager.swift, NotificationManager.swift, NetworkManager.swift, EventsManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Emitting module for DisabilityAdvocacy_macOS (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriver\ Compilation\ Requirements DisabilityAdvocacy-macOS normal arm64 com.apple.xcode.tools.swift.compiler (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-Swift-Compilation-Requirements -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name DisabilityAdvocacy_macOS -Onone -enforce-exclusivity\=checked @/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-macos15.0 -g -module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -F /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -emit-localized-strings -emit-localized-strings-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64 -c -j11 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/macosx26.2-25C57-3885c01c3e6b6a337905948deab2002e00fa09913b459cbbc988d1f6730289ae.sdkstatcache -output-file-map /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_const_extract_protocols.json -Xcc -iquote -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-generated-files.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-own-target-headers.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-all-target-headers.hmap -Xcc -iquote -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-project-headers.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/include -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources-normal/arm64 -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/arm64 -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS-Swift.h -working-directory /Users/liammatthews/Desktop/APP/DA -experimental-emit-module-separately -disable-cmo
+
+SwiftMergeGeneratedHeaders /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/DisabilityAdvocacy_macOS-Swift.h /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS-Swift.h (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-swiftHeaderTool -arch arm64 /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS-Swift.h -o /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/DisabilityAdvocacy_macOS-Swift.h
+
+Copy /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy_macOS.swiftmodule/arm64-apple-macos.swiftdoc /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftdoc (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftdoc /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy_macOS.swiftmodule/arm64-apple-macos.swiftdoc
+
+Copy /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy_macOS.swiftmodule/arm64-apple-macos.swiftmodule /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftmodule (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftmodule /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy_macOS.swiftmodule/arm64-apple-macos.swiftmodule
+
+Copy /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy_macOS.swiftmodule/arm64-apple-macos.abi.json /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.abi.json (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.abi.json /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy_macOS.swiftmodule/arm64-apple-macos.abi.json
+
+Copy /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy_macOS.swiftmodule/Project/arm64-apple-macos.swiftsourceinfo /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftsourceinfo (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-copy -exclude .DS_Store -exclude CVS -exclude .svn -exclude .git -exclude .hg -resolve-src-symlinks -rename /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftsourceinfo /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy_macOS.swiftmodule/Project/arm64-apple-macos.swiftsourceinfo
+
+SwiftDriverJobDiscovery normal arm64 Compiling NavigationModels.swift, PersistentModels.swift, AdvocacyApp.swift, ContextualMenuExtensions.swift, TooltipExtensions.swift, AccessibilityExtensions.swift, HomeView.swift, ContentView.swift, GeneratedAssetSymbols.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling FeedbackViewModel.swift, HomeViewModel.swift, EventsViewModel.swift, BaseViewModel.swift, SearchViewModel.swift, NewsViewModel.swift, CommunityViewModel.swift, ResourcesViewModel.swift, LetterTemplateViewModel.swift, ResourcesManager.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling AdaptiveLayout.swift, CommunityPost.swift, Event.swift, SearchResult.swift, AppError.swift, User.swift, Resource.swift, RightsInfo.swift, LetterTemplate.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling SearchView.swift, AppSectionHeader.swift, ProfileComponents.swift, AppChip.swift, FeedbackComponents.swift, AppRow.swift, StatsComponents.swift, SkeletonComponents.swift, ProfileToolbarButton.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling ProfileView.swift, AccessibilitySettingsView.swift, KeyboardShortcutsView.swift, AdminDashboardView.swift, EventManagementViews.swift, DataExportView.swift, ResourceManagementViews.swift, AppDetailContainer.swift, NavigationViews.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling FeatureHighlight.swift, EmptyStateView.swift, CardViews.swift, EnhancedSearchBar.swift, EventSkeletonRow.swift, LoadingView.swift, AppEmptyState.swift, ResourcesView.swift, FavoritesView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriverJobDiscovery normal arm64 Compiling CreatePostView.swift, AdvocacyToolsView.swift, LetterTemplateView.swift, NewsView.swift, RightsKnowledgeBaseView.swift, EventsView.swift, CommunityView.swift, LaunchScreenView.swift, OnboardingView.swift (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+SwiftDriver\ Compilation DisabilityAdvocacy-macOS normal arm64 com.apple.xcode.tools.swift.compiler (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-Swift-Compilation -- /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/swiftc -module-name DisabilityAdvocacy_macOS -Onone -enforce-exclusivity\=checked @/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftFileList -DDEBUG -enable-bare-slash-regex -enable-experimental-feature DebugDescriptionMacro -sdk /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -target arm64-apple-macos15.0 -g -module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -Xfrontend -serialize-debugging-options -enable-testing -index-store-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Index.noindex/DataStore -Xcc -D_LIBCPP_HARDENING_MODE\=_LIBCPP_HARDENING_MODE_DEBUG -swift-version 5 -I /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -F /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -emit-localized-strings -emit-localized-strings-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64 -c -j11 -enable-batch-mode -incremental -Xcc -ivfsstatcache -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/SDKStatCaches.noindex/macosx26.2-25C57-3885c01c3e6b6a337905948deab2002e00fa09913b459cbbc988d1f6730289ae.sdkstatcache -output-file-map /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS-OutputFileMap.json -use-frontend-parseable-output -save-temps -no-color-diagnostics -explicit-module-build -module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/SwiftExplicitPrecompiledModules -clang-scanner-module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -sdk-module-cache-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex -serialize-diagnostics -emit-dependencies -emit-module -emit-module-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftmodule -validate-clang-modules-once -clang-build-session-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/ModuleCache.noindex/Session.modulevalidation -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/swift-overrides.hmap -emit-const-values -Xfrontend -const-gather-protocols-file -Xfrontend /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_const_extract_protocols.json -Xcc -iquote -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-generated-files.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-own-target-headers.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-all-target-headers.hmap -Xcc -iquote -Xcc /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-project-headers.hmap -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/include -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources-normal/arm64 -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources/arm64 -Xcc -I/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DerivedSources -Xcc -DDEBUG\=1 -emit-objc-header -emit-objc-header-path /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS-Swift.h -working-directory /Users/liammatthews/Desktop/APP/DA -experimental-emit-module-separately -disable-cmo
+
+Ld /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS.debug.dylib normal (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos15.0 -dynamiclib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -O0 -L/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -L/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -F/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/EagerLinkingTBDs/Debug -F/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -filelist /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.LinkFileList -install_name @rpath/DisabilityAdvocacy-macOS.debug.dylib -Xlinker -rpath -Xlinker /usr/lib/swift -Xlinker -rpath -Xlinker @executable_path/../Frameworks -Xlinker -object_path_lto -Xlinker /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_lto.o -rdynamic -Xlinker -no_deduplicate -Xlinker -dependency_info -Xlinker /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_dependency_info.dat -fobjc-link-runtime -L/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx -L/usr/lib/swift -Xlinker -add_ast_path -Xlinker /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS.swiftmodule @/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy_macOS-linker-args.resp -Xlinker -alias -Xlinker _main -Xlinker ___debug_main_executable_dylib_entry_point -Xlinker -no_adhoc_codesign -o /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS.debug.dylib
+
+ConstructStubExecutorLinkFileList /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-ExecutorLinkFileList-normal-arm64.txt (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    construct-stub-executor-link-file-list /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS.debug.dylib /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib/libPreviewsJITStubExecutor_no_swift_entry_point.a /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/lib/libPreviewsJITStubExecutor.a --output /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-ExecutorLinkFileList-normal-arm64.txt
+note: Using stub executor library with Swift entry point. (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+
+Ld /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS normal (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -Xlinker -reproducible -target arm64-apple-macos15.0 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk -O0 -L/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -F/Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug -Xlinker -rpath -Xlinker @executable_path -Xlinker -rpath -Xlinker @executable_path/../Frameworks -rdynamic -Xlinker -no_deduplicate -e ___debug_blank_executor_main -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_dylib -Xlinker /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-DebugDylibPath-normal-arm64.txt -Xlinker -sectcreate -Xlinker __TEXT -Xlinker __debug_instlnm -Xlinker /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-DebugDylibInstallName-normal-arm64.txt -Xlinker -filelist -Xlinker /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS-ExecutorLinkFileList-normal-arm64.txt /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS.debug.dylib -Xlinker -no_adhoc_codesign -o /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS
+
+CopySwiftLibs /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-swiftStdLibTool --copy --verbose --sign - --scan-executable /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS.debug.dylib --scan-folder /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Frameworks --scan-folder /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/PlugIns --scan-folder /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Library/SystemExtensions --scan-folder /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Extensions --platform macosx --toolchain /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v17.3.48.0.KbGkCR/Metal.xctoolchain --toolchain /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain --destination /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Frameworks --strip-bitcode --strip-bitcode-tool /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/bitcode_strip --emit-dependency-info /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/SwiftStdLibToolInputDependencies.dep --filter-for-swift-os --back-deploy-swift-span
+
+ExtractAppIntentsMetadata (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/appintentsmetadataprocessor --toolchain-dir /var/run/com.apple.security.cryptexd/mnt/com.apple.MobileAsset.MetalToolchain-v17.3.48.0.KbGkCR/Metal.xctoolchain --module-name DisabilityAdvocacy_macOS --sdk-root /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX26.2.sdk --xcode-version 17C52 --platform-family macOS --deployment-target 15.0 --bundle-identifier com.disabilityadvocacy.macos --output /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/Resources --target-triple arm64-apple-macos15.0 --binary-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS --dependency-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS_dependency_info.dat --stringsdata-file /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/ExtractedAppShortcutsMetadata.stringsdata --source-file-list /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftFileList --metadata-file-list /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.DependencyMetadataFileList --static-metadata-file-list /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.DependencyStaticMetadataFileList --swift-const-vals-list /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/Objects-normal/arm64/DisabilityAdvocacy-macOS.SwiftConstValuesFileList --compile-time-extraction --deployment-aware-processing --validate-assistant-intents --no-app-shortcuts-localization
+2026-01-13 16:29:27.873 appintentsmetadataprocessor[64411:1134745] Starting appintentsmetadataprocessor export
+2026-01-13 16:29:27.874 appintentsmetadataprocessor[64411:1134745] warning: Metadata extraction skipped. No AppIntents.framework dependency found.
+
+CodeSign /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS.debug.dylib (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS.debug.dylib
+
+CodeSign /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/__preview.dylib (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --timestamp\=none --generate-entitlement-der /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app/Contents/MacOS/__preview.dylib
+
+CodeSign /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    
+    Signing Identity:     "Sign to Run Locally"
+    
+    /usr/bin/codesign --force --sign - --entitlements /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Intermediates.noindex/DisabilityAdvocacy.build/Debug/DisabilityAdvocacy-macOS.build/DisabilityAdvocacy-macOS.app.xcent --timestamp\=none --generate-entitlement-der /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app
+
+RegisterExecutionPolicyException /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-RegisterExecutionPolicyException /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app
+
+Validate /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    builtin-validationUtility /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app -no-validate-extension -infoplist-subpath Contents/Info.plist
+
+Touch /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /usr/bin/touch -c /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app
+
+RegisterWithLaunchServices /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app (in target 'DisabilityAdvocacy-macOS' from project 'DisabilityAdvocacy')
+    cd /Users/liammatthews/Desktop/APP/DA
+    /System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -f -R -trusted /Users/liammatthews/Library/Developer/Xcode/DerivedData/DisabilityAdvocacy-dzstltpmxsntqoadztaarwiisvxh/Build/Products/Debug/DisabilityAdvocacy-macOS.app
+
+** BUILD SUCCEEDED **
+
