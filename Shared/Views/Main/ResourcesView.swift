@@ -425,9 +425,9 @@ struct ResourceDetailView: View {
                         systemImage: "square.and.arrow.up",
                         style: AppShareButton.ShareButtonStyle.button
                     )
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.primary)
-                    .frame(maxWidth: .infinity)
+                    .font(.subheadline.weight(Font.Weight.medium))
+                    .foregroundStyle(Color.primary)
+                    .frame(maxWidth: CGFloat.infinity)
                     .frame(height: 44)
                     .background(Color.secondary.opacity(0.1))
                     .cornerRadius(12)

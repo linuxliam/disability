@@ -1,0 +1,196 @@
+name: Monitor Xcode Project Structure
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'DisabilityAdvocacy.xcodeproj/**'
+      - 'Shared/**'
+      - 'iOS/**'
+      - 'macOS/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'DisabilityAdvocacy.xcodeproj/**'
+      - 'Shared/**'
+      - 'iOS/**'
+      - 'macOS/**'
+  workflow_dispatch:
+
+jobs:
+  validate-project-structure:
+    name: 🔍 Validate Project Structure
+    runs-on: macos-14
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '15.1'
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📊 Analyze Project Structure
+        id: analyze
+        run: |
+          echo "## 📊 Xcode Project Structure Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Run Python validation script
+          python3 scripts/validate-project-structure-simple.py > analysis_output.txt 2>&1 || ANALYSIS_EXIT=$?
+          
+          # Capture output
+          ANALYSIS_OUTPUT=$(cat analysis_output.txt)
+          echo "$ANALYSIS_OUTPUT" >> $GITHUB_STEP_SUMMARY
+          
+          # Extract missing and orphaned files
+          MISSING_FILES=$(echo "$ANALYSIS_OUTPUT" | sed -n '/Files NOT in project.pbxproj:/,/^$/p' | grep "^-" | sed 's/^  - //' || true)
+          ORPHANED_FILES=$(echo "$ANALYSIS_OUTPUT" | sed -n '/Orphaned references in project.pbxproj:/,/^$/p' | grep "^-" | sed 's/^  - //' || true)
+          
+          # Determine status
+          if echo "$ANALYSIS_OUTPUT" | grep -q "✅ Project structure is valid"; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            ISSUES_FOUND=0
+          else
+            echo "status=warning" >> $GITHUB_OUTPUT
+            ISSUES_FOUND=1
+          fi
+          
+          # Save files for artifact upload
+          if [ -n "$MISSING_FILES" ]; then
+            echo "$MISSING_FILES" > missing_files.txt
+          fi
+          
+          if [ -n "$ORPHANED_FILES" ]; then
+            echo "$ORPHANED_FILES" > orphaned_files.txt
+          fi
+          
+          # Check for target membership
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🎯 Target Membership Check" >> $GITHUB_STEP_SUMMARY
+          
+          PROJECT_FILE="DisabilityAdvocacy.xcodeproj/project.pbxproj"
+          IOS_FILES=$(grep -c "DisabilityAdvocacy-iOS" "$PROJECT_FILE" || echo "0")
+          MACOS_FILES=$(grep -c "DisabilityAdvocacy-macOS" "$PROJECT_FILE" || echo "0")
+          
+          echo "- **iOS target references:** $IOS_FILES" >> $GITHUB_STEP_SUMMARY
+          echo "- **macOS target references:** $MACOS_FILES" >> $GITHUB_STEP_SUMMARY
+          
+          # Validate project can be parsed
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Project Validation" >> $GITHUB_STEP_SUMMARY
+          
+          if xcodebuild -list -project DisabilityAdvocacy.xcodeproj > /dev/null 2>&1; then
+            echo "✅ Project file is valid and can be parsed by xcodebuild" >> $GITHUB_STEP_SUMMARY
+            
+            # Get scheme list
+            SCHEMES=$(xcodebuild -list -project DisabilityAdvocacy.xcodeproj 2>/dev/null | grep -A 10 "Schemes:" | grep -v "Schemes:" | grep -v "^$" | head -5)
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Available Schemes:**" >> $GITHUB_STEP_SUMMARY
+            echo "$SCHEMES" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Project file cannot be parsed by xcodebuild" >> $GITHUB_STEP_SUMMARY
+            ISSUES_FOUND=1
+          fi
+          
+          # Exit with appropriate code
+          exit ${ANALYSIS_EXIT:-0}
+
+      - name: 📤 Upload Analysis Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-structure-analysis
+          path: |
+            missing_files.txt
+            orphaned_files.txt
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: 💬 Comment on PR
+        if: github.event_name == 'pull_request' && steps.analyze.outputs.status == 'warning'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let comment = "## 🔍 Xcode Project Structure Analysis\n\n";
+            comment += "⚠️ **Issues detected in project structure**\n\n";
+            
+            try {
+              if (fs.existsSync('missing_files.txt')) {
+                const missing = fs.readFileSync('missing_files.txt', 'utf8');
+                if (missing.trim()) {
+                  comment += "### Files Not in Project\n\n";
+                  comment += "The following files exist but are not referenced in `project.pbxproj`:\n\n";
+                  comment += "```\n" + missing + "\n```\n\n";
+                  comment += "**Action Required:** Add these files to the Xcode project.\n\n";
+                  comment += "💡 **Tip:** You can use the auto-add script locally:\n";
+                  comment += "```bash\n";
+                  comment += "python3 scripts/auto-add-files-to-project.py --dry-run  # Preview\n";
+                  comment += "python3 scripts/auto-add-files-to-project.py --auto     # Auto-add\n";
+                  comment += "```\n\n";
+                }
+              }
+              
+              if (fs.existsSync('orphaned_files.txt')) {
+                const orphaned = fs.readFileSync('orphaned_files.txt', 'utf8');
+                if (orphaned.trim()) {
+                  comment += "### Orphaned Project References\n\n";
+                  comment += "The following files are referenced in `project.pbxproj` but don't exist:\n\n";
+                  comment += "```\n" + orphaned + "\n```\n\n";
+                  comment += "**Action Required:** Remove these references from the Xcode project.\n\n";
+                }
+              }
+            } catch (error) {
+              console.log('Error reading analysis files:', error);
+            }
+            
+            comment += "---\n";
+            comment += "*This check runs automatically on project structure changes.*";
+            
+            // Find existing comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.data.find(
+              comment => comment.user.type === 'Bot' && comment.body.includes('Xcode Project Structure Analysis')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment,
+              });
+            }
+
+      - name: ❌ Fail if Critical Issues
+        if: steps.analyze.outputs.status == 'warning'
+        run: |
+          echo "⚠️ Project structure issues detected. Please review the analysis above."
+          echo "💡 Tip: Use 'python3 scripts/auto-add-files-to-project.py --dry-run' to preview fixes."
+          # Don't fail the build, just warn
+          exit 0

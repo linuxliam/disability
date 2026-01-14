@@ -121,6 +121,7 @@
 		46FBB91E2F161277003E53BD /* AppSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7D3EF4906944C8BB8AD54D1 /* AppSectionHeader.swift */; };
 		46FBB91F2F161277003E53BD /* ProfileComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B834DB8CC7F496E8CC43EC2 /* ProfileComponents.swift */; };
 		46FBB9202F161277003E53BD /* AppChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F97EF0668DC44C79436D66B /* AppChip.swift */; };
+		46FBB92D2F161277003E53BD /* ShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D709E61F35485D9471B77E /* ShareButton.swift */; };
 		46FBB9212F161277003E53BD /* FeedbackComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BF34797D5141F78BA01E71 /* FeedbackComponents.swift */; };
 		46FBB9222F161277003E53BD /* AppRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E014E99F75494AB6248025 /* AppRow.swift */; };
 		46FBB9232F161277003E53BD /* StatsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = F14816DE40094CFE8ED71A1C /* StatsComponents.swift */; };
@@ -205,6 +206,7 @@
 		8B5375043DA648F09446768D /* AdvocacyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 224DB7128CC14C93B109FED2 /* AdvocacyApp.swift */; };
 		8BADD86CF4354A7FA23242A5 /* EventsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FAA3D518E194D2890ED2989 /* EventsManager.swift */; };
 		8D942FAFF96144AF895C2926 /* AppChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F97EF0668DC44C79436D66B /* AppChip.swift */; };
+		0B050B274B134E3180F4F3B4 /* ShareButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44D709E61F35485D9471B77E /* ShareButton.swift */; };
 		9144C7327BBF4E50A387FE6C /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0166DAB474C496C88CAF106 /* AppTheme.swift */; };
 		927C31C3E1024F9CBD71E29B /* RightsInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21C154AB0B0B426BA0A90E94 /* RightsInfo.swift */; };
 		992323885FAD4F7AA64E0943 /* EventsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C4D37AA9BD4980AE9EB267 /* EventsView.swift */; };
@@ -337,6 +339,7 @@
 		6B834DB8CC7F496E8CC43EC2 /* ProfileComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileComponents.swift; sourceTree = "<group>"; };
 		6F4684FF7FC348FDADB73B09 /* AdminDashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDashboardView.swift; sourceTree = "<group>"; };
 		6F97EF0668DC44C79436D66B /* AppChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppChip.swift; sourceTree = "<group>"; };
+		44D709E61F35485D9471B77E /* ShareButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareButton.swift; sourceTree = "<group>"; };
 		716276B9C240485E82644207 /* CalendarManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManagerTests.swift; sourceTree = "<group>"; };
 		718FC5385CEA4D9EB30636FB /* FeatureHighlight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureHighlight.swift; sourceTree = "<group>"; };
 		72D7E24499D4401B9B13EFF5 /* iOS/Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = iOS/Info.plist; sourceTree = "<group>"; };
@@ -648,6 +651,7 @@
 				EAAB5125C6504E299949990A /* LoadingView.swift */,
 				6B834DB8CC7F496E8CC43EC2 /* ProfileComponents.swift */,
 				56160F75087248DCBD8128AA /* ProfileToolbarButton.swift */,
+				44D709E61F35485D9471B77E /* ShareButton.swift */,
 				61F59A39C4B6474192638CE2 /* SkeletonComponents.swift */,
 				F14816DE40094CFE8ED71A1C /* StatsComponents.swift */,
 			);
@@ -1122,6 +1126,7 @@
 				9B2E1BB4A35F457EAA18C4D8 /* AppSectionHeader.swift in Sources */,
 				14C4F09CDE234CA5B88E8EE5 /* ProfileComponents.swift in Sources */,
 				8D942FAFF96144AF895C2926 /* AppChip.swift in Sources */,
+				0B050B274B134E3180F4F3B4 /* ShareButton.swift in Sources */,
 				295663F4088F4C4BBE16C4D1 /* FeedbackComponents.swift in Sources */,
 				D03ECE1ED6FE4686924AB0EC /* AppRow.swift in Sources */,
 				9D5EFB95701B4D809606110A /* StatsComponents.swift in Sources */,
@@ -1235,6 +1240,7 @@
 				46FBB91E2F161277003E53BD /* AppSectionHeader.swift in Sources */,
 				46FBB91F2F161277003E53BD /* ProfileComponents.swift in Sources */,
 				46FBB9202F161277003E53BD /* AppChip.swift in Sources */,
+				46FBB92D2F161277003E53BD /* ShareButton.swift in Sources */,
 				46FBB9212F161277003E53BD /* FeedbackComponents.swift in Sources */,
 				46FBB9222F161277003E53BD /* AppRow.swift in Sources */,
 				46FBB9232F161277003E53BD /* StatsComponents.swift in Sources */,

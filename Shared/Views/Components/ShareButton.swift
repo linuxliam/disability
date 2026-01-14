@@ -212,67 +212,81 @@ private struct iOSShareButton: View {
     let style: AppShareButton.ShareButtonStyle
     
     var body: some View {
-        switch item {
-        case .url(let url):
-            ShareLink(item: url) {
-                shareButtonContent
+        Group {
+            switch item {
+            case .url(let url):
+                ShareLink(item: url) {
+                    shareButtonContent
+                }
+            case .text(let text):
+                ShareLink(item: text) {
+                    shareButtonContent
+                }
+            case .resource(let resource):
+                resourceShareLink(resource: resource)
+            case .event(let event):
+                eventShareLink(event: event)
+            case .article(let article):
+                articleShareLink(article: article)
             }
-        case .text(let text):
-            ShareLink(item: text) {
-                shareButtonContent
-            }
-        case .resource(let resource):
-            let shareText = """
-            \(resource.title)
-            
-            \(resource.description)
-            
-            Category: \(resource.category.rawValue)
-            """
-            ShareLink(item: shareText, subject: Text(resource.title)) {
-                shareButtonContent
-            }
-        case .event(let event):
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            dateFormatter.timeStyle = .short
-            
-            var shareText = """
-            \(event.title)
-            
-            \(event.description)
-            
-            Date: \(dateFormatter.string(from: event.date))
-            Location: \(event.location)
-            """
-            
-            if event.isVirtual {
-                shareText += "\nVirtual Event"
-            }
-            
-            if let registrationURL = event.registrationURL {
-                shareText += "\nRegistration: \(registrationURL)"
-            }
-            
-            ShareLink(item: shareText, subject: Text(event.title)) {
-                shareButtonContent
-            }
-        case .article(let article):
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .medium
-            
-            let shareText = """
-            \(article.title)
-            
-            \(article.summary)
-            
-            Source: \(article.source)
-            Date: \(dateFormatter.string(from: article.date))
-            Category: \(article.category)
-            """
-            ShareLink(item: shareText, subject: Text(article.title)) {
-                shareButtonContent
-            }
+        }
+    }
+    
+    private func resourceShareLink(resource: Resource) -> some View {
+        let shareText = """
+        \(resource.title)
+        
+        \(resource.description)
+        
+        Category: \(resource.category.rawValue)
+        """
+        return ShareLink(item: shareText, subject: Text(resource.title)) {
+            shareButtonContent
+        }
+    }
+    
+    private func eventShareLink(event: Event) -> some View {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        
+        var shareText = """
+        \(event.title)
+        
+        \(event.description)
+        
+        Date: \(dateFormatter.string(from: event.date))
+        Location: \(event.location)
+        """
+        
+        if event.isVirtual {
+            shareText += "\nVirtual Event"
+        }
+        
+        if let registrationURL = event.registrationURL {
+            shareText += "\nRegistration: \(registrationURL)"
+        }
+        
+        return ShareLink(item: shareText, subject: Text(event.title)) {
+            shareButtonContent
+        }
+    }
+    
+    private func articleShareLink(article: NewsArticle) -> some View {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        
+        let shareText = """
+        \(article.title)
+        
+        \(article.summary)
+        
+        Source: \(article.source)
+        Date: \(dateFormatter.string(from: article.date))
+        Category: \(article.category)
+        """
+        return ShareLink(item: shareText, subject: Text(article.title)) {
+            shareButtonContent
         }
     }
     

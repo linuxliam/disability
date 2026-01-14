@@ -160,12 +160,12 @@ struct ArticleDetailView: View {
                     systemImage: "square.and.arrow.up",
                     style: AppShareButton.ShareButtonStyle.button
                 )
-                .fontWeight(.semibold)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
+                .fontWeight(Font.Weight.semibold)
+                .frame(maxWidth: CGFloat.infinity)
+                .padding(EdgeInsets(top: 12, leading: 0, bottom: 12, trailing: 0))
                 .background(Color.accentColor, in: RoundedRectangle(cornerRadius: 12))
-                .foregroundStyle(.white)
-                .buttonStyle(.plain)
+                .foregroundStyle(Color.white)
+                .buttonStyle(PlainButtonStyle())
                 .listRowBackground(Color.clear)
                 .listRowInsets(EdgeInsets())
             }
