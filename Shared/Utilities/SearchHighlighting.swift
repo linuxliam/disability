@@ -67,7 +67,6 @@ struct SearchHighlighting {
         
         for query in queries where !query.isEmpty {
             var newSegments: [HighlightedTextSegment] = []
-            let lowerQuery = query.lowercased()
             
             for segment in segments {
                 if segment.isHighlighted {
