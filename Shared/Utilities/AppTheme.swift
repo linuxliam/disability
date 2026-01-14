@@ -161,6 +161,50 @@ extension View {
     }
 }
 
+// MARK: - Helper Wrappers for Search Results
+
+@MainActor
+private struct PostDetailViewWrapper: View {
+    let postId: UUID
+    @State private var communityViewModel = CommunityViewModel()
+    
+    var body: some View {
+        Group {
+            if let post = communityViewModel.posts.first(where: { $0.id == postId }) {
+                PostDetailView(post: post)
+            } else {
+                Text(String(localized: "Post not found"))
+            }
+        }
+        .task {
+            if communityViewModel.posts.isEmpty {
+                communityViewModel.loadPosts()
+            }
+        }
+    }
+}
+
+@MainActor
+private struct ArticleDetailViewWrapper: View {
+    let articleId: UUID
+    @State private var newsViewModel = NewsViewModel()
+    
+    var body: some View {
+        Group {
+            if let article = newsViewModel.articles.first(where: { $0.id == articleId }) {
+                ArticleDetailView(article: article)
+            } else {
+                Text(String(localized: "Article not found"))
+            }
+        }
+        .task {
+            if newsViewModel.articles.isEmpty {
+                newsViewModel.loadArticles()
+            }
+        }
+    }
+}
+
 private struct _AppContentFrameModifier: ViewModifier {
     @Environment(\.appContentMaxWidth) private var maxWidth
 
