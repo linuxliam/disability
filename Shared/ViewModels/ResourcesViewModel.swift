@@ -25,9 +25,19 @@ class ResourcesViewModel: BaseViewModelProtocol {
         resources.filtered(searchText: searchText, category: selectedCategory, tag: selectedTag)
     }
     
+    // Cached tags to avoid recalculating on every access
+    private var _cachedTags: [String]?
+    private var _tagsCacheVersion: Int = 0
+    
     var availableTags: [String] {
-        let allTags = resources.flatMap { $0.tags }
-        return Array(Set(allTags)).sorted()
+        // Invalidate cache if resources changed
+        let currentVersion = resources.count
+        if _cachedTags == nil || _tagsCacheVersion != currentVersion {
+            let allTags = resources.flatMap { $0.tags }
+            _cachedTags = Array(Set(allTags)).sorted()
+            _tagsCacheVersion = currentVersion
+        }
+        return _cachedTags ?? []
     }
     
     private let resourcesManager: ResourcesManager
@@ -71,6 +81,9 @@ class ResourcesViewModel: BaseViewModelProtocol {
         guard !Task.isCancelled else { return }
         
         resources = loadedResources
+        // Invalidate tags cache when resources change
+        _cachedTags = nil
+        _tagsCacheVersion = 0
     }
     
 }
