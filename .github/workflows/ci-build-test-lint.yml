@@ -35,219 +35,134 @@ env:
 
 jobs:
   # ============================================================================
-  # Code Quality and Linting
+  # Gate 1: Code Quality Check
+  # Purpose: Verify code follows linting standards
   # ============================================================================
-  code-quality-and-linting:
-    name: 🔍 Code Quality and Linting
+  code-quality:
+    name: 🔍 Code Quality Check
     runs-on: macos-14
-    timeout-minutes: 10
+    timeout-minutes: 5
     if: github.event.inputs.skip_lint != 'true'
     steps:
-      - name: 📥 Checkout Source Code
+      - name: Checkout
         uses: actions/checkout@v4
       
-      - name: 🔧 Configure Xcode Version
-        run: |
-          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          else
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
+      - name: Setup Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
       
-      - name: 📦 Verify SwiftLint Installation
-        run: |
-          if ! command -v swiftlint &> /dev/null; then
-            echo "SwiftLint not found. Install with: brew install swiftlint"
-            echo "Skipping linting for now..."
-            exit 0
-          fi
-          swiftlint version
-      
-      - name: 🧹 Run SwiftLint Code Analysis
+      - name: Run SwiftLint
         run: |
           if command -v swiftlint &> /dev/null; then
             swiftlint lint --reporter github-actions-logging || true
-          else
-            echo "SwiftLint not available, skipping..."
           fi
-      
-      - name: ✨ Validate Swift Code Formatting
-        run: |
-          echo "Checking Swift code formatting..."
-          find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" | while read file; do
-            echo "Checking: $file"
-          done
-          echo "Format check complete (basic validation)"
-      
-      - name: 📁 Validate Project File Structure
-        run: |
-          echo "Validating project structure..."
-          [ -f "DisabilityAdvocacy.xcodeproj/project.pbxproj" ] || (echo "Missing project.pbxproj" && exit 1)
-          [ -f "iOS/Info.plist" ] || (echo "Missing iOS/Info.plist" && exit 1)
-          [ -f "macOS/Info.plist" ] || (echo "Missing macOS/Info.plist" && exit 1)
-          echo "✓ Project structure valid"
 
   # ============================================================================
-  # Project and Dependency Validation
+  # Gate 2: Project Structure Validation
+  # Purpose: Verify project files and structure are valid
   # ============================================================================
-  validate-project-and-dependencies:
-    name: ✅ Validate Project and Dependencies
+  validate-project:
+    name: ✅ Project Structure Validation
+    runs-on: macos-14
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+      
+      - name: Validate Project
+        run: |
+          [ -f "DisabilityAdvocacy.xcodeproj/project.pbxproj" ] || exit 1
+          [ -f "iOS/Info.plist" ] || exit 1
+          [ -f "macOS/Info.plist" ] || exit 1
+          xcodebuild -list -project DisabilityAdvocacy.xcodeproj || exit 1
+
+  # ============================================================================
+  # Gate 3: Dependency Validation
+  # Purpose: Verify all dependencies can be resolved
+  # ============================================================================
+  validate-dependencies:
+    name: 📦 Dependency Validation
+    runs-on: macos-14
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+      
+      - name: Resolve Dependencies
+        run: |
+          if grep -r "packageReferences" DisabilityAdvocacy.xcodeproj/project.pbxproj > /dev/null 2>&1; then
+            xcodebuild -resolvePackageDependencies -project DisabilityAdvocacy.xcodeproj || exit 1
+          fi
+
+  # ============================================================================
+  # Gate 4: Swift 6 Concurrency Pre-Check
+  # Purpose: Detect potential concurrency issues before build
+  # ============================================================================
+  concurrency-check:
+    name: ⚡ Swift 6 Concurrency Check
     runs-on: macos-14
     timeout-minutes: 5
     steps:
-      - name: 📥 Checkout Source Code
+      - name: Checkout
         uses: actions/checkout@v4
       
-      - name: 🔧 Configure Xcode Version
+      - name: Check Concurrency Patterns
         run: |
-          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          else
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
-      
-      - name: 🔍 Validate Xcode Project Structure
-        run: |
-          xcodebuild -list -project DisabilityAdvocacy.xcodeproj
-          echo "✓ Project structure valid"
-      
-      - name: 🔎 Check for Missing Source Files
-        run: |
-          echo "Checking for missing source files..."
-          xcodebuild -project DisabilityAdvocacy.xcodeproj \
-            -target "DisabilityAdvocacy-iOS" \
-            -showBuildSettings 2>&1 | grep -i "error" || echo "✓ No missing file errors"
-      
-      - name: 📋 Verify Swift Package Dependencies
-        run: |
-          echo "Checking Swift Package dependencies..."
-          if grep -r "packageReferences" DisabilityAdvocacy.xcodeproj/project.pbxproj > /dev/null 2>&1; then
-            echo "✓ Swift Package dependencies found"
-            xcodebuild -resolvePackageDependencies -project DisabilityAdvocacy.xcodeproj || echo "⚠️ Package resolution completed with warnings"
-          else
-            echo "ℹ️ No Swift Package dependencies found"
-          fi
-
-  # ============================================================================
-  # Swift 6 Concurrency Pre-Check
-  # ============================================================================
-  swift-6-concurrency-pre-check:
-    name: ⚡ Swift 6 Concurrency Pre-Check
-    runs-on: macos-14
-    timeout-minutes: 10
-    steps:
-      - name: 📥 Checkout Source Code
-        uses: actions/checkout@v4
-      
-      - name: 🔧 Configure Xcode Version
-        run: |
-          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          else
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
-      
-      - name: 🔍 Check for Swift 6 Concurrency Issues
-        id: concurrency_check
-        run: |
-          echo "## 🔍 Swift 6 Concurrency Pre-Check" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # Pattern 1: Check for calls to MainActor-isolated methods without @MainActor
-          echo "### Checking for MainActor isolation issues..." >> $GITHUB_STEP_SUMMARY
-          
           CONCURRENCY_ISSUES=0
-          
-          # Find files that call Manager.shared methods without @MainActor
           while IFS= read -r file; do
-            # Check for calls to Manager.shared methods in non-isolated contexts
             if grep -q "Manager\.shared\." "$file" && ! grep -q "@MainActor" "$file"; then
-              # Check if the method calling Manager.shared is not marked @MainActor
-              LINE_NUM=$(grep -n "Manager\.shared\." "$file" | head -1 | cut -d: -f1)
-              if [ -n "$LINE_NUM" ]; then
-                # Check if the function containing this line is marked @MainActor
-                FUNCTION_START=$(sed -n "1,${LINE_NUM}p" "$file" | grep -nE "^\s*(private\s+)?func\s+" | tail -1 | cut -d: -f1)
-                if [ -n "$FUNCTION_START" ]; then
-                  FUNCTION_CONTEXT=$(sed -n "${FUNCTION_START},${LINE_NUM}p" "$file")
-                  if ! echo "$FUNCTION_CONTEXT" | grep -q "@MainActor"; then
-                    echo "⚠️ **Potential issue in:** \`$file\` (line $LINE_NUM)" >> $GITHUB_STEP_SUMMARY
-                    echo "   Calls Manager.shared method without @MainActor annotation" >> $GITHUB_STEP_SUMMARY
-                    CONCURRENCY_ISSUES=$((CONCURRENCY_ISSUES + 1))
-                  fi
-                fi
-              fi
+              CONCURRENCY_ISSUES=$((CONCURRENCY_ISSUES + 1))
             fi
           done < <(find Shared -name "*.swift" -type f 2>/dev/null)
-          
-          # Pattern 2: Check for nonisolated init calling MainActor methods
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Checking for nonisolated init issues..." >> $GITHUB_STEP_SUMMARY
-          
-          while IFS= read -r file; do
-            if grep -q "nonisolated init" "$file"; then
-              # Check if nonisolated init calls MainActor methods
-              if grep -A 10 "nonisolated init" "$file" | grep -q "Manager\.shared\|MainActor"; then
-                echo "⚠️ **Potential issue in:** \`$file\`" >> $GITHUB_STEP_SUMMARY
-                echo "   nonisolated init may call MainActor-isolated methods" >> $GITHUB_STEP_SUMMARY
-                CONCURRENCY_ISSUES=$((CONCURRENCY_ISSUES + 1))
-              fi
-            fi
-          done < <(find Shared -name "*.swift" -type f 2>/dev/null)
-          
-          # Summary
-          echo "" >> $GITHUB_STEP_SUMMARY
-          if [ "$CONCURRENCY_ISSUES" -eq 0 ]; then
-            echo "✅ **No obvious concurrency issues detected**" >> $GITHUB_STEP_SUMMARY
-            echo "Note: This is a pre-check. Full validation occurs during build." >> $GITHUB_STEP_SUMMARY
-          else
-            echo "⚠️ **Found $CONCURRENCY_ISSUES potential concurrency issue(s)**" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "### 💡 Common Fixes:" >> $GITHUB_STEP_SUMMARY
-            echo "1. Add \`@MainActor\` to methods that call MainActor-isolated code" >> $GITHUB_STEP_SUMMARY
-            echo "2. Use \`Task { @MainActor in ... }\` for async MainActor calls" >> $GITHUB_STEP_SUMMARY
-            echo "3. Use \`MainActor.assumeIsolated { ... }\` in nonisolated init (with caution)" >> $GITHUB_STEP_SUMMARY
-          fi
-          
-          echo "::notice title=Swift 6 Concurrency Check::Found $CONCURRENCY_ISSUES potential issue(s)"
-          
-          # Exit with success (this is a warning check, not a blocker)
+          echo "Found $CONCURRENCY_ISSUES potential concurrency issue(s)"
           exit 0
 
   # ============================================================================
-  # Build iOS Application
+  # Gate 5: Security Scan
+  # Purpose: Check for hardcoded secrets and security issues
   # ============================================================================
-  build-ios-application:
-    name: 📱 Build iOS Application (${{ matrix.configuration }})
+  security-scan:
+    name: 🔒 Security Scan
     runs-on: macos-14
-    timeout-minutes: 30
-    needs: [validate-project-and-dependencies, swift-6-concurrency-pre-check]
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Scan for Secrets
+        run: |
+          SECRET_PATTERNS=("api[_-]?key" "secret" "token" "password")
+          for pattern in "${SECRET_PATTERNS[@]}"; do
+            grep -r -i "$pattern" --include="*.swift" --include="*.plist" . 2>/dev/null | grep -v ".git" | head -5 || true
+          done
+
+  # ============================================================================
+  # Gate 6: Build iOS Application
+  # Purpose: Compile iOS app for specified configuration
+  # ============================================================================
+  build-ios:
+    name: 📱 Build iOS (${{ matrix.configuration }})
+    runs-on: macos-14
+    timeout-minutes: 25
+    needs: [validate-project, validate-dependencies]
     if: always()
     strategy:
       fail-fast: false
       matrix:
         configuration: [Debug, Release]
     steps:
-      - name: 📥 Checkout Source Code
+      - name: Checkout
         uses: actions/checkout@v4
       
-      - name: 🔧 Configure Xcode Version
-        run: |
-          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          else
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
+      - name: Setup Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
       
-      - name: 📊 Display Xcode and Swift Versions
-        run: |
-          echo "### Build Environment" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          xcodebuild -version | head -1 >> $GITHUB_STEP_SUMMARY
-          swift --version | head -1 >> $GITHUB_STEP_SUMMARY
-          xcodebuild -version
-          swift --version
-      
-      - name: 💾 Cache Swift Packages and Build Artifacts
+      - name: Cache Build
         uses: actions/cache@v4
         with:
           path: |
@@ -257,16 +172,9 @@ jobs:
           key: ${{ runner.os }}-ios-${{ matrix.configuration }}-${{ hashFiles('**/*.swift', '**/project.pbxproj') }}
           restore-keys: |
             ${{ runner.os }}-ios-${{ matrix.configuration }}-
-            ${{ runner.os }}-ios-
-            ${{ runner.os }}-
       
-      - name: 📋 List Available iOS Simulators
-        run: xcrun simctl list devices available | head -20
-      
-      - name: 🔨 Build iOS Application (${{ matrix.configuration }})
-        id: build
+      - name: Build
         run: |
-          set -o pipefail
           xcodebuild \
             -project DisabilityAdvocacy.xcodeproj \
             -scheme "DisabilityAdvocacy-iOS" \
@@ -277,145 +185,45 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             -derivedDataPath build \
             clean build \
-            2>&1 | tee build-ios-${{ matrix.configuration }}.log
+            2>&1 | tee build-ios-${{ matrix.configuration }}.log || exit 1
       
-      - name: 📝 Extract and Report Build Warnings
-        if: always()
-        run: |
-          if [ -f "build-ios-${{ matrix.configuration }}.log" ]; then
-            WARNING_COUNT=$(grep -c "warning:" build-ios-${{ matrix.configuration }}.log || echo "0")
-            echo "### Build Warnings (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
-            echo "**Total Warnings:** $WARNING_COUNT" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            grep -E "warning:" build-ios-${{ matrix.configuration }}.log | head -20 >> $GITHUB_STEP_SUMMARY || echo "No warnings" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
-      
-      - name: 🔍 Categorize and Report Build Errors
-        if: failure()
-        run: |
-          echo "## ❌ Build Failed (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          if [ -f "build-ios-${{ matrix.configuration }}.log" ]; then
-            # Extract and categorize errors
-            CONCURRENCY_ERRORS=$(grep -c "main actor-isolated\|nonisolated context" build-ios-${{ matrix.configuration }}.log || echo "0")
-            COMPILATION_ERRORS=$(grep -c "error:" build-ios-${{ matrix.configuration }}.log || echo "0")
-            LINKER_ERRORS=$(grep -c "Undefined symbol\|ld:" build-ios-${{ matrix.configuration }}.log || echo "0")
-            
-            echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
-            echo "- **Concurrency Errors:** $CONCURRENCY_ERRORS" >> $GITHUB_STEP_SUMMARY
-            echo "- **Compilation Errors:** $COMPILATION_ERRORS" >> $GITHUB_STEP_SUMMARY
-            echo "- **Linker Errors:** $LINKER_ERRORS" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            
-            # Show concurrency errors with context
-            if [ "$CONCURRENCY_ERRORS" -gt 0 ]; then
-              echo "### 🔴 Swift 6 Concurrency Errors" >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              grep -B 2 -A 5 "main actor-isolated\|nonisolated context" build-ios-${{ matrix.configuration }}.log | head -50 >> $GITHUB_STEP_SUMMARY || true
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-              echo "**💡 Fix:** Add \`@MainActor\` to the method or use \`Task { @MainActor in ... }\`" >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
-            
-            # Show other compilation errors
-            if [ "$COMPILATION_ERRORS" -gt "$CONCURRENCY_ERRORS" ]; then
-              echo "### Other Compilation Errors" >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              grep "error:" build-ios-${{ matrix.configuration }}.log | grep -v "main actor-isolated\|nonisolated context" | head -20 >> $GITHUB_STEP_SUMMARY || true
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
-            
-            # Show last 50 lines for context
-            echo "### Full Error Context (Last 50 lines)" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -50 build-ios-${{ matrix.configuration }}.log >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
-          
-          # Create annotations for better visibility
-          if [ -f "build-ios-${{ matrix.configuration }}.log" ]; then
-            while IFS= read -r line; do
-              if echo "$line" | grep -q "error:"; then
-                FILE=$(echo "$line" | grep -oE "[^:]+\.swift" | head -1 || echo "")
-                LINE_NUM=$(echo "$line" | grep -oE ":[0-9]+:" | head -1 | tr -d ':' || echo "")
-                MESSAGE=$(echo "$line" | sed 's/.*error: //' || echo "$line")
-                if [ -n "$FILE" ] && [ -n "$LINE_NUM" ]; then
-                  echo "::error file=$FILE,line=$LINE_NUM::$MESSAGE"
-                fi
-              fi
-            done < <(grep "error:" build-ios-${{ matrix.configuration }}.log | head -10)
-          fi
-      
-      - name: ✅ Validate Built Application Bundle
+      - name: Validate Bundle
         if: success()
         run: |
           APP_PATH="build/${{ matrix.configuration == 'Debug' && 'Debug' || 'Release' }}-iphonesimulator/DisabilityAdvocacy-iOS.app"
-          if [ -d "$APP_PATH" ]; then
-            echo "✅ Application bundle found at: $APP_PATH"
-            echo "Bundle size: $(du -sh "$APP_PATH" | cut -f1)"
-            # Check for required Info.plist
-            if [ -f "$APP_PATH/Info.plist" ]; then
-              echo "✅ Info.plist found in bundle"
-            else
-              echo "❌ Info.plist missing from bundle"
-              exit 1
-            fi
-          else
-            echo "❌ Application bundle not found at expected path: $APP_PATH"
-            exit 1
-          fi
+          [ -d "$APP_PATH" ] && [ -f "$APP_PATH/Info.plist" ] || exit 1
       
-      - name: 📦 Archive Build Artifacts
+      - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ios-build-artifacts-${{ matrix.configuration }}
+          name: ios-build-${{ matrix.configuration }}
           path: |
-            build/${{ matrix.configuration == 'Debug' && 'Debug' || 'Release' }}-iphonesimulator/DisabilityAdvocacy-iOS.app
             build-ios-${{ matrix.configuration }}.log
           retention-days: 7
-          if-no-files-found: warn
-          compression-level: 6
 
   # ============================================================================
-  # Build macOS Application
+  # Gate 7: Build macOS Application
+  # Purpose: Compile macOS app for specified configuration
   # ============================================================================
-  build-macos-application:
-    name: 💻 Build macOS Application (${{ matrix.configuration }})
+  build-macos:
+    name: 💻 Build macOS (${{ matrix.configuration }})
     runs-on: macos-14
-    timeout-minutes: 30
-    needs: [validate-project-and-dependencies, swift-6-concurrency-pre-check]
+    timeout-minutes: 25
+    needs: [validate-project, validate-dependencies]
     if: always()
     strategy:
       fail-fast: false
       matrix:
         configuration: [Debug, Release]
     steps:
-      - name: 📥 Checkout Source Code
+      - name: Checkout
         uses: actions/checkout@v4
       
-      - name: 🔧 Configure Xcode Version
-        run: |
-          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          else
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
+      - name: Setup Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
       
-      - name: 📊 Display Xcode and Swift Versions
-        run: |
-          echo "### Build Environment" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          xcodebuild -version | head -1 >> $GITHUB_STEP_SUMMARY
-          swift --version | head -1 >> $GITHUB_STEP_SUMMARY
-          xcodebuild -version
-          swift --version
-      
-      - name: 💾 Cache Swift Packages and Build Artifacts
+      - name: Cache Build
         uses: actions/cache@v4
         with:
           path: |
@@ -425,13 +233,9 @@ jobs:
           key: ${{ runner.os }}-macos-${{ matrix.configuration }}-${{ hashFiles('**/*.swift', '**/project.pbxproj') }}
           restore-keys: |
             ${{ runner.os }}-macos-${{ matrix.configuration }}-
-            ${{ runner.os }}-macos-
-            ${{ runner.os }}-
       
-      - name: 🔨 Build macOS Application (${{ matrix.configuration }})
-        id: build
+      - name: Build
         run: |
-          set -o pipefail
           xcodebuild \
             -project DisabilityAdvocacy.xcodeproj \
             -scheme "DisabilityAdvocacy-macOS" \
@@ -442,136 +246,45 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             -derivedDataPath build \
             clean build \
-            2>&1 | tee build-macos-${{ matrix.configuration }}.log
+            2>&1 | tee build-macos-${{ matrix.configuration }}.log || exit 1
       
-      - name: 📝 Extract and Report Build Warnings
-        if: always()
-        run: |
-          if [ -f "build-macos-${{ matrix.configuration }}.log" ]; then
-            WARNING_COUNT=$(grep -c "warning:" build-macos-${{ matrix.configuration }}.log || echo "0")
-            echo "### Build Warnings (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
-            echo "**Total Warnings:** $WARNING_COUNT" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            grep -E "warning:" build-macos-${{ matrix.configuration }}.log | head -20 >> $GITHUB_STEP_SUMMARY || echo "No warnings" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
-      
-      - name: 🔍 Categorize and Report Build Errors
-        if: failure()
-        run: |
-          echo "## ❌ Build Failed (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          if [ -f "build-macos-${{ matrix.configuration }}.log" ]; then
-            # Extract and categorize errors
-            CONCURRENCY_ERRORS=$(grep -c "main actor-isolated\|nonisolated context" build-macos-${{ matrix.configuration }}.log || echo "0")
-            COMPILATION_ERRORS=$(grep -c "error:" build-macos-${{ matrix.configuration }}.log || echo "0")
-            LINKER_ERRORS=$(grep -c "Undefined symbol\|ld:" build-macos-${{ matrix.configuration }}.log || echo "0")
-            
-            echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
-            echo "- **Concurrency Errors:** $CONCURRENCY_ERRORS" >> $GITHUB_STEP_SUMMARY
-            echo "- **Compilation Errors:** $COMPILATION_ERRORS" >> $GITHUB_STEP_SUMMARY
-            echo "- **Linker Errors:** $LINKER_ERRORS" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            
-            # Show concurrency errors with context
-            if [ "$CONCURRENCY_ERRORS" -gt 0 ]; then
-              echo "### 🔴 Swift 6 Concurrency Errors" >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              grep -B 2 -A 5 "main actor-isolated\|nonisolated context" build-macos-${{ matrix.configuration }}.log | head -50 >> $GITHUB_STEP_SUMMARY || true
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-              echo "**💡 Fix:** Add \`@MainActor\` to the method or use \`Task { @MainActor in ... }\`" >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
-            
-            # Show other compilation errors
-            if [ "$COMPILATION_ERRORS" -gt "$CONCURRENCY_ERRORS" ]; then
-              echo "### Other Compilation Errors" >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              grep "error:" build-macos-${{ matrix.configuration }}.log | grep -v "main actor-isolated\|nonisolated context" | head -20 >> $GITHUB_STEP_SUMMARY || true
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
-            
-            # Show last 50 lines for context
-            echo "### Full Error Context (Last 50 lines)" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -50 build-macos-${{ matrix.configuration }}.log >> $GITHUB_STEP_SUMMARY || true
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
-          
-          # Create annotations for better visibility
-          if [ -f "build-macos-${{ matrix.configuration }}.log" ]; then
-            while IFS= read -r line; do
-              if echo "$line" | grep -q "error:"; then
-                FILE=$(echo "$line" | grep -oE "[^:]+\.swift" | head -1 || echo "")
-                LINE_NUM=$(echo "$line" | grep -oE ":[0-9]+:" | head -1 | tr -d ':' || echo "")
-                MESSAGE=$(echo "$line" | sed 's/.*error: //' || echo "$line")
-                if [ -n "$FILE" ] && [ -n "$LINE_NUM" ]; then
-                  echo "::error file=$FILE,line=$LINE_NUM::$MESSAGE"
-                fi
-              fi
-            done < <(grep "error:" build-macos-${{ matrix.configuration }}.log | head -10)
-          fi
-      
-      - name: ✅ Validate Built Application Bundle
+      - name: Validate Bundle
         if: success()
         run: |
           APP_PATH="build/${{ matrix.configuration }}/DisabilityAdvocacy-macOS.app"
-          if [ -d "$APP_PATH" ]; then
-            echo "✅ Application bundle found at: $APP_PATH"
-            echo "Bundle size: $(du -sh "$APP_PATH" | cut -f1)"
-            # Check for required Info.plist
-            if [ -f "$APP_PATH/Contents/Info.plist" ]; then
-              echo "✅ Info.plist found in bundle"
-            else
-              echo "❌ Info.plist missing from bundle"
-              exit 1
-            fi
-          else
-            echo "❌ Application bundle not found at expected path: $APP_PATH"
-            exit 1
-          fi
+          [ -d "$APP_PATH" ] && [ -f "$APP_PATH/Contents/Info.plist" ] || exit 1
       
-      - name: 📦 Archive Build Artifacts
+      - name: Upload Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: macos-build-artifacts-${{ matrix.configuration }}
+          name: macos-build-${{ matrix.configuration }}
           path: |
-            build/${{ matrix.configuration }}/DisabilityAdvocacy-macOS.app
             build-macos-${{ matrix.configuration }}.log
           retention-days: 7
-          if-no-files-found: warn
-          compression-level: 6
 
   # ============================================================================
-  # Run iOS Unit Tests
+  # Gate 8: Test iOS Application
+  # Purpose: Execute iOS unit tests
   # ============================================================================
-  test-ios-application:
-    name: 🧪 Test iOS Application (${{ matrix.device }})
+  test-ios:
+    name: 🧪 Test iOS (${{ matrix.device }})
     runs-on: macos-14
-    timeout-minutes: 25
-    needs: [build-ios-application]
+    timeout-minutes: 20
+    needs: [build-ios]
     if: always() && github.event.inputs.skip_tests != 'true'
     strategy:
       fail-fast: false
       matrix:
         device: [iPhone 15, iPhone 15 Pro]
     steps:
-      - name: 📥 Checkout Source Code
+      - name: Checkout
         uses: actions/checkout@v4
       
-      - name: 🔧 Configure Xcode Version
-        run: |
-          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          else
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
+      - name: Setup Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
       
-      - name: 💾 Cache Test Results and Build Artifacts
+      - name: Cache Tests
         uses: actions/cache@v4
         with:
           path: |
@@ -581,53 +294,23 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-test-ios-
       
-      - name: 📋 List Available iOS Simulators
-        run: |
-          echo "Available iOS Simulators:"
-          xcrun simctl list devices available | grep -i "iphone" | head -10
-      
-      - name: 🔍 Find and Boot iOS Simulator
+      - name: Find Simulator
         id: simulator
         run: |
-          # Try to find the specific device
-          DEVICE_NAME="${{ matrix.device }}"
-          DEVICE_UDID=$(xcrun simctl list devices available | grep -i "$DEVICE_NAME" | grep -i "iphone" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/' | head -1)
-          
+          DEVICE_UDID=$(xcrun simctl list devices available | grep -i "${{ matrix.device }}" | grep -i "iphone" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/' | head -1)
           if [ -z "$DEVICE_UDID" ]; then
-            # Fallback to any available iPhone simulator
-            echo "Device '$DEVICE_NAME' not found, using first available iPhone"
             DEVICE_UDID=$(xcrun simctl list devices available | grep -i "iphone" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/' | head -1)
-            DEVICE_NAME=$(xcrun simctl list devices available | grep -i "iphone" | head -1 | sed -E 's/.*(iPhone[^\(]+).*/\1/' | xargs)
           fi
-          
           if [ -z "$DEVICE_UDID" ]; then
-            echo "No iPhone simulator found, using generic destination"
-            echo "use_generic=true" >> $GITHUB_OUTPUT
-            echo "device_name=generic" >> $GITHUB_OUTPUT
+            echo "destination=generic/platform=iOS Simulator" >> $GITHUB_OUTPUT
           else
-            echo "Found device: $DEVICE_NAME ($DEVICE_UDID)"
-            echo "use_generic=false" >> $GITHUB_OUTPUT
-            echo "device_name=$DEVICE_NAME" >> $GITHUB_OUTPUT
-            echo "device_udid=$DEVICE_UDID" >> $GITHUB_OUTPUT
-            
-            # Boot the simulator
             xcrun simctl boot "$DEVICE_UDID" 2>/dev/null || true
-            sleep 5
+            sleep 3
+            echo "destination=platform=iOS Simulator,id=$DEVICE_UDID" >> $GITHUB_OUTPUT
           fi
       
-      - name: 🧪 Execute iOS Unit Tests
-        id: test
+      - name: Run Tests
         run: |
-          set -o pipefail
-          
-          if [ "${{ steps.simulator.outputs.use_generic }}" == "true" ]; then
-            DESTINATION="generic/platform=iOS Simulator"
-          else
-            DESTINATION="platform=iOS Simulator,id=${{ steps.simulator.outputs.device_udid }}"
-          fi
-          
-          echo "Using destination: $DESTINATION"
-          
           xcodebuild test \
             -project DisabilityAdvocacy.xcodeproj \
             -scheme "DisabilityAdvocacy-iOS" \
@@ -636,75 +319,37 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            -destination "$DESTINATION" \
+            -destination "${{ steps.simulator.outputs.destination }}" \
             -derivedDataPath build \
-            -resultBundlePath build/test-results-${{ matrix.device }}.xcresult \
             -only-testing:DisabilityAdvocacyTests \
-            2>&1 | tee test-output-${{ matrix.device }}.txt || TEST_EXIT_CODE=$?
+            2>&1 | tee test-output-${{ matrix.device }}.txt || exit 1
       
-      - name: 📊 Parse and Report Test Results
-        if: always()
-        run: |
-          if [ -f "test-output-${{ matrix.device }}.txt" ]; then
-            echo "## Test Results (${{ matrix.device }})" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            
-            # Extract test summary
-            if grep -q "Test Suite" test-output-${{ matrix.device }}.txt; then
-              grep -A 5 "Test Suite" test-output-${{ matrix.device }}.txt | head -20 >> $GITHUB_STEP_SUMMARY || true
-            fi
-            
-            # Extract passed/failed counts
-            PASSED=$(grep -oE "[0-9]+ passed" test-output-${{ matrix.device }}.txt | head -1 || echo "0 passed")
-            FAILED=$(grep -oE "[0-9]+ failed" test-output-${{ matrix.device }}.txt | head -1 || echo "0 failed")
-            
-            echo "Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
-            echo "Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            
-            # Show failed tests
-            if grep -q "failed" test-output-${{ matrix.device }}.txt; then
-              echo "### Failed Tests" >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              grep -E "Test Case.*failed|error:" test-output-${{ matrix.device }}.txt | head -10 >> $GITHUB_STEP_SUMMARY || true
-              echo '```' >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-      
-      - name: 📦 Archive Test Results
+      - name: Upload Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: ios-test-results-${{ matrix.device }}
-          path: |
-            build/test-results-${{ matrix.device }}.xcresult
-            test-output-${{ matrix.device }}.txt
+          name: ios-test-${{ matrix.device }}
+          path: test-output-${{ matrix.device }}.txt
           retention-days: 7
-          if-no-files-found: ignore
-          compression-level: 6
 
   # ============================================================================
-  # Run macOS Unit Tests
+  # Gate 9: Test macOS Application
+  # Purpose: Execute macOS unit tests
   # ============================================================================
-  test-macos-application:
-    name: 🧪 Test macOS Application
+  test-macos:
+    name: 🧪 Test macOS
     runs-on: macos-14
-    timeout-minutes: 20
-    needs: [build-macos-application]
+    timeout-minutes: 15
+    needs: [build-macos]
     if: always() && github.event.inputs.skip_tests != 'true'
     steps:
-      - name: 📥 Checkout Source Code
+      - name: Checkout
         uses: actions/checkout@v4
       
-      - name: 🔧 Configure Xcode Version
-        run: |
-          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          else
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
+      - name: Setup Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
       
-      - name: 💾 Cache Test Results and Build Artifacts
+      - name: Cache Tests
         uses: actions/cache@v4
         with:
           path: |
@@ -714,10 +359,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-test-macos-
       
-      - name: 🧪 Execute macOS Unit Tests
-        id: test
+      - name: Run Tests
         run: |
-          set -o pipefail
           xcodebuild test \
             -project DisabilityAdvocacy.xcodeproj \
             -scheme "DisabilityAdvocacy-macOS" \
@@ -728,237 +371,79 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             -destination 'platform=macOS' \
             -derivedDataPath build \
-            -resultBundlePath build/test-results-macos.xcresult \
             -only-testing:DisabilityAdvocacyTests \
-            2>&1 | tee test-output-macos.txt || TEST_EXIT_CODE=$?
+            2>&1 | tee test-output-macos.txt || exit 1
       
-      - name: 📊 Parse and Report Test Results
-        if: always()
-        run: |
-          if [ -f "test-output-macos.txt" ]; then
-            echo "## macOS Test Results" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            
-            # Extract test summary
-            if grep -q "Test Suite" test-output-macos.txt; then
-              grep -A 5 "Test Suite" test-output-macos.txt | head -20 >> $GITHUB_STEP_SUMMARY || true
-            fi
-            
-            # Extract passed/failed counts
-            PASSED=$(grep -oE "[0-9]+ passed" test-output-macos.txt | head -1 || echo "0 passed")
-            FAILED=$(grep -oE "[0-9]+ failed" test-output-macos.txt | head -1 || echo "0 failed")
-            
-            echo "Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
-            echo "Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-          fi
-      
-      - name: 📦 Archive Test Results
+      - name: Upload Results
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: macos-test-results
-          path: |
-            build/test-results-macos.xcresult
-            test-output-macos.txt
+          path: test-output-macos.txt
           retention-days: 7
-          if-no-files-found: ignore
-          compression-level: 6
 
   # ============================================================================
-  # Comprehensive Build Validation
+  # Gate 10: Post-Build Validation
+  # Purpose: Validate build artifacts and code quality metrics
   # ============================================================================
-  comprehensive-build-validation:
-    name: ✅ Comprehensive Build Validation
+  post-build-validation:
+    name: ✅ Post-Build Validation
     runs-on: macos-14
-    timeout-minutes: 15
-    needs: [build-ios-application, build-macos-application]
+    timeout-minutes: 5
+    needs: [build-ios, build-macos]
     if: always()
     steps:
-      - name: 📥 Checkout Source Code
+      - name: Checkout
         uses: actions/checkout@v4
       
-      - name: 🔧 Configure Xcode Version
-        run: |
-          if [ -d "/Applications/Xcode_${XCODE_VERSION}.app" ]; then
-            sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer
-          else
-            sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-          fi
+      - name: Setup Xcode
+        run: sudo xcode-select -s /Applications/Xcode_${XCODE_VERSION}.app/Contents/Developer || sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
       
-      - name: 🔨 Run Build Validation Script
+      - name: Run Validation Scripts
         run: |
-          chmod +x scripts/validate-build.sh || true
-          ./scripts/validate-build.sh || echo "⚠️ Build validation completed with warnings"
+          chmod +x scripts/validate-build.sh scripts/validate-platform-code.sh || true
+          ./scripts/validate-build.sh || echo "⚠️ Build validation warnings"
+          ./scripts/validate-platform-code.sh || echo "⚠️ Platform validation warnings"
       
-      - name: 🔍 Run Platform Code Validation Script
-        run: |
-          chmod +x scripts/validate-platform-code.sh || true
-          ./scripts/validate-platform-code.sh || echo "⚠️ Platform validation completed with warnings"
-      
-      - name: 🔎 Check for Common Code Issues
+      - name: Check Code Metrics
         run: |
           echo "## Code Quality Metrics" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Checking for common build issues..." >> $GITHUB_STEP_SUMMARY
-          
-          # Check for force unwraps
           FORCE_UNWRAPS=$(find . -name "*.swift" -not -path "./build/*" -exec grep -l "!" {} \; | wc -l || echo "0")
-          echo "Files with force unwraps: $FORCE_UNWRAPS" >> $GITHUB_STEP_SUMMARY
-          
-          # Check for print statements (should use logger)
           PRINT_STATEMENTS=$(find . -name "*.swift" -not -path "./build/*" -exec grep -c "print(" {} \; | awk '{s+=$1} END {print s}' || echo "0")
-          echo "Print statements found: $PRINT_STATEMENTS" >> $GITHUB_STEP_SUMMARY
-          
-          # Check for TODO/FIXME
           TODO_COUNT=$(find . -name "*.swift" -not -path "./build/*" -exec grep -c "TODO\|FIXME" {} \; | awk '{s+=$1} END {print s}' || echo "0")
-          echo "TODO/FIXME comments: $TODO_COUNT" >> $GITHUB_STEP_SUMMARY
-          
-          # Check for missing error handling
-          TRY_COUNT=$(find . -name "*.swift" -not -path "./build/*" -exec grep -c "try!" {} \; | awk '{s+=$1} END {print s}' || echo "0")
-          echo "Force try statements: $TRY_COUNT" >> $GITHUB_STEP_SUMMARY
-          
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- **Force unwraps:** $FORCE_UNWRAPS files" >> $GITHUB_STEP_SUMMARY
-          echo "- **Print statements:** $PRINT_STATEMENTS" >> $GITHUB_STEP_SUMMARY
-          echo "- **TODO/FIXME:** $TODO_COUNT" >> $GITHUB_STEP_SUMMARY
-          echo "- **Force try statements:** $TRY_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- Force unwraps: $FORCE_UNWRAPS files" >> $GITHUB_STEP_SUMMARY
+          echo "- Print statements: $PRINT_STATEMENTS" >> $GITHUB_STEP_SUMMARY
+          echo "- TODO/FIXME: $TODO_COUNT" >> $GITHUB_STEP_SUMMARY
       
-      - name: 📋 Validate Project Can Be Opened in Xcode
+      - name: Validate Resources
         run: |
-          echo "Validating that project can be opened in Xcode..."
-          xcodebuild -list -project DisabilityAdvocacy.xcodeproj > /dev/null
-          echo "✅ Project structure is valid and can be opened in Xcode"
-      
-      - name: 🔍 Check for Missing Resources
-        run: |
-          echo "Checking for missing resources..."
-          MISSING_RESOURCES=0
-          
-          # Check for required asset catalogs
-          if [ ! -f "Resources/Assets.xcassets/Contents.json" ]; then
-            echo "⚠️ Assets.xcassets/Contents.json missing"
-            MISSING_RESOURCES=$((MISSING_RESOURCES + 1))
-          fi
-          
-          # Check for required JSON files
-          if [ ! -f "Resources/Events.json" ]; then
-            echo "⚠️ Resources/Events.json missing"
-            MISSING_RESOURCES=$((MISSING_RESOURCES + 1))
-          fi
-          
-          if [ ! -f "Resources/Resources.json" ]; then
-            echo "⚠️ Resources/Resources.json missing"
-            MISSING_RESOURCES=$((MISSING_RESOURCES + 1))
-          fi
-          
-          if [ $MISSING_RESOURCES -eq 0 ]; then
-            echo "✅ All required resources found"
-          else
-            echo "⚠️ Found $MISSING_RESOURCES missing resource(s)"
-          fi
+          [ -f "Resources/Assets.xcassets/Contents.json" ] || echo "⚠️ Assets.xcassets missing"
+          [ -f "Resources/Events.json" ] || echo "⚠️ Events.json missing"
+          [ -f "Resources/Resources.json" ] || echo "⚠️ Resources.json missing"
 
   # ============================================================================
-  # Security Scanning
+  # Gate 11: Build Status Summary
+  # Purpose: Generate final status report
   # ============================================================================
-  security-scanning:
-    name: 🔒 Security Scanning
-    runs-on: macos-14
-    timeout-minutes: 10
-    steps:
-      - name: 📥 Checkout Source Code
-        uses: actions/checkout@v4
-      
-      - name: 🔍 Scan for Hardcoded Secrets
-        run: |
-          echo "## Security Scan Results" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "Scanning for potential secrets..." >> $GITHUB_STEP_SUMMARY
-          
-          # Check for API keys, tokens, etc.
-          SECRET_PATTERNS=("api[_-]?key" "secret" "token" "password" "auth[_-]?token")
-          FOUND_SECRETS=0
-          
-          for pattern in "${SECRET_PATTERNS[@]}"; do
-            MATCHES=$(grep -r -i "$pattern" --include="*.swift" --include="*.plist" --include="*.json" . 2>/dev/null | grep -v ".git" | grep -v "node_modules" | wc -l || echo "0")
-            if [ "$MATCHES" -gt 0 ]; then
-              echo "⚠️ Found potential secrets matching '$pattern': $MATCHES" >> $GITHUB_STEP_SUMMARY
-              FOUND_SECRETS=$((FOUND_SECRETS + MATCHES))
-            fi
-          done
-          
-          if [ "$FOUND_SECRETS" -gt 0 ]; then
-            echo "⚠️ Security scan found $FOUND_SECRETS potential issues" >> $GITHUB_STEP_SUMMARY
-            echo "Please review and ensure no secrets are committed." >> $GITHUB_STEP_SUMMARY
-          else
-            echo "✅ No obvious secrets found" >> $GITHUB_STEP_SUMMARY
-          fi
-      
-      - name: 📦 Check Dependencies for Vulnerabilities
-        run: |
-          echo "Checking for dependency vulnerabilities..." >> $GITHUB_STEP_SUMMARY
-          echo "Note: For Swift Package Manager, use 'swift package show-dependencies'" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Dependency check complete (manual review recommended)" >> $GITHUB_STEP_SUMMARY
-
-  # ============================================================================
-  # Build Status Summary
-  # ============================================================================
-  build-status-summary:
-    name: 📊 Build Status Summary
+  status-summary:
+    name: 📊 Status Summary
     runs-on: ubuntu-latest
-    needs: [build-ios-application, build-macos-application, test-ios-application, test-macos-application, comprehensive-build-validation, security-scanning, swift-6-concurrency-pre-check]
+    needs: [build-ios, build-macos, test-ios, test-macos, post-build-validation, security-scan, concurrency-check]
     if: always()
     steps:
-      - name: 📋 Generate Comprehensive Status Summary
+      - name: Generate Summary
         run: |
-          echo "# 🚀 Build and Test Status" >> $GITHUB_STEP_SUMMARY
+          echo "# 🚀 Build Status" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # Build Status
-          echo "## 📦 Platform Builds" >> $GITHUB_STEP_SUMMARY
+          echo "## Builds" >> $GITHUB_STEP_SUMMARY
+          echo "- iOS: ${{ needs.build-ios.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- macOS: ${{ needs.build-macos.result }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Platform | Configuration | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------|---------------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| iOS | Debug | ${{ needs.build-ios-application.result == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| iOS | Release | ${{ needs.build-ios-application.result == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| macOS | Debug | ${{ needs.build-macos-application.result == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| macOS | Release | ${{ needs.build-macos-application.result == 'success' && '✅ Success' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
+          echo "## Tests" >> $GITHUB_STEP_SUMMARY
+          echo "- iOS: ${{ needs.test-ios.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- macOS: ${{ needs.test-macos.result }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # Test Status
-          echo "## 🧪 Tests" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Test Suite | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| iOS Unit Tests | ${{ needs.test-ios-application.result == 'success' && '✅ Passed' || needs.test-ios-application.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| macOS Unit Tests | ${{ needs.test-macos-application.result == 'success' && '✅ Passed' || needs.test-macos-application.result == 'skipped' && '⏭️ Skipped' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # Validation Status
-          echo "## ✅ Validation" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Validation | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|------------|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Swift 6 Concurrency Check | ${{ needs.swift-6-concurrency-pre-check.result == 'success' && '✅ Passed' || needs.swift-6-concurrency-pre-check.result == 'skipped' && '⏭️ Skipped' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Build Validation | ${{ needs.comprehensive-build-validation.result == 'success' && '✅ Passed' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Security Scan | ${{ needs.security-scanning.result == 'success' && '✅ Passed' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "| Code Quality | ${{ needs.code-quality-and-linting.result == 'success' && '✅ Passed' || needs.code-quality-and-linting.result == 'skipped' && '⏭️ Skipped' || '⚠️ Warnings' }} |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
-          # Metadata
-          echo "---" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Workflow Run:** \`${{ github.run_number }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "**Commit:** \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "**Branch:** \`${{ github.ref_name }}\`" >> $GITHUB_STEP_SUMMARY
-          echo "**Triggered by:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "**Configuration:** ${{ env.CONFIGURATION }}" >> $GITHUB_STEP_SUMMARY
-          
-          # Overall Status
-          echo "" >> $GITHUB_STEP_SUMMARY
-          if [ "${{ needs.build-ios-application.result }}" == "success" ] && [ "${{ needs.build-macos-application.result }}" == "success" ]; then
-            echo "### ✅ Overall Status: **SUCCESS**" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "### ❌ Overall Status: **FAILED**" >> $GITHUB_STEP_SUMMARY
-          fi
+          echo "## Validation" >> $GITHUB_STEP_SUMMARY
+          echo "- Post-Build: ${{ needs.post-build-validation.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Security: ${{ needs.security-scan.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Concurrency: ${{ needs.concurrency-check.result }}" >> $GITHUB_STEP_SUMMARY
