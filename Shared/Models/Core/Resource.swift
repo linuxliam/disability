@@ -53,36 +53,53 @@ enum ResourceCategory: String, Codable, CaseIterable {
 
 // MARK: - Resource Filtering Extension
 extension Array where Element == Resource {
-    /// Filters resources by search text, category, and tag
+    /// Filters resources by search text, category, and tag in a single pass
+    /// - Parameters:
+    ///   - searchText: Search query (will be trimmed and lowercased)
+    ///   - category: Optional category filter
+    ///   - tag: Optional tag filter
+    /// - Returns: Filtered array of resources
     func filtered(searchText: String, category: ResourceCategory?, tag: String?) -> [Resource] {
-        var filtered = self
-
-        // Pre-compute lowercase search for efficiency
+        // Pre-compute search text once
         let trimmedSearch = searchText.trimmingCharacters(in: .whitespaces)
+        let lowerSearch = trimmedSearch.isEmpty ? nil : trimmedSearch.lowercased()
 
-        if !trimmedSearch.isEmpty {
-            filtered = filtered.filter { $0.matches(searchText: trimmedSearch) }
+        // Single-pass filtering: combine all filters in one operation
+        return self.filter { resource in
+            // Search text filter
+            if let search = lowerSearch {
+                if !resource.matches(searchText: search) {
+                    return false
+                }
+            }
+            
+            // Category filter
+            if let category = category, resource.category != category {
+                return false
+            }
+            
+            // Tag filter
+            if let tag = tag, !resource.tags.contains(tag) {
+                return false
+            }
+            
+            return true
         }
-
-        if let category = category {
-            filtered = filtered.filter { $0.category == category }
-        }
-        
-        if let tag = tag {
-            filtered = filtered.filter { $0.tags.contains(tag) }
-        }
-
-        return filtered
     }
 }
 
 // MARK: - Resource Search Matching
 extension Resource {
-    /// Checks if resource matches search text
+    /// Checks if resource matches search text (assumes searchText is already lowercased)
     func matches(searchText: String) -> Bool {
-        title.localizedCaseInsensitiveContains(searchText) ||
-        description.localizedCaseInsensitiveContains(searchText) ||
-        tags.contains { $0.localizedCaseInsensitiveContains(searchText) }
+        // Use lowercased() once per property instead of localizedCaseInsensitiveContains
+        // This is faster when searchText is already lowercased
+        let lowerTitle = title.lowercased()
+        let lowerDescription = description.lowercased()
+        
+        return lowerTitle.contains(searchText) ||
+               lowerDescription.contains(searchText) ||
+               tags.contains { $0.lowercased().contains(searchText) }
     }
 }
 
