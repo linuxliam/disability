@@ -1,0 +1,160 @@
+name: Test Platform
+
+on:
+  workflow_call:
+    inputs:
+      platform:
+        required: true
+        type: string
+        description: 'Platform to test (ios or macos)'
+      xcode_version:
+        required: false
+        type: string
+        default: '15.1'
+        description: 'Xcode version to use'
+      device:
+        required: false
+        type: string
+        default: 'iPhone 15'
+        description: 'iOS device name (ignored for macOS)'
+    outputs:
+      test-status:
+        description: 'Test status (success or failure)'
+        value: ${{ jobs.test.outputs.status }}
+      coverage:
+        description: 'Code coverage percentage'
+        value: ${{ jobs.test.outputs.coverage }}
+
+jobs:
+  test:
+    name: 🧪 Test ${{ inputs.platform }}
+    runs-on: macos-14
+    timeout-minutes: 20
+    outputs:
+      status: ${{ steps.test-status.outputs.status }}
+      coverage: ${{ steps.coverage.outputs.percentage }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ inputs.xcode_version }}
+
+      - name: 📦 Cache Test Artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            build
+          key: ${{ runner.os }}-test-${{ inputs.platform }}-${{ hashFiles('**/*.swift') }}
+          restore-keys: |
+            ${{ runner.os }}-test-${{ inputs.platform }}-
+
+      - name: 📱 Find Simulator (iOS only)
+        if: inputs.platform == 'ios'
+        id: simulator
+        run: |
+          DEVICE_UDID=$(xcrun simctl list devices available | grep -i "${{ inputs.device }}" | grep -i "iphone" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/' | head -1)
+          if [ -z "$DEVICE_UDID" ]; then
+            DEVICE_UDID=$(xcrun simctl list devices available | grep -i "iphone" | head -1 | sed -E 's/.*\(([A-F0-9-]+)\).*/\1/' | head -1)
+          fi
+          if [ -z "$DEVICE_UDID" ]; then
+            echo "destination=generic/platform=iOS Simulator" >> $GITHUB_OUTPUT
+          else
+            xcrun simctl boot "$DEVICE_UDID" 2>/dev/null || true
+            sleep 3
+            echo "destination=platform=iOS Simulator,id=$DEVICE_UDID" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🧪 Run Tests
+        id: run-tests
+        run: |
+          set -o pipefail
+          TEST_START=$(date +%s)
+          
+          if [ "${{ inputs.platform }}" = "ios" ]; then
+            SCHEME="DisabilityAdvocacy-iOS"
+            SDK="iphonesimulator"
+            DESTINATION="${{ steps.simulator.outputs.destination }}"
+          else
+            SCHEME="DisabilityAdvocacy-macOS"
+            SDK="macosx"
+            DESTINATION="platform=macOS"
+          fi
+          
+          xcodebuild test \
+            -project DisabilityAdvocacy.xcodeproj \
+            -scheme "$SCHEME" \
+            -sdk "$SDK" \
+            -configuration Debug \
+            -destination "$DESTINATION" \
+            -enableCodeCoverage YES \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -derivedDataPath build \
+            -only-testing:DisabilityAdvocacyTests \
+            2>&1 | tee test-output.txt || TEST_EXIT_CODE=$?
+          
+          TEST_END=$(date +%s)
+          TEST_DURATION=$((TEST_END - TEST_START))
+          echo "⏱️ Tests took ${TEST_DURATION}s"
+          
+          if [ ${TEST_EXIT_CODE:-0} -ne 0 ]; then
+            echo "status=failure" >> $GITHUB_OUTPUT
+            exit ${TEST_EXIT_CODE:-1}
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📊 Calculate Coverage
+        id: coverage
+        if: always()
+        run: |
+          COVERAGE_DATA=$(find build -name "*.profdata" -type f | head -1)
+          
+          if [ -z "$COVERAGE_DATA" ]; then
+            echo "⚠️ Coverage data not found"
+            echo "percentage=0" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Try to get coverage using xcrun xccov
+          xcrun xccov view --report "$COVERAGE_DATA" > coverage-report.txt 2>/dev/null || true
+          
+          if [ -f coverage-report.txt ]; then
+            COVERAGE=$(grep -oE '[0-9]+\.[0-9]+%' coverage-report.txt | head -1 | sed 's/%//' || echo "0")
+          else
+            COVERAGE="0"
+          fi
+          
+          # Ensure coverage is a number
+          if ! echo "$COVERAGE" | grep -qE '^[0-9]+\.?[0-9]*$'; then
+            COVERAGE="0"
+          fi
+          
+          echo "📊 Coverage: ${COVERAGE}%"
+          echo "percentage=$COVERAGE" >> $GITHUB_OUTPUT
+
+      - name: 📤 Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.platform }}-test-results
+          path: |
+            test-output.txt
+            coverage-report.txt
+          retention-days: 7
+          compression-level: 6
+
+      - name: 📊 Set Test Status
+        id: test-status
+        if: always()
+        run: |
+          if [ "${{ steps.run-tests.outputs.status }}" = "success" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+          fi

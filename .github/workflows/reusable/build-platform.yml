@@ -1,0 +1,156 @@
+name: Build Platform
+
+on:
+  workflow_call:
+    inputs:
+      platform:
+        required: true
+        type: string
+        description: 'Platform to build (ios or macos)'
+      configuration:
+        required: false
+        type: string
+        default: 'Debug'
+        description: 'Build configuration'
+      xcode_version:
+        required: false
+        type: string
+        default: '15.1'
+        description: 'Xcode version to use'
+    outputs:
+      build-status:
+        description: 'Build status (success or failure)'
+        value: ${{ jobs.build.outputs.status }}
+
+jobs:
+  build:
+    name: 🔨 Build ${{ inputs.platform }}
+    runs-on: macos-14
+    timeout-minutes: 25
+    outputs:
+      status: ${{ steps.build-status.outputs.status }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ inputs.xcode_version }}
+
+      - name: 📦 Cache Dependencies
+        uses: actions/cache@v4
+        id: cache-deps
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+            ~/.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved', '**/project.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: 📦 Resolve Dependencies
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: |
+          if grep -r "packageReferences" DisabilityAdvocacy.xcodeproj/project.pbxproj > /dev/null 2>&1; then
+            xcodebuild -resolvePackageDependencies -project DisabilityAdvocacy.xcodeproj || exit 1
+          fi
+
+      - name: 📦 Cache Build Artifacts
+        uses: actions/cache@v4
+        id: cache-build
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+            build
+          key: ${{ runner.os }}-${{ inputs.platform }}-${{ inputs.configuration }}-${{ hashFiles('**/*.swift', '**/project.pbxproj', '**/Package.resolved') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ inputs.platform }}-${{ inputs.configuration }}-
+            ${{ runner.os }}-${{ inputs.platform }}-
+
+      - name: 🔨 Build
+        id: build
+        run: |
+          set -o pipefail
+          BUILD_START=$(date +%s)
+          
+          if [ "${{ inputs.platform }}" = "ios" ]; then
+            SCHEME="DisabilityAdvocacy-iOS"
+            SDK="iphonesimulator"
+            DESTINATION="generic/platform=iOS Simulator"
+          else
+            SCHEME="DisabilityAdvocacy-macOS"
+            SDK="macosx"
+            DESTINATION="platform=macOS"
+          fi
+          
+          xcodebuild \
+            -project DisabilityAdvocacy.xcodeproj \
+            -scheme "$SCHEME" \
+            -sdk "$SDK" \
+            -configuration ${{ inputs.configuration }} \
+            -destination "$DESTINATION" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -derivedDataPath build \
+            clean build \
+            2>&1 | tee build-${{ inputs.platform }}-${{ inputs.configuration }}.log || BUILD_EXIT_CODE=$?
+          
+          BUILD_END=$(date +%s)
+          BUILD_DURATION=$((BUILD_END - BUILD_START))
+          echo "⏱️ Build took ${BUILD_DURATION}s"
+          
+          if [ ${BUILD_EXIT_CODE:-0} -ne 0 ]; then
+            echo "status=failure" >> $GITHUB_OUTPUT
+            exit ${BUILD_EXIT_CODE:-1}
+          else
+            echo "status=success" >> $GITHUB_OUTPUT
+          fi
+
+      - name: ✅ Validate Bundle
+        if: success()
+        run: |
+          if [ "${{ inputs.platform }}" = "ios" ]; then
+            APP_NAME="DisabilityAdvocacy-iOS.app"
+            INFO_PLIST="Info.plist"
+          else
+            APP_NAME="DisabilityAdvocacy-macOS.app"
+            INFO_PLIST="Contents/Info.plist"
+          fi
+          
+          APP_PATH=$(find build -name "$APP_NAME" -type d 2>/dev/null | head -1)
+          
+          if [ -z "$APP_PATH" ]; then
+            echo "❌ App bundle not found"
+            exit 1
+          fi
+          
+          if [ ! -f "$APP_PATH/$INFO_PLIST" ]; then
+            echo "❌ Info.plist not found in app bundle"
+            exit 1
+          fi
+          
+          echo "✅ App bundle validated: $APP_PATH"
+
+      - name: 📤 Upload Artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.platform }}-build-${{ inputs.configuration }}
+          path: |
+            build-${{ inputs.platform }}-${{ inputs.configuration }}.log
+          retention-days: 7
+          compression-level: 6
+
+      - name: 📊 Set Build Status
+        id: build-status
+        if: always()
+        run: |
+          if [ "${{ steps.build.outputs.status }}" = "success" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+          fi

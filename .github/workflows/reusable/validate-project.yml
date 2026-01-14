@@ -1,0 +1,79 @@
+name: Validate Project
+
+on:
+  workflow_call:
+    inputs:
+      xcode_version:
+        required: false
+        type: string
+        default: '15.1'
+        description: 'Xcode version to use'
+    outputs:
+      validation-status:
+        description: 'Validation status (success or failure)'
+        value: ${{ jobs.validate.outputs.status }}
+
+jobs:
+  validate:
+    name: ✅ Validate Project
+    runs-on: macos-14
+    timeout-minutes: 5
+    outputs:
+      status: ${{ steps.validation-status.outputs.status }}
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ inputs.xcode_version }}
+
+      - name: ✅ Validate Project Structure
+        run: |
+          echo "🔍 Validating project structure..."
+          
+          # Check required files exist
+          [ -f "DisabilityAdvocacy.xcodeproj/project.pbxproj" ] || { echo "❌ Project file missing"; exit 1; }
+          [ -f "iOS/Info.plist" ] || { echo "❌ iOS Info.plist missing"; exit 1; }
+          [ -f "macOS/Info.plist" ] || { echo "❌ macOS Info.plist missing"; exit 1; }
+          
+          echo "✅ Required files present"
+
+      - name: ✅ Validate Xcode Project
+        run: |
+          echo "🔍 Validating Xcode project..."
+          xcodebuild -list -project DisabilityAdvocacy.xcodeproj || { echo "❌ Project validation failed"; exit 1; }
+          echo "✅ Xcode project is valid"
+
+      - name: ✅ Validate Resources
+        run: |
+          echo "🔍 Validating resources..."
+          
+          [ -f "Resources/Assets.xcassets/Contents.json" ] || echo "⚠️ Assets.xcassets missing"
+          [ -f "Resources/Events.json" ] || echo "⚠️ Events.json missing"
+          [ -f "Resources/Resources.json" ] || echo "⚠️ Resources.json missing"
+          
+          echo "✅ Resource validation complete"
+
+      - name: ✅ Validate Dependencies
+        run: |
+          echo "🔍 Validating dependencies..."
+          
+          if grep -r "packageReferences" DisabilityAdvocacy.xcodeproj/project.pbxproj > /dev/null 2>&1; then
+            echo "📦 Package dependencies found, resolving..."
+            xcodebuild -resolvePackageDependencies -project DisabilityAdvocacy.xcodeproj || { echo "❌ Dependency resolution failed"; exit 1; }
+            echo "✅ Dependencies resolved"
+          else
+            echo "ℹ️ No package dependencies found"
+          fi
+
+      - name: 📊 Set Validation Status
+        id: validation-status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+          fi

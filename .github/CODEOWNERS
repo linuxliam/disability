@@ -1,0 +1,31 @@
+# Code Owners Configuration
+# This file defines code ownership for automatic reviewer assignment
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Platform-specific code
+/iOS/ @liammatthews
+/macOS/ @liammatthews
+
+# Shared code (high impact - requires review)
+/Shared/ @liammatthews
+
+# Documentation
+/docs/ @liammatthews
+*.md @liammatthews
+
+# Configuration files
+/.github/ @liammatthews
+/Config/ @liammatthews
+
+# Resources
+/Resources/ @liammatthews
+
+# Scripts
+/scripts/ @liammatthews
+
+# Project files
+*.xcodeproj/ @liammatthews
+*.xcworkspace/ @liammatthews
+
+# Default owner for everything else
+* @liammatthews

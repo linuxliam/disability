@@ -1,0 +1,209 @@
+name: Auto-Link PR to Project
+
+on:
+  pull_request:
+    types: [opened, synchronize, closed, reopened, ready_for_review]
+    branches: [ main ]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  link-to-project:
+    name: 🔗 Link PR to Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔍 Extract Milestone from PR
+        id: extract-milestone
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          BODY="${{ github.event.pull_request.body }}"
+          
+          # Look for milestone patterns in title or body
+          MILESTONE=""
+          
+          # Pattern 1: "milestone: X" or "milestone X"
+          if echo "$TITLE $BODY" | grep -qiE 'milestone[:\s]+([0-9]+|[A-Za-z0-9-]+)'; then
+            MILESTONE=$(echo "$TITLE $BODY" | grep -oiE 'milestone[:\s]+([0-9]+|[A-Za-z0-9-]+)' | head -1 | sed -E 's/milestone[:\s]+//i' | tr -d ' ')
+          fi
+          
+          # Pattern 2: "[M-X]" or "[milestone-X]"
+          if [ -z "$MILESTONE" ]; then
+            if echo "$TITLE $BODY" | grep -qiE '\[M-([0-9]+|[A-Za-z0-9-]+)\]|\[milestone-([0-9]+|[A-Za-z0-9-]+)\]'; then
+              MILESTONE=$(echo "$TITLE $BODY" | grep -oiE '\[M-([0-9]+|[A-Za-z0-9-]+)\]|\[milestone-([0-9]+|[A-Za-z0-9-]+)\]' | head -1 | sed -E 's/\[.*-([0-9A-Za-z-]+)\]/\1/i')
+            fi
+          fi
+          
+          # Pattern 3: Check PR labels for milestone indicators
+          if [ -z "$MILESTONE" ]; then
+            LABELS="${{ join(github.event.pull_request.labels.*.name, ' ') }}"
+            if echo "$LABELS" | grep -qiE 'milestone-[0-9]+|m[0-9]+'; then
+              MILESTONE=$(echo "$LABELS" | grep -oiE 'milestone-[0-9]+|m[0-9]+' | head -1 | sed -E 's/.*-?([0-9]+)/\1/')
+            fi
+          fi
+          
+          if [ -n "$MILESTONE" ]; then
+            echo "Found milestone: $MILESTONE"
+            echo "milestone=$MILESTONE" >> $GITHUB_OUTPUT
+            echo "found=true" >> $GITHUB_OUTPUT
+          else
+            echo "No milestone found in PR"
+            echo "found=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🔗 Link PR to Project
+        if: steps.extract-milestone.outputs.found == 'true'
+        uses: actions/github-script@v7
+        env:
+          MILESTONE: ${{ steps.extract-milestone.outputs.milestone }}
+        with:
+          script: |
+            const milestone = process.env.MILESTONE;
+            const prNumber = context.payload.pull_request.number;
+            const prState = context.payload.pull_request.state;
+            const isDraft = context.payload.pull_request.draft;
+            
+            console.log(`Processing PR #${prNumber} for milestone: ${milestone}`);
+            console.log(`PR State: ${prState}, Draft: ${isDraft}`);
+            
+            // Get all projects for the repository
+            const projects = await github.rest.projects.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            
+            console.log(`Found ${projects.data.length} projects`);
+            
+            // Find project matching milestone
+            const targetProject = projects.data.find(project => 
+              project.name.toLowerCase().includes(`milestone ${milestone}`.toLowerCase()) ||
+              project.name.toLowerCase().includes(`m${milestone}`.toLowerCase()) ||
+              project.name.toLowerCase().includes(`milestone-${milestone}`.toLowerCase())
+            );
+            
+            if (!targetProject) {
+              console.log(`No project found matching milestone ${milestone}`);
+              return;
+            }
+            
+            console.log(`Found project: ${targetProject.name} (ID: ${targetProject.id})`);
+            
+            // Get project columns
+            const columns = await github.rest.projects.listColumns({
+              project_id: targetProject.id,
+            });
+            
+            console.log(`Found ${columns.data.length} columns`);
+            
+            // Determine target column based on PR state
+            let targetColumn = null;
+            
+            if (prState === 'closed' && context.payload.pull_request.merged) {
+              // Merged PRs go to "Done" or "Completed" column
+              targetColumn = columns.data.find(col => 
+                col.name.toLowerCase().includes('done') ||
+                col.name.toLowerCase().includes('completed') ||
+                col.name.toLowerCase().includes('merged')
+              );
+            } else if (isDraft || prState === 'draft') {
+              // Draft PRs go to "In Progress" or "Draft" column
+              targetColumn = columns.data.find(col => 
+                col.name.toLowerCase().includes('draft') ||
+                col.name.toLowerCase().includes('in progress') ||
+                col.name.toLowerCase().includes('wip')
+              );
+            } else {
+              // Open PRs go to "In Review" or "Open" column
+              targetColumn = columns.data.find(col => 
+                col.name.toLowerCase().includes('review') ||
+                col.name.toLowerCase().includes('open') ||
+                col.name.toLowerCase().includes('in progress')
+              );
+            }
+            
+            // Fallback to first column if no match
+            if (!targetColumn && columns.data.length > 0) {
+              targetColumn = columns.data[0];
+            }
+            
+            if (!targetColumn) {
+              console.log('No suitable column found');
+              return;
+            }
+            
+            console.log(`Target column: ${targetColumn.name} (ID: ${targetColumn.id})`);
+            
+            // Check if card already exists
+            const cards = await github.rest.projects.listCards({
+              column_id: targetColumn.id,
+            });
+            
+            const existingCard = cards.data.find(card => 
+              card.content_url && card.content_url.includes(`/pulls/${prNumber}`)
+            );
+            
+            if (existingCard) {
+              console.log(`Card already exists: ${existingCard.id}`);
+              
+              // Move card to appropriate column if state changed
+              if (existingCard.column_url !== targetColumn.url) {
+                await github.rest.projects.moveCard({
+                  card_id: existingCard.id,
+                  position: 'bottom',
+                  column_id: targetColumn.id,
+                });
+                console.log(`Moved card to column: ${targetColumn.name}`);
+              }
+            } else {
+              // Create new card
+              await github.rest.projects.createCard({
+                column_id: targetColumn.id,
+                content_id: context.payload.pull_request.id,
+                content_type: 'PullRequest',
+              });
+              console.log(`Created card in column: ${targetColumn.name}`);
+            }
+
+      - name: 📝 Comment on PR
+        if: steps.extract-milestone.outputs.found == 'true'
+        uses: actions/github-script@v7
+        env:
+          MILESTONE: ${{ steps.extract-milestone.outputs.milestone }}
+        with:
+          script: |
+            const milestone = process.env.MILESTONE;
+            const comment = `🔗 **Automated Project Linking**
+            
+            This PR has been automatically linked to milestone project: **${milestone}**
+            
+            The PR card will be moved between project columns based on its state:
+            - **Draft** → Draft/In Progress column
+            - **Open** → In Review/Open column  
+            - **Merged** → Done/Completed column
+            
+            ---
+            *This is an automated action. To link to a different milestone, add \`milestone: X\` to your PR title or description.*`;
+            
+            // Check if comment already exists
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.data.find(
+              comment => comment.user.type === 'Bot' && comment.body.includes('Automated Project Linking')
+            );
+            
+            if (!botComment) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment,
+              });
+            }

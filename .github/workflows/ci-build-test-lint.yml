@@ -3,8 +3,22 @@ name: Continuous Integration - Build, Test, and Validate
 on:
   push:
     branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/CODEOWNERS'
+      - '.github/labels.yml'
+      - '.github/branch-protection.yml'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/CODEOWNERS'
+      - '.github/labels.yml'
+      - '.github/branch-protection.yml'
   workflow_dispatch:
     inputs:
       configuration:
@@ -182,43 +196,6 @@ jobs:
           echo "⏱️ Dependency Validation completed in ${DURATION}s (${CACHE_STATUS})"
 
   # ============================================================================
-  # Gate 4: Swift 6 Concurrency Pre-Check
-  # Purpose: Detect potential concurrency issues before build
-  # ============================================================================
-  concurrency-check:
-    name: ⚡ Swift 6 Concurrency Check
-    runs-on: macos-14
-    timeout-minutes: 5
-    steps:
-      - name: ⏱️ Start Timer
-        uses: actions/github-script@v7
-        id: timer
-        with:
-          script: |
-            core.exportVariable('WORKFLOW_START', Date.now())
-            return Date.now()
-      
-      - name: 📥 Checkout
-        uses: actions/checkout@v4
-      
-      - name: 🔍 Check Concurrency Patterns
-        run: |
-          CONCURRENCY_ISSUES=0
-          while IFS= read -r file; do
-            if grep -q "Manager\.shared\." "$file" && ! grep -q "@MainActor" "$file"; then
-              CONCURRENCY_ISSUES=$((CONCURRENCY_ISSUES + 1))
-            fi
-          done < <(find Shared -name "*.swift" -type f 2>/dev/null)
-          echo "Found $CONCURRENCY_ISSUES potential concurrency issue(s)"
-          exit 0
-      
-      - name: ⏱️ Job Duration
-        if: always()
-        run: |
-          DURATION=$(((${{ steps.timer.outputs.result }} - ${{ env.WORKFLOW_START }}) / 1000))
-          echo "⏱️ Concurrency Check completed in ${DURATION}s"
-
-  # ============================================================================
   # Gate 5: Security Scan
   # Purpose: Check for hardcoded secrets and security issues
   # ============================================================================
@@ -323,24 +300,13 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             
             # Extract error types
-            CONCURRENCY_ERRORS=$(grep -c "main actor-isolated\|nonisolated context" build-ios-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
             COMPILATION_ERRORS=$(grep -c "error:" build-ios-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
             LINKER_ERRORS=$(grep -c "Undefined symbol\|ld:" build-ios-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
             
             echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
-            echo "- **Concurrency Errors:** $CONCURRENCY_ERRORS" >> $GITHUB_STEP_SUMMARY
             echo "- **Compilation Errors:** $COMPILATION_ERRORS" >> $GITHUB_STEP_SUMMARY
             echo "- **Linker Errors:** $LINKER_ERRORS" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            
-            # Show concurrency errors if any
-            if [ "$CONCURRENCY_ERRORS" -gt 0 ]; then
-              echo "### 🔴 Swift 6 Concurrency Errors" >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              grep -B 2 -A 5 "main actor-isolated\|nonisolated context" build-ios-${{ matrix.configuration }}.log | head -50 >> $GITHUB_STEP_SUMMARY || true
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
             
             # Show compilation errors
             if [ "$COMPILATION_ERRORS" -gt 0 ]; then
@@ -486,24 +452,13 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             
             # Extract error types
-            CONCURRENCY_ERRORS=$(grep -c "main actor-isolated\|nonisolated context" build-macos-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
             COMPILATION_ERRORS=$(grep -c "error:" build-macos-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
             LINKER_ERRORS=$(grep -c "Undefined symbol\|ld:" build-macos-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
             
             echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
-            echo "- **Concurrency Errors:** $CONCURRENCY_ERRORS" >> $GITHUB_STEP_SUMMARY
             echo "- **Compilation Errors:** $COMPILATION_ERRORS" >> $GITHUB_STEP_SUMMARY
             echo "- **Linker Errors:** $LINKER_ERRORS" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            
-            # Show concurrency errors if any
-            if [ "$CONCURRENCY_ERRORS" -gt 0 ]; then
-              echo "### 🔴 Swift 6 Concurrency Errors" >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              grep -B 2 -A 5 "main actor-isolated\|nonisolated context" build-macos-${{ matrix.configuration }}.log | head -50 >> $GITHUB_STEP_SUMMARY || true
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              echo "" >> $GITHUB_STEP_SUMMARY
-            fi
             
             # Show compilation errors
             if [ "$COMPILATION_ERRORS" -gt 0 ]; then
@@ -851,18 +806,6 @@ jobs:
           echo "- **Nil Coalescing (??):** $NIL_COALESCING" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
-          # Swift 6 Concurrency
-          echo "### ⚡ Swift 6 Concurrency" >> $GITHUB_STEP_SUMMARY
-          MAIN_ACTOR=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "@MainActor" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
-          ASYNC_AWAIT=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "async\|await" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
-          TASK_USAGE=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "Task {" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
-          NONISOLATED=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -exec grep -c "nonisolated" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
-          echo "- **@MainActor Annotations:** $MAIN_ACTOR" >> $GITHUB_STEP_SUMMARY
-          echo "- **Async/Await Usage:** $ASYNC_AWAIT" >> $GITHUB_STEP_SUMMARY
-          echo "- **Task Usage:** $TASK_USAGE" >> $GITHUB_STEP_SUMMARY
-          echo "- **Nonisolated Declarations:** $NONISOLATED" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          
           # Documentation
           echo "### 📝 Documentation" >> $GITHUB_STEP_SUMMARY
           DOCUMENTED_FUNCTIONS=$(find . -name "*.swift" -not -path "./build/*" -not -path "./.build/*" -not -path "*/Tests/*" -exec grep -c "///" {} \; 2>/dev/null | awk '{s+=$1} END {print s}' || echo "0")
@@ -917,7 +860,7 @@ jobs:
   status-summary:
     name: 📊 Status Summary
     runs-on: ubuntu-latest
-    needs: [build-ios, build-macos, test-ios, test-macos, post-build-validation, security-scan, concurrency-check, code-quality]
+    needs: [build-ios, build-macos, test-ios, test-macos, post-build-validation, security-scan, code-quality]
     if: always()
     steps:
       - name: 📊 Generate Summary
@@ -936,7 +879,6 @@ jobs:
           echo "- Code Quality: ${{ needs.code-quality.result == 'skipped' && '⏭️ Skipped' || needs.code-quality.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Post-Build: ${{ needs.post-build-validation.result }}" >> $GITHUB_STEP_SUMMARY
           echo "- Security: ${{ needs.security-scan.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Concurrency: ${{ needs.concurrency-check.result }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## ⚡ Performance Tips" >> $GITHUB_STEP_SUMMARY
           echo "- Cache hits reduce build times significantly" >> $GITHUB_STEP_SUMMARY

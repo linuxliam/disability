@@ -1,0 +1,171 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  validate-pr:
+    name: ✅ Validate Pull Request
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      issues: read
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Validate PR Title
+        id: validate-title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          echo "PR Title: $TITLE"
+          
+          # Check for conventional commit format
+          if echo "$TITLE" | grep -qE '^(feat|fix|docs|style|refactor|perf|test|chore|build|ci|revert)(\(.+\))?: .+'; then
+            echo "✅ PR title follows conventional commits format"
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "title_status=✅ Valid" >> $GITHUB_OUTPUT
+          else
+            echo "❌ PR title should follow conventional commits format: type(scope): description"
+            echo "Examples:"
+            echo "  - feat: add new feature"
+            echo "  - fix(ios): resolve crash issue"
+            echo "  - docs: update README"
+            echo "valid=false" >> $GITHUB_OUTPUT
+            echo "title_status=❌ Invalid - Should follow conventional commits format" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🔗 Check for Linked Issues
+        id: check-issues
+        run: |
+          BODY="${{ github.event.pull_request.body }}"
+          TITLE="${{ github.event.pull_request.title }}"
+          
+          # Check for issue references in body or title
+          if echo "$BODY $TITLE" | grep -qE '#[0-9]+|Fixes #[0-9]+|Closes #[0-9]+|Resolves #[0-9]+'; then
+            echo "✅ PR references an issue"
+            echo "has_issue=true" >> $GITHUB_OUTPUT
+            echo "issue_status=✅ Linked" >> $GITHUB_OUTPUT
+          else
+            echo "⚠️ PR does not reference an issue"
+            echo "has_issue=false" >> $GITHUB_OUTPUT
+            echo "issue_status=⚠️ No issue linked" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📝 Validate PR Description
+        id: validate-description
+        run: |
+          BODY="${{ github.event.pull_request.body }}"
+          BODY_LENGTH=${#BODY}
+          
+          if [ "$BODY_LENGTH" -lt 50 ]; then
+            echo "❌ PR description is too short (minimum 50 characters)"
+            echo "valid=false" >> $GITHUB_OUTPUT
+            echo "desc_status=❌ Too short (${BODY_LENGTH} chars, minimum 50)" >> $GITHUB_OUTPUT
+          else
+            echo "✅ PR description meets minimum length requirement"
+            echo "valid=true" >> $GITHUB_OUTPUT
+            echo "desc_status=✅ Valid (${BODY_LENGTH} chars)" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 🔍 Detect Breaking Changes
+        id: detect-breaking
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+          BODY="${{ github.event.pull_request.body }}"
+          
+          if echo "$TITLE" | grep -qE '^[^:]+!:' || echo "$BODY" | grep -qiE 'breaking change|BREAKING'; then
+            echo "⚠️ Breaking change detected"
+            echo "breaking=true" >> $GITHUB_OUTPUT
+            echo "breaking_status=⚠️ Breaking change detected" >> $GITHUB_OUTPUT
+          else
+            echo "✅ No breaking changes detected"
+            echo "breaking=false" >> $GITHUB_OUTPUT
+            echo "breaking_status=✅ No breaking changes" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📊 Generate Validation Report
+        id: generate-report
+        run: |
+          TITLE_VALID="${{ steps.validate-title.outputs.valid }}"
+          HAS_ISSUE="${{ steps.check-issues.outputs.has_issue }}"
+          DESC_VALID="${{ steps.validate-description.outputs.valid }}"
+          BREAKING="${{ steps.detect-breaking.outputs.breaking }}"
+          
+          REPORT="## 📋 PR Validation Report\n\n"
+          REPORT+="| Check | Status |\n"
+          REPORT+="|-------|--------|\n"
+          REPORT+="| **Title Format** | ${{ steps.validate-title.outputs.title_status }} |\n"
+          REPORT+="| **Issue Link** | ${{ steps.check-issues.outputs.issue_status }} |\n"
+          REPORT+="| **Description** | ${{ steps.validate-description.outputs.desc_status }} |\n"
+          REPORT+="| **Breaking Changes** | ${{ steps.detect-breaking.outputs.breaking_status }} |\n"
+          REPORT+="\n"
+          
+          # Overall status
+          if [ "$TITLE_VALID" = "true" ] && [ "$HAS_ISSUE" = "true" ] && [ "$DESC_VALID" = "true" ]; then
+            REPORT+="### ✅ All validations passed!\n\n"
+            REPORT+="This PR meets all validation requirements."
+            echo "overall_status=success" >> $GITHUB_OUTPUT
+          else
+            REPORT+="### ⚠️ Some validations need attention\n\n"
+            REPORT+="Please review the items above and update your PR as needed."
+            echo "overall_status=warning" >> $GITHUB_OUTPUT
+          fi
+          
+          # Add guidance
+          REPORT+="\n\n---\n\n"
+          REPORT+="### 📖 Guidelines\n\n"
+          REPORT+="- **Title:** Use conventional commits format: `type(scope): description`\n"
+          REPORT+="- **Issue:** Link to related issues using `#issue-number` or `Fixes #issue-number`\n"
+          REPORT+="- **Description:** Provide clear description of changes (minimum 50 characters)\n"
+          REPORT+="- **Breaking Changes:** Use `!` in title or mention in description if applicable\n"
+          
+          echo "report<<EOF" >> $GITHUB_OUTPUT
+          echo "$REPORT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: 💬 Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const report = `${{ steps.generate-report.outputs.report }}`;
+            const overallStatus = `${{ steps.generate-report.outputs.overall_status }}`;
+            
+            // Find existing comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.data.find(
+              comment => comment.user.type === 'Bot' && comment.body.includes('PR Validation Report')
+            );
+            
+            const commentBody = `🤖 **Automated PR Validation**\n\n${report}`;
+            
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: commentBody,
+              });
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: commentBody,
+              });
+            }

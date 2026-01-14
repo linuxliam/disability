@@ -1,0 +1,105 @@
+# GitHub Labels Configuration
+# This file defines standard labels for the repository
+# Labels can be synced using: gh label sync --source .github/labels.yml
+
+labels:
+  # Type labels
+  - name: bug
+    color: d73a4a
+    description: Something isn't working
+  - name: enhancement
+    color: a2eeef
+    description: New feature or request
+  - name: documentation
+    color: 0075ca
+    description: Improvements or additions to documentation
+  - name: question
+    color: d876e3
+    description: Further information is requested
+  - name: help wanted
+    color: 008672
+    description: Extra attention is needed
+
+  # Platform labels
+  - name: ios
+    color: 0e8a16
+    description: iOS-specific changes
+  - name: macos
+    color: 1d76db
+    description: macOS-specific changes
+  - name: shared
+    color: fbca04
+    description: Shared code changes
+
+  # Priority labels
+  - name: priority: high
+    color: b60205
+    description: High priority issue
+  - name: priority: medium
+    color: 0e8a16
+    description: Medium priority issue
+  - name: priority: low
+    color: fef2c0
+    description: Low priority issue
+
+  # Status labels
+  - name: in progress
+    color: fbca04
+    description: Work in progress
+  - name: blocked
+    color: d93f0b
+    description: Blocked by another issue
+  - name: needs review
+    color: 0e8a16
+    description: Needs code review
+  - name: needs testing
+    color: 1d76db
+    description: Needs testing
+
+  # Milestone labels
+  - name: milestone-1
+    color: 0052cc
+    description: Milestone 1
+  - name: milestone-2
+    color: 0052cc
+    description: Milestone 2
+  - name: milestone-3
+    color: 0052cc
+    description: Milestone 3
+
+  # Size labels
+  - name: size: xs
+    color: 3cbf00
+    description: Extra small (< 10 lines)
+  - name: size: s
+    color: 5d9801
+    description: Small (10-30 lines)
+  - name: size: m
+    color: 7d7d00
+    description: Medium (30-100 lines)
+  - name: size: l
+    color: 9d5d00
+    description: Large (100-500 lines)
+  - name: size: xl
+    color: bd3d00
+    description: Extra large (> 500 lines)
+
+  # Special labels
+  - name: breaking change
+    color: b60205
+    description: Breaking change
+  - name: security
+    color: b60205
+    description: Security-related issue
+  - name: pinned
+    color: 5319e7
+    description: Pinned issue
+  - name: duplicate
+    color: cfd3d7
+    description: This issue or pull request already exists
+  - name: invalid
+    color: e4e669
+    description: This doesn't seem right
+  - name: wontfix
+    color: ffffff
+    description: This will not be worked on

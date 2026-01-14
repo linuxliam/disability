@@ -1,0 +1,334 @@
+name: Code Coverage
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  XCODE_VERSION: '15.1'
+
+jobs:
+  coverage-ios:
+    name: 📊 Code Coverage - iOS
+    runs-on: macos-14
+    timeout-minutes: 20
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+
+      - name: 📦 Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved', '**/project.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: 🧪 Run Tests with Coverage
+        run: |
+          xcodebuild test \
+            -project DisabilityAdvocacy.xcodeproj \
+            -scheme "DisabilityAdvocacy-iOS" \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -destination 'platform=iOS Simulator,name=iPhone 15' \
+            -enableCodeCoverage YES \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -only-testing:DisabilityAdvocacyTests \
+            2>&1 | tee test-output.txt || TEST_EXIT_CODE=$?
+          
+          if [ ${TEST_EXIT_CODE:-0} -ne 0 ]; then
+            echo "⚠️ Some tests failed, but continuing with coverage analysis"
+          fi
+
+      - name: 📊 Generate Coverage Report
+        id: coverage
+        run: |
+          # Find coverage data
+          COVERAGE_DATA=$(find build -name "*.profdata" -type f | head -1)
+          
+          if [ -z "$COVERAGE_DATA" ]; then
+            echo "❌ Coverage data not found"
+            echo "coverage=0" >> $GITHUB_OUTPUT
+            echo "status=❌ Coverage data not found" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Find the binary
+          BINARY=$(find build -name "DisabilityAdvocacy-iOS" -type f -path "*/DisabilityAdvocacy-iOS.app/DisabilityAdvocacy-iOS" | head -1)
+          
+          if [ -z "$BINARY" ]; then
+            echo "⚠️ Binary not found, using alternative method"
+            # Try xcrun xccov
+            xcrun xccov view --report "$COVERAGE_DATA" > coverage-report.txt || true
+            COVERAGE=$(grep -oE '[0-9]+\.[0-9]+%' coverage-report.txt | head -1 | sed 's/%//' || echo "0")
+          else
+            # Use xcrun llvm-cov
+            COVERAGE=$(xcrun llvm-cov report "$BINARY" -instr-profile="$COVERAGE_DATA" \
+              -ignore-filename-regex=".*Tests.*|.*UITests.*" \
+              -ignore-filename-regex=".*\.swiftpm.*" \
+              2>/dev/null | tail -1 | awk '{print $NF}' | sed 's/%//' || echo "0")
+          fi
+          
+          # Ensure coverage is a number
+          if ! echo "$COVERAGE" | grep -qE '^[0-9]+\.?[0-9]*$'; then
+            COVERAGE="0"
+          fi
+          
+          echo "📊 Coverage: ${COVERAGE}%"
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+          
+          # Determine status
+          if (( $(echo "$COVERAGE >= 80" | bc -l) )); then
+            echo "status=✅ Excellent (${COVERAGE}%)" >> $GITHUB_OUTPUT
+            echo "emoji=✅" >> $GITHUB_OUTPUT
+          elif (( $(echo "$COVERAGE >= 60" | bc -l) )); then
+            echo "status=⚠️ Good (${COVERAGE}%)" >> $GITHUB_OUTPUT
+            echo "emoji=⚠️" >> $GITHUB_OUTPUT
+          else
+            echo "status=❌ Needs Improvement (${COVERAGE}%)" >> $GITHUB_OUTPUT
+            echo "emoji=❌" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📤 Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-ios
+          path: |
+            coverage-report.txt
+            test-output.txt
+          retention-days: 7
+
+      - name: 💬 Comment Coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const coverage = parseFloat(`${{ steps.coverage.outputs.coverage }}`);
+            const status = `${{ steps.coverage.outputs.status }}`;
+            const emoji = `${{ steps.coverage.outputs.emoji }}`;
+            
+            const comment = `## ${emoji} Code Coverage Report - iOS
+            
+            **Coverage:** ${coverage.toFixed(2)}%
+            
+            **Status:** ${status}
+            
+            ### Coverage Goals
+            - ✅ Excellent: 80%+
+            - ⚠️ Good: 60-79%
+            - ❌ Needs Improvement: < 60%
+            
+            ${coverage < 60 ? '⚠️ **Action Required:** Coverage is below the recommended threshold. Please consider adding more tests.' : ''}
+            
+            ---
+            *This report is automatically generated by the Code Coverage workflow.*`;
+            
+            // Find existing comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.data.find(
+              comment => comment.user.type === 'Bot' && comment.body.includes('Code Coverage Report - iOS')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment,
+              });
+            }
+
+  coverage-macos:
+    name: 📊 Code Coverage - macOS
+    runs-on: macos-14
+    timeout-minutes: 15
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: ${{ env.XCODE_VERSION }}
+
+      - name: 📦 Cache Dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/Developer/Xcode/DerivedData
+            ~/Library/Caches/org.swift.swiftpm
+          key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved', '**/project.pbxproj') }}
+          restore-keys: |
+            ${{ runner.os }}-spm-
+
+      - name: 🧪 Run Tests with Coverage
+        run: |
+          xcodebuild test \
+            -project DisabilityAdvocacy.xcodeproj \
+            -scheme "DisabilityAdvocacy-macOS" \
+            -sdk macosx \
+            -configuration Debug \
+            -destination 'platform=macOS' \
+            -enableCodeCoverage YES \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            -only-testing:DisabilityAdvocacyTests \
+            2>&1 | tee test-output.txt || TEST_EXIT_CODE=$?
+          
+          if [ ${TEST_EXIT_CODE:-0} -ne 0 ]; then
+            echo "⚠️ Some tests failed, but continuing with coverage analysis"
+          fi
+
+      - name: 📊 Generate Coverage Report
+        id: coverage
+        run: |
+          # Find coverage data
+          COVERAGE_DATA=$(find build -name "*.profdata" -type f | head -1)
+          
+          if [ -z "$COVERAGE_DATA" ]; then
+            echo "❌ Coverage data not found"
+            echo "coverage=0" >> $GITHUB_OUTPUT
+            echo "status=❌ Coverage data not found" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          
+          # Find the binary
+          BINARY=$(find build -name "DisabilityAdvocacy-macOS" -type f -path "*/DisabilityAdvocacy-macOS.app/Contents/MacOS/DisabilityAdvocacy-macOS" | head -1)
+          
+          if [ -z "$BINARY" ]; then
+            echo "⚠️ Binary not found, using alternative method"
+            xcrun xccov view --report "$COVERAGE_DATA" > coverage-report.txt || true
+            COVERAGE=$(grep -oE '[0-9]+\.[0-9]+%' coverage-report.txt | head -1 | sed 's/%//' || echo "0")
+          else
+            COVERAGE=$(xcrun llvm-cov report "$BINARY" -instr-profile="$COVERAGE_DATA" \
+              -ignore-filename-regex=".*Tests.*|.*UITests.*" \
+              -ignore-filename-regex=".*\.swiftpm.*" \
+              2>/dev/null | tail -1 | awk '{print $NF}' | sed 's/%//' || echo "0")
+          fi
+          
+          # Ensure coverage is a number
+          if ! echo "$COVERAGE" | grep -qE '^[0-9]+\.?[0-9]*$'; then
+            COVERAGE="0"
+          fi
+          
+          echo "📊 Coverage: ${COVERAGE}%"
+          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
+          
+          # Determine status
+          if (( $(echo "$COVERAGE >= 80" | bc -l) )); then
+            echo "status=✅ Excellent (${COVERAGE}%)" >> $GITHUB_OUTPUT
+            echo "emoji=✅" >> $GITHUB_OUTPUT
+          elif (( $(echo "$COVERAGE >= 60" | bc -l) )); then
+            echo "status=⚠️ Good (${COVERAGE}%)" >> $GITHUB_OUTPUT
+            echo "emoji=⚠️" >> $GITHUB_OUTPUT
+          else
+            echo "status=❌ Needs Improvement (${COVERAGE}%)" >> $GITHUB_OUTPUT
+            echo "emoji=❌" >> $GITHUB_OUTPUT
+          fi
+
+      - name: 📤 Upload Coverage Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-macos
+          path: |
+            coverage-report.txt
+            test-output.txt
+          retention-days: 7
+
+      - name: 💬 Comment Coverage on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const coverage = parseFloat(`${{ steps.coverage.outputs.coverage }}`);
+            const status = `${{ steps.coverage.outputs.status }}`;
+            const emoji = `${{ steps.coverage.outputs.emoji }}`;
+            
+            const comment = `## ${emoji} Code Coverage Report - macOS
+            
+            **Coverage:** ${coverage.toFixed(2)}%
+            
+            **Status:** ${status}
+            
+            ### Coverage Goals
+            - ✅ Excellent: 80%+
+            - ⚠️ Good: 60-79%
+            - ❌ Needs Improvement: < 60%
+            
+            ${coverage < 60 ? '⚠️ **Action Required:** Coverage is below the recommended threshold. Please consider adding more tests.' : ''}
+            
+            ---
+            *This report is automatically generated by the Code Coverage workflow.*`;
+            
+            // Find existing comment
+            const comments = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            const botComment = comments.data.find(
+              comment => comment.user.type === 'Bot' && comment.body.includes('Code Coverage Report - macOS')
+            );
+            
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: comment,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: comment,
+              });
+            }
