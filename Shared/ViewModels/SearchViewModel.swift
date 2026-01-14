@@ -189,24 +189,26 @@ class SearchViewModel {
     // MARK: - Matching Logic
     
     // Optimized matching functions - query is already lowercased
+    // Use direct lowercased() and contains() instead of localizedCaseInsensitiveContains
+    // for better performance when query is pre-lowercased
     private func matches(query: String, resource: Resource) -> Bool {
-        return resource.title.localizedCaseInsensitiveContains(query) ||
-               resource.description.localizedCaseInsensitiveContains(query) ||
-               resource.category.rawValue.localizedCaseInsensitiveContains(query) ||
-               resource.tags.contains { $0.localizedCaseInsensitiveContains(query) }
+        return resource.title.lowercased().contains(query) ||
+               resource.description.lowercased().contains(query) ||
+               resource.category.rawValue.lowercased().contains(query) ||
+               resource.tags.contains { $0.lowercased().contains(query) }
     }
 
     private func matches(query: String, event: Event) -> Bool {
-        return event.title.localizedCaseInsensitiveContains(query) ||
-               event.description.localizedCaseInsensitiveContains(query) ||
-               event.category.rawValue.localizedCaseInsensitiveContains(query) ||
-               event.location.localizedCaseInsensitiveContains(query)
+        return event.title.lowercased().contains(query) ||
+               event.description.lowercased().contains(query) ||
+               event.category.rawValue.lowercased().contains(query) ||
+               event.location.lowercased().contains(query)
     }
 
     private func matches(query: String, post: CommunityPost) -> Bool {
-        return post.title.localizedCaseInsensitiveContains(query) ||
-               post.content.localizedCaseInsensitiveContains(query) ||
-               post.category.rawValue.localizedCaseInsensitiveContains(query)
+        return post.title.lowercased().contains(query) ||
+               post.content.lowercased().contains(query) ||
+               post.category.rawValue.lowercased().contains(query)
     }
 
     private func matches(query: String, article: NewsArticle) -> Bool {
