@@ -151,17 +151,21 @@ jobs:
             console.log(`Created PR #${pr.number}: ${pr.html_url}`);
             
             // Add comment to issue
+            const commentBody = [
+              '✅ **PR automatically created**',
+              '',
+              'A pull request has been created for this bug:',
+              '',
+              `🔗 **PR #${pr.number}:** [${pr.title}](${pr.html_url})`,
+              '',
+              'The PR is currently in draft mode. Please implement the fix and mark it as ready for review when complete.'
+            ].join('\n');
+            
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: issueNumber,
-              body: `✅ **PR automatically created**
-
-A pull request has been created for this bug:
-
-🔗 **PR #${pr.number}:** [${pr.title}](${pr.html_url})
-
-The PR is currently in draft mode. Please implement the fix and mark it as ready for review when complete.`
+              body: commentBody
             });
       
       - name: Summary
