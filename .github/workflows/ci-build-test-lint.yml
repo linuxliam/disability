@@ -32,7 +32,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  XCODE_VERSION: '15.0'
+  XCODE_VERSION: '15.1'
   SWIFT_VERSION: '5.9'
   CONFIGURATION: ${{ github.event.inputs.configuration || 'Debug' }}
   SKIP_TESTS: ${{ github.event.inputs.skip_tests == 'true' || false }}
@@ -363,8 +363,40 @@ jobs:
       - name: ✅ Validate Bundle
         if: success()
         run: |
-          APP_PATH="build/${{ matrix.configuration == 'Debug' && 'Debug' || 'Release' }}-iphonesimulator/DisabilityAdvocacy-iOS.app"
-          [ -d "$APP_PATH" ] && [ -f "$APP_PATH/Info.plist" ] || exit 1
+          # Try multiple possible paths for the built app
+          APP_PATH=""
+          POSSIBLE_PATHS=(
+            "build/Build/Products/${{ matrix.configuration }}-iphonesimulator/DisabilityAdvocacy-iOS.app"
+            "build/${{ matrix.configuration == 'Debug' && 'Debug' || 'Release' }}-iphonesimulator/DisabilityAdvocacy-iOS.app"
+            "build/Build/Products/DisabilityAdvocacy-iOS.app"
+          )
+          
+          for path in "${POSSIBLE_PATHS[@]}"; do
+            if [ -d "$path" ] && [ -f "$path/Info.plist" ]; then
+              APP_PATH="$path"
+              break
+            fi
+          done
+          
+          if [ -z "$APP_PATH" ]; then
+            echo "⚠️ App bundle not found in expected locations. Searching..."
+            FOUND_PATH=$(find build -name "DisabilityAdvocacy-iOS.app" -type d 2>/dev/null | head -1)
+            if [ -n "$FOUND_PATH" ]; then
+              APP_PATH="$FOUND_PATH"
+              echo "✅ Found app bundle at: $APP_PATH"
+            else
+              echo "❌ App bundle not found anywhere in build directory"
+              exit 1
+            fi
+          fi
+          
+          if [ -n "$APP_PATH" ]; then
+            echo "✅ Found app bundle at: $APP_PATH"
+            [ -d "$APP_PATH" ] && [ -f "$APP_PATH/Info.plist" ] || exit 1
+          else
+            echo "❌ App bundle validation failed"
+            exit 1
+          fi
       
       - name: 📤 Upload Artifacts
         if: always()
@@ -429,6 +461,7 @@ jobs:
       
       - name: 🔨 Build
         run: |
+          set -o pipefail
           BUILD_START=$(date +%s)
           xcodebuild \
             -project DisabilityAdvocacy.xcodeproj \
@@ -440,17 +473,93 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             -derivedDataPath build \
             clean build \
-            2>&1 | tee build-macos-${{ matrix.configuration }}.log || exit 1
+            2>&1 | tee build-macos-${{ matrix.configuration }}.log || BUILD_EXIT_CODE=$?
           
           BUILD_END=$(date +%s)
           BUILD_DURATION=$((BUILD_END - BUILD_START))
           echo "⏱️ Build took ${BUILD_DURATION}s"
+          
+          if [ ${BUILD_EXIT_CODE:-0} -ne 0 ]; then
+            echo "## ❌ Build Failed (${{ matrix.configuration }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⏱️ **Build Duration:** ${BUILD_DURATION}s" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Extract error types
+            CONCURRENCY_ERRORS=$(grep -c "main actor-isolated\|nonisolated context" build-macos-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
+            COMPILATION_ERRORS=$(grep -c "error:" build-macos-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
+            LINKER_ERRORS=$(grep -c "Undefined symbol\|ld:" build-macos-${{ matrix.configuration }}.log 2>/dev/null || echo "0")
+            
+            echo "### Error Summary" >> $GITHUB_STEP_SUMMARY
+            echo "- **Concurrency Errors:** $CONCURRENCY_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Compilation Errors:** $COMPILATION_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "- **Linker Errors:** $LINKER_ERRORS" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Show concurrency errors if any
+            if [ "$CONCURRENCY_ERRORS" -gt 0 ]; then
+              echo "### 🔴 Swift 6 Concurrency Errors" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              grep -B 2 -A 5 "main actor-isolated\|nonisolated context" build-macos-${{ matrix.configuration }}.log | head -50 >> $GITHUB_STEP_SUMMARY || true
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            # Show compilation errors
+            if [ "$COMPILATION_ERRORS" -gt 0 ]; then
+              echo "### Compilation Errors" >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              grep "error:" build-macos-${{ matrix.configuration }}.log | head -30 >> $GITHUB_STEP_SUMMARY || true
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+            
+            # Show last 50 lines for context
+            echo "### Full Build Log (Last 50 lines)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -50 build-macos-${{ matrix.configuration }}.log >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            
+            exit ${BUILD_EXIT_CODE:-1}
+          fi
       
       - name: ✅ Validate Bundle
         if: success()
         run: |
-          APP_PATH="build/${{ matrix.configuration }}/DisabilityAdvocacy-macOS.app"
-          [ -d "$APP_PATH" ] && [ -f "$APP_PATH/Contents/Info.plist" ] || exit 1
+          # Try multiple possible paths for the built app
+          APP_PATH=""
+          POSSIBLE_PATHS=(
+            "build/Build/Products/${{ matrix.configuration }}/DisabilityAdvocacy-macOS.app"
+            "build/${{ matrix.configuration }}/DisabilityAdvocacy-macOS.app"
+            "build/Build/Products/DisabilityAdvocacy-macOS.app"
+          )
+          
+          for path in "${POSSIBLE_PATHS[@]}"; do
+            if [ -d "$path" ] && [ -f "$path/Contents/Info.plist" ]; then
+              APP_PATH="$path"
+              break
+            fi
+          done
+          
+          if [ -z "$APP_PATH" ]; then
+            echo "⚠️ App bundle not found in expected locations. Searching..."
+            FOUND_PATH=$(find build -name "DisabilityAdvocacy-macOS.app" -type d 2>/dev/null | head -1)
+            if [ -n "$FOUND_PATH" ]; then
+              APP_PATH="$FOUND_PATH"
+              echo "✅ Found app bundle at: $APP_PATH"
+            else
+              echo "❌ App bundle not found anywhere in build directory"
+              exit 1
+            fi
+          fi
+          
+          if [ -n "$APP_PATH" ]; then
+            echo "✅ Found app bundle at: $APP_PATH"
+            [ -d "$APP_PATH" ] && [ -f "$APP_PATH/Contents/Info.plist" ] || exit 1
+          else
+            echo "❌ App bundle validation failed"
+            exit 1
+          fi
       
       - name: 📤 Upload Artifacts
         if: always()
@@ -528,6 +637,7 @@ jobs:
       
       - name: 🧪 Run Tests
         run: |
+          set -o pipefail
           TEST_START=$(date +%s)
           xcodebuild test \
             -project DisabilityAdvocacy.xcodeproj \
@@ -540,11 +650,23 @@ jobs:
             -destination "${{ steps.simulator.outputs.destination }}" \
             -derivedDataPath build \
             -only-testing:DisabilityAdvocacyTests \
-            2>&1 | tee test-output-${{ matrix.device }}.txt || exit 1
+            2>&1 | tee test-output-${{ matrix.device }}.txt || TEST_EXIT_CODE=$?
           
           TEST_END=$(date +%s)
           TEST_DURATION=$((TEST_END - TEST_START))
           echo "⏱️ Tests took ${TEST_DURATION}s"
+          
+          if [ ${TEST_EXIT_CODE:-0} -ne 0 ]; then
+            echo "## ❌ Tests Failed (${{ matrix.device }})" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⏱️ **Test Duration:** ${TEST_DURATION}s" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Test Output (Last 100 lines)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -100 test-output-${{ matrix.device }}.txt >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit ${TEST_EXIT_CODE:-1}
+          fi
       
       - name: 📤 Upload Results
         if: always()
@@ -601,6 +723,7 @@ jobs:
       
       - name: 🧪 Run Tests
         run: |
+          set -o pipefail
           TEST_START=$(date +%s)
           xcodebuild test \
             -project DisabilityAdvocacy.xcodeproj \
@@ -613,11 +736,23 @@ jobs:
             -destination 'platform=macOS' \
             -derivedDataPath build \
             -only-testing:DisabilityAdvocacyTests \
-            2>&1 | tee test-output-macos.txt || exit 1
+            2>&1 | tee test-output-macos.txt || TEST_EXIT_CODE=$?
           
           TEST_END=$(date +%s)
           TEST_DURATION=$((TEST_END - TEST_START))
           echo "⏱️ Tests took ${TEST_DURATION}s"
+          
+          if [ ${TEST_EXIT_CODE:-0} -ne 0 ]; then
+            echo "## ❌ Tests Failed (macOS)" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⏱️ **Test Duration:** ${TEST_DURATION}s" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Test Output (Last 100 lines)" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -100 test-output-macos.txt >> $GITHUB_STEP_SUMMARY || true
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            exit ${TEST_EXIT_CODE:-1}
+          fi
       
       - name: 📤 Upload Results
         if: always()

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct AdminDashboardView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     

@@ -104,6 +104,7 @@ import Observation
 
 @MainActor
 @Observable
+@MainActor
 class CreatePostViewModel {
     private let communityViewModel: CommunityViewModel
     

@@ -86,6 +86,7 @@ struct ManageEventsView: View {
     }
 }
 
+@MainActor
 struct EventEditView: View {
     @Environment(\.dismiss) var dismiss
     

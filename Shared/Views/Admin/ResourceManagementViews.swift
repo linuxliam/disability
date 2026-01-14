@@ -82,6 +82,7 @@ struct ManageResourcesView: View {
     }
 }
 
+@MainActor
 struct ResourceEditView: View {
     @Environment(\.dismiss) var dismiss
     

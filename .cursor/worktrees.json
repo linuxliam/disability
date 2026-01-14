@@ -1,0 +1,9 @@
+{
+  "setup-worktree": [
+    "xcodebuild -resolvePackageDependencies -project DisabilityAdvocacy.xcodeproj",
+    "xcodebuild -list -project DisabilityAdvocacy.xcodeproj"
+  ],
+  "description": "Disability Advocacy App - Swift/Xcode project worktree configuration",
+  "project-type": "xcode",
+  "platforms": ["ios", "macos"]
+}

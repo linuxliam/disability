@@ -245,6 +245,7 @@ struct EventRow: View {
     }
 }
 
+@MainActor
 struct EventDetailView: View {
     let event: Event
     @Bindable private var calendarManager = CalendarManager.shared
