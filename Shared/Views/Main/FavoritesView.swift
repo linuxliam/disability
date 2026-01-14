@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct FavoritesView: View {
     @Environment(AppState.self) private var appState: AppState
     @State private var resourcesViewModel = ResourcesViewModel()

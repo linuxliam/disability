@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct ContentView: View {
     @Environment(AppState.self) var appState
     @State private var selectedSection: AppTab? = .home

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 struct ResourcesView: View {
     @Environment(AppState.self) private var appState: AppState
     @State private var viewModel = ResourcesViewModel()
@@ -37,6 +38,7 @@ struct ResourcesView: View {
 }
 
 // MARK: - Resources View With Category (for navigation from HomeView)
+@MainActor
 struct ResourcesViewWithCategory: View {
     @Environment(AppState.self) private var appState: AppState
     @State private var viewModel = ResourcesViewModel()
@@ -270,6 +272,7 @@ struct ResourcesContentView: View {
 
 }
 
+@MainActor
 struct ResourceListRow: View {
     let resource: Resource
     @Environment(AppState.self) private var appState: AppState
@@ -322,6 +325,7 @@ struct ResourceListRow: View {
     }
 }
 
+@MainActor
 struct ResourceDetailView: View {
     let resource: Resource
     @Environment(AppState.self) private var appState: AppState
@@ -427,8 +431,10 @@ struct ResourceDetailView: View {
                     
                     Button(action: {
                         PlatformUI.copyToClipboard(urlString)
-                        HapticManager.success()
-                        appState.feedback.success(String(localized: "URL copied"))
+                        Task { @MainActor in
+                            HapticManager.success()
+                            appState.feedback.success(String(localized: "URL copied"))
+                        }
                     }) {
                         Label(String(localized: "Copy"), systemImage: "doc.on.doc")
                             .font(.subheadline.weight(.medium))

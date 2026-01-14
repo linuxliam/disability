@@ -65,6 +65,7 @@ struct CardModifier: ViewModifier {
     }
 }
 
+@MainActor
 struct ElevatedCardModifier: ViewModifier {
     var cornerRadius: CGFloat = 16
     var padding: CGFloat = 20
@@ -101,10 +102,12 @@ struct CompactCardModifier: ViewModifier {
 
 // MARK: - View Extensions
 extension View {
+    @MainActor
     func cardStyle(cornerRadius: CGFloat = 16, padding: CGFloat = 20, elevation: CardElevation = .standard) -> some View {
         self.modifier(CardModifier(cornerRadius: cornerRadius, padding: padding, elevation: elevation))
     }
     
+    @MainActor
     func prominentCardStyle(cornerRadius: CGFloat = 18, padding: CGFloat = 24) -> some View {
         self.modifier(CardModifier(cornerRadius: cornerRadius, padding: padding, elevation: .prominent))
     }
@@ -126,10 +129,12 @@ extension View {
             )
     }
     
+    @MainActor
     func elevatedCardStyle(cornerRadius: CGFloat = 16, padding: CGFloat = 20) -> some View {
         self.modifier(ElevatedCardModifier(cornerRadius: cornerRadius, padding: padding))
     }
     
+    @MainActor
     func compactCardStyle(cornerRadius: CGFloat = 12, padding: CGFloat = 16) -> some View {
         self.modifier(CompactCardModifier(cornerRadius: cornerRadius, padding: padding))
     }

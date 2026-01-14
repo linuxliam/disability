@@ -63,6 +63,7 @@ extension View {
         #endif
     }
     
+    @MainActor
     func appCard(padding: CGFloat = LayoutConstants.cardPadding, elevation: CardElevation = .standard) -> some View {
         #if canImport(SwiftUI)
         return self.modifier(CardModifier(cornerRadius: LayoutConstants.cardCornerRadius, padding: padding, elevation: elevation))
